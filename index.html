@@ -1,0 +1,2902 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Анастасия — Онлайн-фитнес-тренер | Система тренировок и питания</title>
+  <meta name="description" content="Анастасия — онлайн-фитнес-тренер: персональные тренировки по видеосвязи, питание и поддержка в чате. Первая пробная тренировка — в подарок.">
+  <meta name="theme-color" content="#3F291B">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ru_RU">
+  <meta property="og:title" content="Анастасия — онлайн-фитнес-тренер">
+  <meta property="og:description" content="Система тренировок и питания онлайн. Первая пробная тренировка — в подарок.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-soft: #FAF7F2;
+      --bg-milk: #EFECE6;
+      --bg-taupe: #CDC7BF;
+      --bg-taupe-btn: #D5CFC7;
+      --bg-faq: #E9E4DC;
+      --bg-included: #EBE6DF;
+      --accent-brown: #6A6257;
+      --soft-beige: #A49E95;
+      --deep-choco: #3F291B;
+      --choco-card: #3B2618;
+      --darker-choco: #1E140E;
+      --text-main: #2B211B;
+      --text-muted: #6E655C;
+      --border-soft: rgba(63, 41, 27, 0.12);
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --radius-sm: 8px;
+      --transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-soft);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .serif {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 600;
+      line-height: 1.12;
+      color: var(--deep-choco);
+    }
+
+    h1 i, h2 i, h3 i {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ПРЕЛОАДЕР */
+    .preloader {
+      position: fixed;
+      inset: 0;
+      background: var(--deep-choco);
+      color: var(--bg-soft);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    .preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loader-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--bg-soft);
+    }
+    .loader-sub {
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--soft-beige);
+      margin-top: 6px;
+      margin-bottom: 18px;
+    }
+    .loader-bar {
+      width: 140px;
+      height: 2px;
+      background: rgba(250, 247, 242, 0.15);
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 2px;
+    }
+    .loader-bar span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-taupe);
+      animation: loadProgress 0.9s ease-in-out forwards;
+      transform-origin: left;
+    }
+    @keyframes loadProgress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    /* ТИПОГРАФИКА И КНОПКИ */
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent-brown);
+      margin-bottom: 12px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 44px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: clamp(2.1rem, 4vw, 3.2rem);
+      color: var(--deep-choco);
+    }
+
+    .section-desc {
+      max-width: 460px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 28px;
+      border-radius: 999px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background-color: var(--deep-choco);
+      color: var(--bg-soft);
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-brown);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border-color: var(--accent-brown);
+      color: var(--deep-choco);
+    }
+    .btn-outline:hover {
+      background-color: var(--deep-choco);
+      border-color: var(--deep-choco);
+      color: var(--bg-soft);
+    }
+
+    /* ШАПКА */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(250, 247, 242, 0.86);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 78px;
+      gap: 20px;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: column;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--deep-choco);
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .logo span {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      color: var(--accent-brown);
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .nav-links a {
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+    .nav-links a:hover {
+      color: var(--accent-brown);
+    }
+
+    /* 1. ГЛАВНЫЙ ЭКРАН */
+    .hero {
+      padding: 130px 0 80px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 54px;
+      align-items: center;
+    }
+    .hero-title {
+      font-size: clamp(2.6rem, 5vw, 4.3rem);
+      margin-bottom: 22px;
+      color: var(--deep-choco);
+    }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin-bottom: 32px;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 42px;
+    }
+    .hero-badges {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-soft);
+    }
+    .badge-item strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      color: var(--deep-choco);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .badge-item span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hero-visual {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4 / 4.8;
+      background: var(--bg-taupe);
+      box-shadow: 0 24px 48px rgba(63, 41, 27, 0.1);
+    }
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+    }
+    .hero-floating-card {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      background: rgba(250, 247, 242, 0.94);
+      backdrop-filter: blur(12px);
+      padding: 18px 22px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border: 1px solid rgba(63, 41, 27, 0.1);
+    }
+
+    /* 2. ЦЕЛИ */
+    .goals-sec {
+      padding: 84px 0;
+      background: var(--deep-choco);
+      color: var(--bg-soft);
+    }
+    .goals-sec .eyebrow {
+      color: var(--soft-beige);
+    }
+    .goals-sec .section-title {
+      color: var(--bg-soft);
+    }
+    .goals-sec .section-desc {
+      color: var(--bg-taupe);
+    }
+    .goals-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+    }
+    .goal-card {
+      background: rgba(250, 247, 242, 0.05);
+      border: 1px solid rgba(205, 199, 191, 0.16);
+      border-radius: var(--radius-md);
+      padding: 26px 22px;
+      transition: var(--transition);
+    }
+    .goal-card:hover {
+      background: rgba(250, 247, 242, 0.1);
+      transform: translateY(-4px);
+    }
+    .goal-num {
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      color: var(--soft-beige);
+      display: block;
+      margin-bottom: 14px;
+    }
+    .goal-card h3 {
+      font-size: 1.45rem;
+      color: var(--bg-soft);
+      margin-bottom: 10px;
+    }
+    .goal-card p {
+      font-size: 0.86rem;
+      color: var(--bg-taupe);
+      line-height: 1.55;
+    }
+
+    /* 3. РЕЗУЛЬТАТЫ И КЕЙСЫ */
+    .cases-sec {
+      padding: 96px 0;
+    }
+    .cases-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .case-tab-btn {
+      padding: 11px 22px;
+      border-radius: 999px;
+      background: var(--bg-milk);
+      border: 1px solid var(--border-soft);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .case-tab-btn.active {
+      background: var(--deep-choco);
+      color: var(--bg-soft);
+      border-color: var(--deep-choco);
+    }
+    .case-view {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 42px;
+      background: var(--bg-milk);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      align-items: center;
+    }
+    .case-photos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .case-photo-box {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      background: var(--bg-taupe);
+    }
+    .case-photo-box img {
+      width: 100%;
+      height: 100%;
+    }
+    .case-photo-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(63, 41, 27, 0.82);
+      color: var(--bg-soft);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+    .case-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 22px;
+    }
+    .metric-pill {
+      background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      padding: 7px 15px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--deep-choco);
+    }
+    .case-quote {
+      font-size: 0.96rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      padding-left: 16px;
+      border-left: 2px solid var(--accent-brown);
+    }
+
+    /* 4. ОТЗЫВЫ */
+    .reviews-sec {
+      padding: 88px 0;
+      background: var(--bg-milk);
+    }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+    .review-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 26px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .review-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .review-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: var(--bg-taupe);
+    }
+    .review-avatar img {
+      width: 100%;
+      height: 100%;
+    }
+    .review-badge {
+      display: inline-block;
+      background: var(--bg-included);
+      color: var(--deep-choco);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .review-text {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* 5. ОБО МНЕ */
+    .about-sec {
+      padding: 96px 0;
+    }
+    .about-tabs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .about-tab-btn {
+      padding: 12px 24px;
+      border-radius: 999px;
+      background: var(--bg-milk);
+      border: 1px solid var(--border-soft);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .about-tab-btn.active {
+      background: var(--deep-choco);
+      color: var(--bg-soft);
+      border-color: var(--deep-choco);
+    }
+    .about-slide {
+      display: none;
+    }
+    .about-slide.active {
+      display: block;
+    }
+    .about-bio-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .about-photo-main {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      aspect-ratio: 4 / 4.7;
+      background: var(--bg-taupe);
+    }
+    .about-photo-main img {
+      width: 100%;
+      height: 100%;
+    }
+    .about-points {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .about-point {
+      background: var(--bg-milk);
+      padding: 18px 20px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-soft);
+    }
+    .about-point strong {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--deep-choco);
+      margin-bottom: 4px;
+    }
+    .about-point span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .about-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .gallery-card {
+      background: var(--bg-milk);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-soft);
+    }
+    .gallery-card img {
+      width: 100%;
+      aspect-ratio: 4 / 3.4;
+    }
+    .gallery-card-body {
+      padding: 20px;
+    }
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+    .cert-card {
+      background: var(--bg-milk);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 26px 22px;
+    }
+
+    /* 6. МОЙ ПОДХОД */
+    .approach-sec {
+      padding: 88px 0;
+      background: var(--bg-milk);
+    }
+    .approach-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .approach-card {
+      background: var(--bg-soft);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .approach-card img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+    }
+    .approach-card-body {
+      padding: 26px 24px;
+    }
+    .approach-card-body h3 {
+      font-size: 1.55rem;
+      margin-bottom: 10px;
+    }
+    .approach-card-body p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 7. УСЛУГИ И ФОРМАТЫ РАБОТЫ (ПО СКРИНУ 1 — ЗОЛОТАЯ СЕРЕДИНА) */
+    .services-sec {
+      padding: 96px 0;
+      background: var(--bg-taupe);
+    }
+    .services-sec .eyebrow {
+      color: var(--deep-choco);
+      opacity: 0.75;
+    }
+    .services-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .service-tab-btn {
+      padding: 13px 24px;
+      border-radius: 6px;
+      background: rgba(250, 247, 242, 0.55);
+      border: 1px solid rgba(63, 41, 27, 0.15);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--deep-choco);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .service-tab-btn.active {
+      background: var(--deep-choco);
+      color: var(--bg-soft);
+      border-color: var(--deep-choco);
+    }
+
+    .included-box {
+      background: var(--bg-included);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 28px;
+      border: 1px solid rgba(63, 41, 27, 0.08);
+    }
+    .included-box-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-brown);
+      margin-bottom: 18px;
+    }
+    .included-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px 28px;
+    }
+    .included-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.86rem;
+      color: var(--text-main);
+      line-height: 1.45;
+    }
+    .included-item::before {
+      content: "•";
+      color: var(--accent-brown);
+      font-weight: 700;
+    }
+
+    .tariffs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .tariff-card {
+      background: var(--bg-soft);
+      border-radius: 10px;
+      padding: 34px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(63, 41, 27, 0.08);
+      transition: var(--transition);
+    }
+    .tariff-card.featured {
+      background: var(--choco-card);
+      color: var(--bg-soft);
+    }
+    .tariff-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-brown);
+      margin-bottom: 12px;
+      display: block;
+    }
+    .tariff-card.featured .tariff-tag {
+      color: var(--soft-beige);
+    }
+    .tariff-title {
+      font-size: 1.85rem;
+      color: var(--deep-choco);
+      margin-bottom: 14px;
+    }
+    .tariff-card.featured .tariff-title {
+      color: var(--bg-soft);
+    }
+    .tariff-pill {
+      display: inline-block;
+      background: var(--bg-included);
+      color: var(--deep-choco);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 6px 13px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    .tariff-card.featured .tariff-pill {
+      background: rgba(250, 247, 242, 0.12);
+      color: var(--bg-soft);
+    }
+    .tariff-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+    .tariff-card.featured .tariff-desc {
+      color: rgba(250, 247, 242, 0.8);
+    }
+    .tariff-price-wrap {
+      padding-top: 20px;
+      border-top: 1px solid var(--border-soft);
+      margin-bottom: 22px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .tariff-card.featured .tariff-price-wrap {
+      border-top-color: rgba(250, 247, 242, 0.14);
+    }
+    .tariff-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.35rem;
+      font-weight: 700;
+      color: var(--deep-choco);
+      line-height: 1;
+    }
+    .tariff-card.featured .tariff-price {
+      color: var(--bg-soft);
+    }
+    .tariff-period {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .tariff-card.featured .tariff-period {
+      color: var(--soft-beige);
+    }
+    .tariff-btn {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 6px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      background: var(--accent-brown);
+      color: var(--bg-soft);
+      transition: var(--transition);
+    }
+    .tariff-btn:hover {
+      background: var(--deep-choco);
+    }
+    .tariff-card.featured .tariff-btn {
+      background: var(--bg-taupe-btn);
+      color: var(--deep-choco);
+    }
+    .tariff-card.featured .tariff-btn:hover {
+      background: var(--bg-soft);
+    }
+
+    /* 8. КАК ПРОХОДИТ РАБОТА */
+    .steps-sec {
+      padding: 92px 0;
+      background: var(--bg-soft);
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+    .step-card {
+      background: var(--bg-milk);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+    }
+    .step-num {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-brown);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .step-card h3 {
+      font-size: 1.55rem;
+      margin-bottom: 10px;
+    }
+    .step-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    /* 9. FAQ (ПО СКРИНУ 2) */
+    .faq-sec {
+      padding: 96px 0;
+      background: var(--bg-faq);
+    }
+    .faq-container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .faq-head {
+      margin-bottom: 42px;
+    }
+    .faq-list {
+      border-top: 1px solid rgba(63, 41, 27, 0.15);
+    }
+    .faq-item {
+      border-bottom: 1px solid rgba(63, 41, 27, 0.15);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      text-align: left;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--deep-choco);
+      cursor: pointer;
+    }
+    .faq-icon {
+      font-family: 'Manrope', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--accent-brown);
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, padding-bottom 0.35s ease;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 320px;
+      padding-bottom: 24px;
+    }
+    .faq-answer p {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      line-height: 1.65;
+    }
+
+    /* 10. ФИНАЛЬНАЯ ЗАПИСЬ И КОНТАКТЫ (ПО СКРИНУ 3) */
+    .cta-sec {
+      padding: 96px 0;
+      background: var(--choco-card);
+      color: var(--bg-soft);
+    }
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .cta-sec .eyebrow {
+      color: var(--soft-beige);
+    }
+    .cta-title {
+      font-size: clamp(2.3rem, 4.2vw, 3.5rem);
+      color: var(--bg-soft);
+      margin-bottom: 20px;
+    }
+    .cta-sub {
+      font-size: 0.98rem;
+      color: rgba(250, 247, 242, 0.8);
+      max-width: 470px;
+      margin-bottom: 32px;
+      line-height: 1.65;
+    }
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 36px;
+    }
+    .cta-btn-light {
+      padding: 15px 26px;
+      border-radius: 6px;
+      background: var(--bg-taupe-btn);
+      color: var(--deep-choco);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--bg-taupe-btn);
+      cursor: pointer;
+    }
+    .cta-btn-light:hover {
+      background: var(--bg-soft);
+    }
+    .cta-btn-ghost {
+      padding: 15px 26px;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--bg-soft);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(250, 247, 242, 0.35);
+      cursor: pointer;
+    }
+    .cta-btn-ghost:hover {
+      border-color: var(--bg-soft);
+      background: rgba(250, 247, 242, 0.08);
+    }
+    .cta-socials {
+      display: flex;
+      gap: 28px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bg-taupe);
+    }
+    .cta-socials a:hover {
+      color: var(--bg-soft);
+    }
+
+    .cta-form-card {
+      background: var(--bg-soft);
+      color: var(--text-main);
+      border-radius: 10px;
+      padding: 40px 36px;
+    }
+    .cta-form-card h3 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: var(--deep-choco);
+    }
+    .cta-form-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-brown);
+      margin-bottom: 7px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: 6px;
+      border: 1px solid rgba(63, 41, 27, 0.18);
+      background: #FFFFFF;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-main);
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--deep-choco);
+    }
+    .form-submit {
+      width: 100%;
+      padding: 16px;
+      border-radius: 6px;
+      background: var(--accent-brown);
+      color: var(--bg-soft);
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 6px;
+    }
+    .form-submit:hover {
+      background: var(--deep-choco);
+    }
+    .form-note {
+      display: block;
+      margin-top: 12px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ПОДВАЛ (ПО СКРИНУ 3) */
+    footer {
+      background: var(--darker-choco);
+      color: rgba(250, 247, 242, 0.7);
+      padding: 52px 0 38px;
+    }
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(250, 247, 242, 0.1);
+    }
+    .footer-logo {
+      color: var(--bg-soft);
+    }
+    .footer-logo span {
+      color: var(--soft-beige);
+    }
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 26px;
+      font-size: 0.84rem;
+    }
+    .footer-nav a:hover {
+      color: var(--bg-soft);
+    }
+    .footer-bottom {
+      padding-top: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.78rem;
+      color: rgba(250, 247, 242, 0.45);
+    }
+    .footer-legal {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-legal a:hover {
+      color: var(--bg-soft);
+    }
+
+    /* МОДАЛЬНОЕ ОКНО */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 20, 14, 0.65);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: var(--transition);
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-box {
+      background: var(--bg-soft);
+      border-radius: 12px;
+      max-width: 460px;
+      width: 100%;
+      padding: 36px 32px;
+      position: relative;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    }
+    .modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    /* АДАПТИВНОСТЬ */
+    @media (max-width: 1024px) {
+      .hero-grid,
+      .case-view,
+      .about-bio-grid,
+      .cta-grid {
+        grid-template-columns: 1fr;
+      }
+      .goals-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .reviews-grid,
+      .certs-grid,
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .tariffs-grid,
+      .approach-grid,
+      .about-gallery-grid,
+      .included-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+      .goals-grid,
+      .reviews-grid,
+      .certs-grid,
+      .steps-grid,
+      .about-points,
+      .case-photos {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding-top: 108px;
+      }
+      .cta-form-card {
+        padding: 28px 22px;
+      }
+    }
+
+    /* ===== PREMIUM LAYER ===== */
+    :root{--bg-soft:#FFFBF5;--bg-milk:#F7EFE4;--bg-taupe:#E9DCC9;--bg-taupe-btn:#F2E6D3;--bg-faq:#F5ECDF;--bg-included:#FAF3E9;--accent-brown:#8A6446;--soft-beige:#CDBBA2;--text-muted:#6F6155;--gold:#C9904E;--radius-lg:26px;--radius-md:18px}
+    html{scroll-padding-top:84px}
+    .m-only,.c-nav,.faq-more,#caseCards{display:none}
+    .m-car{position:relative}
+    .logo{flex-direction:row;align-items:center;gap:11px}
+    .logo-text{display:flex;flex-direction:column}
+    .logo-mark{width:38px;height:38px;flex-shrink:0;transition:transform .6s}
+    .logo:hover .logo-mark{transform:rotate(-14deg) scale(1.1)}
+    .preloader{background:radial-gradient(500px 320px at 50% 40%,#5A3A27,#2A1A10);transition:transform .95s cubic-bezier(.77,0,.18,1),opacity .3s .75s,visibility 0s 1.05s}
+    .preloader.hidden{transform:translateY(-100%);opacity:0;visibility:hidden}
+    .loader-mark{width:70px;height:70px;display:block;margin:0 auto 14px}
+    .loader-mark path:first-child{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1.3s ease forwards}
+    .loader-bar span{animation-duration:1.3s;background:var(--gold)}
+    @keyframes draw{to{stroke-dashoffset:0}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(34px)}}
+    .hero .eyebrow,.hero-title,.hero-sub,.hero-actions,.hero-badges,.hero-visual{animation:fadeUp 1s cubic-bezier(.22,1,.36,1) both paused}
+    body.loaded .hero .eyebrow,body.loaded .hero-title,body.loaded .hero-sub,body.loaded .hero-actions,body.loaded .hero-badges,body.loaded .hero-visual{animation-play-state:running}
+    .hero-title{animation-delay:.12s}.hero-sub{animation-delay:.24s}.hero-actions{animation-delay:.36s}.hero-badges{animation-delay:.48s}.hero-visual{animation-delay:.3s}
+    .hero-visual img{transform:scale(1.18);transition:transform 2.4s cubic-bezier(.22,1,.36,1)}
+    body.loaded .hero-visual img{transform:scale(1)}
+    .hero{background:radial-gradient(900px 520px at 88% -5%,rgba(224,168,98,.28),transparent 60%),radial-gradient(700px 500px at -5% 45%,rgba(138,100,70,.1),transparent 60%)}
+    .hero-title i,.section-title i,.cta-title i{background:linear-gradient(100deg,#B8741F,#7A4A2E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:.06em}
+    .goals-sec .section-title i,.cta-title i,.gift-card h2 i{background:linear-gradient(100deg,#F6D9A8,#E0A862);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .eyebrow::before{content:"";display:inline-block;width:22px;height:1px;background:var(--gold);vertical-align:middle;margin-right:10px}
+    .btn-primary,.form-submit,.case-tab-btn.active,.about-tab-btn.active,.service-tab-btn.active{background:linear-gradient(135deg,#4A2F20,#7C5238)}
+    .btn-primary{box-shadow:0 10px 24px rgba(63,41,27,.22)}
+    .btn-gold{position:relative;overflow:hidden;background:linear-gradient(135deg,#EDBB75,#C0803A);color:#2B1A0E;box-shadow:0 12px 28px rgba(192,128,58,.38)}
+    .btn-gold::after{content:"";position:absolute;top:0;left:-70%;width:50%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 3.6s infinite}
+    @keyframes shine{0%,55%{left:-70%}100%{left:130%}}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(192,128,58,.5)}
+    .goals-sec{background:radial-gradient(700px 360px at 90% 0,rgba(224,168,98,.2),transparent 60%),linear-gradient(160deg,#3F291B,#2A1A10)}
+    .cta-sec{background:radial-gradient(700px 400px at 10% 0,rgba(224,168,98,.18),transparent 60%),linear-gradient(160deg,#4A2F20,#2E1C11)}
+    .services-sec{background:linear-gradient(180deg,#F0E4D2,#EADBC6)}
+    .goal-card,.review-card,.step-card,.approach-card,.tariff-card,.gallery-card,.cert-card{transition:var(--transition)}
+    .review-card:hover,.step-card:hover,.approach-card:hover,.tariff-card:hover,.gallery-card:hover,.cert-card:hover{transform:translateY(-6px);box-shadow:0 22px 44px rgba(63,41,27,.14)}
+    .tariff-card.featured{background:linear-gradient(160deg,#4A2F20,#2E1C11);box-shadow:0 24px 50px rgba(63,41,27,.28)}
+    .tariff-card.featured .tariff-price{color:#F6D9A8}
+    .step-card{background:linear-gradient(160deg,#FFFBF5,#F7EFE4)}
+    .step-num{color:var(--gold)}
+    .review-badge{background:linear-gradient(135deg,#F6D9A8,#EBC38A)}
+    .faq-badge{display:block;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:clamp(4.5rem,14vw,8.5rem);line-height:.9;letter-spacing:.05em;color:transparent;-webkit-text-stroke:1.5px rgba(138,100,70,.55);margin-bottom:6px}
+    .form-gift{background:linear-gradient(135deg,#F6D9A8,#E0A862);color:#3F291B;font-weight:700;font-size:.82rem;padding:11px 14px;border-radius:10px;margin-bottom:20px;text-align:center}
+    .cta-btn-light{display:inline-block;text-align:center}
+    /* подарок */
+    .gift-sec{padding:20px 0 96px}
+    .gift-card{position:relative;display:grid;grid-template-columns:.75fr 1.25fr;gap:36px;align-items:center;padding:46px 54px;border-radius:32px;color:#FFF6E8;overflow:hidden;background:radial-gradient(600px 300px at 90% 0,rgba(224,168,98,.38),transparent 60%),linear-gradient(135deg,#3F291B,#6A4126);box-shadow:0 30px 70px rgba(63,41,27,.28)}
+    .gift-card .eyebrow{color:#E7C08A}
+    .gift-card h2{color:#FFF6E8;font-size:clamp(1.9rem,3.6vw,2.9rem);margin:6px 0 14px}
+    .gift-card p{color:rgba(255,246,232,.82);margin-bottom:16px;font-size:.95rem}
+    .gift-list{display:grid;gap:8px;margin-bottom:26px}
+    .gift-list li{position:relative;padding-left:26px;font-size:.92rem}
+    .gift-list li::before{content:"✦";position:absolute;left:0;color:#E0A862}
+    .gift-art{position:relative;display:flex;justify-content:center}
+    .gift-svg{width:min(240px,70%);animation:floaty 4s ease-in-out infinite}
+    .gift-lid{transform-origin:60px 40px;animation:lid 3s ease-in-out infinite}
+    .sp{position:absolute;color:#F6D9A8;animation:twinkle 2.4s ease-in-out infinite}
+    .sp.s1{top:6%;left:18%;font-size:1.3rem}.sp.s2{top:22%;right:16%;font-size:.9rem;animation-delay:.8s}.sp.s3{bottom:12%;left:12%;font-size:1rem;animation-delay:1.5s}
+    @keyframes floaty{50%{transform:translateY(-10px)}}
+    @keyframes lid{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-9deg) translateY(-5px)}80%{transform:rotate(5deg)}}
+    @keyframes twinkle{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+    /* появление при скролле */
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .9s cubic-bezier(.22,1,.36,1),transform .9s cubic-bezier(.22,1,.36,1)}
+    .reveal.in{opacity:1;transform:none}
+    .stagger:not(.in)>*{opacity:0}
+    .stagger.in>*{animation:fadeUp .8s cubic-bezier(.22,1,.36,1) backwards}
+    .stagger.in>:nth-child(2){animation-delay:.1s}.stagger.in>:nth-child(3){animation-delay:.2s}.stagger.in>:nth-child(4){animation-delay:.3s}.stagger.in>:nth-child(5){animation-delay:.4s}
+    /* карточка кейса для телефона */
+    .case-card{background:var(--bg-milk);border:1px solid var(--border-soft);border-radius:var(--radius-lg);overflow:hidden}
+    .cc-photos{display:grid;grid-template-columns:1fr 1fr;gap:2px}
+    .cc-photos .case-photo-box{border-radius:0;aspect-ratio:3/3.6}
+    .cc-body{padding:18px 18px 22px}
+    .cc-body h3{font-size:1.4rem;margin-bottom:8px}
+    .cc-body .case-quote{font-size:.84rem;margin-bottom:16px}
+    @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal,.stagger>*{opacity:1!important;transform:none!important}}
+
+    @media (max-width:720px){
+      .container{padding:0 18px}
+      .nav-wrap{height:64px;gap:10px}
+      .logo{font-size:1.1rem;gap:8px}.logo span{font-size:.5rem;letter-spacing:.1em;margin-top:4px}
+      .logo-mark{width:30px;height:30px}
+      header .btn{padding:9px 16px!important;font-size:.74rem!important}
+      .d-only{display:none}.m-only{display:inline}
+      .hero{padding:88px 0 36px}.hero-grid{gap:26px}
+      .hero-title{font-size:2.25rem;margin-bottom:14px}.hero-sub{font-size:.95rem;margin-bottom:22px}
+      .hero-actions{margin-bottom:26px}.hero-actions .btn{width:100%}
+      .hero-badges{gap:8px}.badge-item strong{font-size:1.4rem}.badge-item span{font-size:.7rem}
+      .hero-visual{aspect-ratio:4/4.2}
+      .hero-floating-card{left:12px;right:12px;bottom:12px;padding:14px;flex-direction:column;align-items:flex-start;gap:10px}
+      .goals-sec,.cases-sec,.reviews-sec,.about-sec,.approach-sec,.services-sec,.steps-sec,.faq-sec,.cta-sec{padding:56px 0}
+      .section-head{margin-bottom:22px;gap:10px}.section-desc{font-size:.88rem}
+      .m-car{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:14px;margin:0 -18px;padding:6px 18px 14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+      .m-car::-webkit-scrollbar{display:none}
+      .m-car>*{flex:0 0 80%;scroll-snap-align:center;transition:transform .45s,opacity .45s}
+      .m-car>*:not(.is-active){transform:scale(.94);opacity:.7}
+      .m-car>*:hover{box-shadow:none}
+      .c-nav{display:flex;align-items:center;justify-content:center;gap:14px}
+      .c-arr{width:38px;height:38px;border-radius:50%;border:1px solid var(--border-soft);background:var(--bg-soft);color:var(--deep-choco);font-size:1.25rem;line-height:1;cursor:pointer}
+      .c-dots{display:flex;gap:6px}.c-dots i{width:6px;height:6px;border-radius:9px;background:rgba(63,41,27,.25);transition:.35s}.c-dots i.on{width:22px;background:var(--gold)}
+      .goals-sec .c-arr{background:transparent;color:var(--bg-soft);border-color:rgba(255,255,255,.28)}.goals-sec .c-dots i{background:rgba(255,255,255,.3)}.goals-sec .c-dots i.on{background:var(--gold)}
+      .cases-tabs,#caseContent{display:none}
+      #caseCards.m-car{display:flex!important}#caseCards+.c-nav{display:flex}
+      .services-tabs,.about-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -18px 18px;padding:0 18px;scrollbar-width:none}
+      .service-tab-btn,.about-tab-btn{white-space:nowrap}
+      .about-bio-grid h3{font-size:1.65rem!important}
+      .included-box{padding:18px 20px;margin-bottom:18px}
+      .included-box-title{cursor:pointer;display:flex;justify-content:space-between;margin:0}
+      .included-box-title::after{content:"+";font-size:1.1rem}.included-box.open .included-box-title::after{content:"–"}
+      .included-box .included-list{display:none;margin-top:16px}.included-box.open .included-list{display:grid;grid-template-columns:1fr}
+      .faq-question{font-size:1.18rem;padding:18px 0}
+      .faq-extra{display:none}.faq-list.expanded .faq-extra{display:block}
+      .faq-more{display:block;margin:22px auto 0;padding:12px 26px;border-radius:999px;border:1px solid var(--accent-brown);background:none;color:var(--deep-choco);font-weight:600;font-family:inherit}
+      .gift-sec{padding:10px 0 56px}
+      .gift-card{grid-template-columns:1fr;padding:30px 22px;text-align:center;gap:18px;border-radius:26px}
+      .gift-svg{width:130px}.gift-list{text-align:left}.gift-card .btn{width:100%}
+      .cta-grid{gap:30px}.cta-buttons .cta-btn-light,.cta-buttons .cta-btn-ghost{width:100%}
+      .cta-form-card{padding:26px 20px}
+    }
+
+    /* ===== V2: ЛОГО, ВХОД, 3D-КАРУСЕЛИ, МОБИЛЬНОЕ МЕНЮ ===== */
+    .logo-mark{filter:drop-shadow(0 6px 12px rgba(184,115,63,.38))}
+    .logo-text span{background:linear-gradient(90deg,#D9826A,#B8733F);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+    .lm-s{transform-box:fill-box;transform-origin:center;animation:tw 2.8s ease-in-out infinite}
+    @keyframes tw{0%,100%{opacity:.55;transform:scale(.75) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
+    .logo:hover .lm-w{stroke-dasharray:1;animation:draw2 .9s ease}
+    @keyframes draw2{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+    .loader-mark{width:88px;height:88px;filter:drop-shadow(0 10px 24px rgba(222,148,98,.45))}
+    .loader-mark .lm-a,.loader-mark .lm-w{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 1s .5s ease forwards}
+    .loader-mark .lm-w{animation-delay:1.1s}
+    .loader-mark circle{transform-box:fill-box;transform-origin:center;animation:popIn .9s cubic-bezier(.22,1,.36,1) both}
+    @keyframes popIn{from{opacity:0;transform:scale(.55)}}
+    .loader-title{animation:titleIn 1.3s .45s cubic-bezier(.22,1,.36,1) both}
+    @keyframes titleIn{from{opacity:0;letter-spacing:.5em;filter:blur(6px)}}
+    .loader-sub{animation:fadeUp .9s 1.1s cubic-bezier(.22,1,.36,1) both}
+    .preloader>div{transition:opacity .5s,transform .8s cubic-bezier(.22,1,.36,1)}
+    .preloader.hidden>div{opacity:0;transform:translateY(-24px)}
+    .preloader{transition:transform 1.25s cubic-bezier(.76,0,.24,1) .25s,border-radius 1.25s cubic-bezier(.76,0,.24,1) .25s,visibility 0s 1.6s}
+    .preloader.hidden{transform:translateY(-100%);opacity:1;visibility:hidden;border-radius:0 0 50% 50%/0 0 90px 90px}
+    header{animation:hdrIn 1.1s cubic-bezier(.22,1,.36,1) .5s both paused}
+    body.loaded header{animation-play-state:running}
+    @keyframes hdrIn{from{transform:translateY(-100%);opacity:0}}
+    .hero{position:relative;overflow:hidden}
+    .hero-grid{position:relative;z-index:1}
+    .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+    .hero::before{width:440px;height:440px;top:-90px;right:-70px;background:radial-gradient(circle,rgba(244,183,160,.5),transparent 65%);animation:drift 16s ease-in-out infinite alternate}
+    .hero::after{width:460px;height:460px;bottom:-140px;left:-120px;background:radial-gradient(circle,rgba(224,168,98,.34),transparent 65%);animation:drift 20s ease-in-out infinite alternate-reverse}
+    @keyframes drift{to{transform:translate(46px,34px) scale(1.15)}}
+    .hero .hero-title{animation:none}
+    .hero .hero-visual{animation:imgReveal 1.7s cubic-bezier(.77,0,.18,1) .35s backwards paused}
+    @keyframes imgReveal{from{clip-path:inset(100% 0 0 0 round 26px);transform:translateY(40px)}to{clip-path:inset(0 0 0 0 round 26px)}}
+    .hero-link{display:inline-block;margin:-4px 0 24px;font-size:.88rem;font-weight:600;color:var(--accent-brown);border-bottom:1px solid rgba(138,100,70,.4);padding-bottom:2px;animation:fadeUp 1s .42s cubic-bezier(.22,1,.36,1) both paused}
+    body.loaded .hero-link{animation-play-state:running}
+    /* заголовки: слова «выплывают» из-под маски */
+    .w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .08em .16em 0;margin:0 -.08em -.16em 0}
+    .w>span{display:inline-block;transform:translateY(118%) rotate(4deg);transform-origin:0 100%;transition:transform 1.15s cubic-bezier(.22,1,.36,1);transition-delay:calc(var(--k,0)*.07s)}
+    .split.in .w>span,body.loaded .hero-title.split .w>span{transform:none}
+    .hero-title .w>span{transition-delay:calc(.3s + var(--k,0)*.08s)}
+    .split i{background:none!important;-webkit-text-fill-color:initial!important}
+    .split i .w>span{background:linear-gradient(100deg,#B8741F,#7A4A2E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+    .goals-sec .split i .w>span,.cta-title.split i .w>span,.gift-card h2.split i .w>span{background:linear-gradient(100deg,#F6D9A8,#E0A862);-webkit-background-clip:text;background-clip:text}
+    /* 3D-призма */
+    .prism,.burger,.mnav{display:none}
+    .footer-top{flex-wrap:wrap;gap:20px 40px}
+    @media (max-width:720px){
+      header{z-index:1000}
+      .nav-wrap{gap:8px}
+      .logo{flex:1;min-width:0}
+      .burger{display:block;position:relative;width:42px;height:42px;flex-shrink:0;border-radius:50%;border:1px solid rgba(63,41,27,.2);background:rgba(255,251,245,.7);cursor:pointer;transition:background .4s,border-color .4s}
+      .burger span{position:absolute;left:12px;right:12px;height:1.6px;border-radius:2px;background:var(--deep-choco);transition:transform .5s cubic-bezier(.22,1,.36,1),top .5s cubic-bezier(.22,1,.36,1),background .4s}
+      .burger span:nth-child(1){top:16px}.burger span:nth-child(2){top:24px}
+      body.menu-open{overflow:hidden}
+      body.menu-open .burger{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08)}
+      body.menu-open .burger span{background:#FFF6E8}
+      body.menu-open .burger span:nth-child(1){top:20px;transform:rotate(45deg)}
+      body.menu-open .burger span:nth-child(2){top:20px;transform:rotate(-45deg)}
+      body.menu-open header{background:transparent;border-color:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:none}
+      body.menu-open header .btn{opacity:0;pointer-events:none}
+      body.menu-open .logo{color:#FFF6E8}
+      .mnav{display:flex;position:fixed;inset:0;z-index:990;flex-direction:column;justify-content:space-between;padding:100px 28px 32px;background:radial-gradient(520px 320px at 90% 0,rgba(222,148,98,.28),transparent 60%),linear-gradient(160deg,#4A2F20,#251610);clip-path:circle(0 at calc(100% - 41px) 32px);visibility:hidden;transition:clip-path .95s cubic-bezier(.76,0,.24,1),visibility 0s .95s}
+      body.menu-open .mnav{clip-path:circle(150% at calc(100% - 41px) 32px);visibility:visible;transition:clip-path .95s cubic-bezier(.76,0,.24,1),visibility 0s}
+      .mnav nav a{display:block;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.1);font-family:'Cormorant Garamond',serif;font-size:2.15rem;line-height:1.15;color:#FFF6E8;opacity:0;transform:translateY(22px);transition:opacity .4s,transform .4s}
+      body.menu-open .mnav nav a{opacity:1;transform:none;transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);transition-delay:calc(.3s + var(--i)*.07s)}
+      .mnav nav em{font-style:normal;font-family:'Manrope',sans-serif;font-size:.68rem;letter-spacing:.2em;color:#E0A862;margin-right:16px;vertical-align:middle}
+      .mnav-foot{display:grid;gap:18px}.mnav-foot .btn{width:100%}
+      .mnav-soc{display:flex;gap:22px}
+      /* призма на телефоне */
+      #stepsContainer{display:none}
+      #stepsPrism{display:block}
+      .prism{margin:0 -18px}
+      /* компактность */
+      .section-desc,.cta-title+p{display:none}
+      .goals-sec,.cases-sec,.reviews-sec,.about-sec,.approach-sec,.services-sec,.steps-sec,.faq-sec,.cta-sec{padding:44px 0}
+      .hero-visual{aspect-ratio:4/3.3}
+      .about-photo-main{aspect-ratio:1/1;max-height:290px}
+      .about-bio-grid p:nth-of-type(2){display:none}
+      .about-bio-grid h3{font-size:1.5rem!important;margin-bottom:10px!important}
+      .about-points{grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+      .about-point{padding:12px 14px}.about-point strong{font-size:.82rem}.about-point span{display:none}
+      .footer-nav{display:flex;flex-wrap:wrap;gap:8px 18px}
+      .footer-soc{display:flex;gap:20px}
+    }
+    @media (max-width:370px){header .btn{display:none}}
+
+    /* ===== V3: многогранник — центр спереди, два боковых затемнены ===== */
+    #reviewsContainer{display:none}
+    #reviewsPrism{display:block}
+    .prism{overflow:hidden;padding:20px 0 4px}
+    .prism-scene{position:relative;width:100%;margin:0 auto;perspective:1400px;perspective-origin:50% 45%;touch-action:pan-y;-webkit-user-select:none;user-select:none;cursor:grab}
+    .prism-scene:active{cursor:grabbing}
+    .prism-scene::after{content:"";position:absolute;left:30%;right:30%;bottom:-26px;height:22px;background:radial-gradient(ellipse at center,rgba(63,41,27,.32),transparent 70%);filter:blur(7px);pointer-events:none}
+    .prism-box{position:relative;width:100%;height:100%;transform-style:preserve-3d}
+    .prism-face{position:absolute;left:50%;top:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius-lg);box-shadow:0 22px 40px -14px rgba(63,41,27,.28);transition:transform .9s cubic-bezier(.22,1,.36,1),opacity .9s}
+    .prism-face>*{height:100%;width:100%;margin:0}
+    .prism-face .review-card:hover,.prism-face .step-card:hover{transform:none;box-shadow:none}
+    .prism-face::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,#2A1A10,#3F291B);opacity:var(--sh,0);pointer-events:none;transition:opacity .9s}
+    .prism .c-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:34px}
+    .prism .c-arr{width:42px;height:42px;border-radius:50%;border:1px solid var(--border-soft);background:var(--bg-soft);color:var(--deep-choco);font-size:1.3rem;line-height:1;cursor:pointer;transition:background .3s,color .3s}
+    .prism .c-arr:hover{background:var(--deep-choco);color:#FFF6E8}
+    .prism .c-dots{display:flex;gap:6px}
+    .prism .c-dots i{width:6px;height:6px;border-radius:9px;background:rgba(63,41,27,.25);transition:.35s}
+    .prism .c-dots i.on{width:22px;background:var(--gold)}
+
+    /* ===== V4: статус формы, ссылки в контактах ===== */
+    .form-status{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:.88rem;line-height:1.5}
+    .form-status.ok{background:#F3E6D2;color:#3F291B}
+    .form-status.err{background:#FBE9E4;color:#8A2F1D}
+    .form-status a{font-weight:700;text-decoration:underline}
+    .cta-socials,.mnav-soc,.footer-soc{flex-wrap:wrap;gap:10px 22px}
+  </style>
+<script>
+    /* Свои фото: положите файлы в папку по имени (jpg/png/webp). Пока их нет, показываются временные. */
+    var PHOTO_EXT = ['jpg', 'jpeg', 'png', 'webp'];
+    var STOCK = {
+      "photos/hero": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=85",
+      "photos/about-main": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=85",
+      "photos/gallery-1": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80",
+      "photos/gallery-2": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=700&q=80",
+      "photos/gallery-3": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=700&q=80",
+      "photos/case-1-before": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+      "photos/case-1-after": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80",
+      "photos/case-2-before": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
+      "photos/case-2-after": "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=600&q=80",
+      "photos/case-3-before": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
+      "photos/case-3-after": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+      "photos/case-4-before": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+      "photos/case-4-after": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
+      "photos/review-1": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      "photos/review-2": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+      "photos/review-3": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
+      "photos/review-4": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
+      "photos/approach-1": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+      "photos/approach-2": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80",
+      "photos/approach-3": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80"
+};
+    function photoFallback(img) {
+      var m = (img.getAttribute('src') || '').match(/^((?:photos|images)\/[^.]+)\.(\w+)$/);
+      if (!m) { img.onerror = null; return; }
+      var i = PHOTO_EXT.indexOf(m[2]);
+      if (i >= 0 && i < PHOTO_EXT.length - 1) { img.src = m[1] + '.' + PHOTO_EXT[i + 1]; return; }
+      img.onerror = null;
+      if (STOCK[m[1]]) img.src = STOCK[m[1]];
+    }
+  </script>
+<script>window.SITE_EDIT = {
+ "name": "Сайт Анастасии",
+ "photoDir": "photos",
+ "groups": [
+  [
+   "#preloader",
+   "Заставка при открытии"
+  ],
+  [
+   "#bookingModal",
+   "Окно записи"
+  ],
+  [
+   ".mnav",
+   "Меню"
+  ],
+  [
+   "header",
+   "Шапка"
+  ],
+  [
+   "footer",
+   "Подвал"
+  ],
+  [
+   ".hero",
+   "Первый экран"
+  ],
+  [
+   ".goals-sec",
+   "Направления (заголовок)"
+  ],
+  [
+   ".cases-sec",
+   "Результаты (заголовок)"
+  ],
+  [
+   ".gift-sec",
+   "Подарок — пробная тренировка"
+  ],
+  [
+   ".reviews-sec",
+   "Отзывы (заголовок)"
+  ],
+  [
+   ".about-sec",
+   "Обо мне"
+  ],
+  [
+   ".approach-sec",
+   "Мой подход (заголовок)"
+  ],
+  [
+   ".services-sec",
+   "Услуги (заголовок)"
+  ],
+  [
+   ".steps-sec",
+   "Последовательность (заголовок)"
+  ],
+  [
+   ".faq-sec",
+   "FAQ (заголовок)"
+  ],
+  [
+   ".cta-sec",
+   "Контакты и форма"
+  ]
+ ],
+ "lists": {
+  "goals": "Направления работы",
+  "cases": "Результаты и кейсы",
+  "reviews": "Отзывы",
+  "approach": "Мой подход",
+  "services": "Услуги и тарифы",
+  "steps": "Последовательность работы",
+  "faq": "Вопросы и ответы (FAQ)"
+ },
+ "photoSlots": {
+  "hero": {
+   "label": "Главное фото на первом экране",
+   "hint": "вертикальное, пропорции 4:5"
+  },
+  "about-main": {
+   "label": "Фото в блоке «Обо мне»",
+   "hint": "вертикальное, пропорции 4:5"
+  },
+  "gallery-1": {
+   "label": "Фото под «Обо мне» №1",
+   "hint": "горизонтальное, 4:3"
+  },
+  "gallery-2": {
+   "label": "Фото под «Обо мне» №2",
+   "hint": "горизонтальное, 4:3"
+  },
+  "gallery-3": {
+   "label": "Фото под «Обо мне» №3",
+   "hint": "горизонтальное, 4:3"
+  }
+ },
+ "settings": [
+  {
+   "key": "phone",
+   "kind": "phone",
+   "label": "Телефон",
+   "def": "8 (937) 791-32-53",
+   "hint": "Как показывать на сайте. Ссылка для звонка обновится сама."
+  },
+  {
+   "key": "telegram",
+   "kind": "url",
+   "label": "Telegram Анастасии (ссылка)",
+   "def": "https://t.me/parfenova_nastya"
+  },
+  {
+   "key": "channel",
+   "kind": "url",
+   "label": "Telegram-канал (ссылка)",
+   "def": "https://t.me/anast_eish_a"
+  },
+  {
+   "key": "instagram",
+   "kind": "url",
+   "label": "Instagram (ссылка)",
+   "def": "https://www.instagram.com/a_nasteisha.a._?exln=MWt2NTNpZjdoaG4zOQ=="
+  },
+  {
+   "key": "avito",
+   "kind": "url",
+   "label": "Авито (ссылка)",
+   "def": "https://www.avito.ru/samara/predlozheniya_uslug/fitnes_trener_onlayn_8482983402"
+  },
+  {
+   "key": "leadEmail",
+   "kind": "plain",
+   "label": "Почта, на которую приходят заявки",
+   "def": "parfenovanastya86@gmail.com",
+   "hint": "Если поменяете, новую почту нужно один раз активировать: отправьте с сайта тестовую заявку и нажмите Activate в письме от FormSubmit."
+  }
+ ]
+};</script>
+<script>document.write('<script src="content.js?v=' + Math.floor(Date.now() / 60000) + '"><\/script>');</script>
+<script>
+  /* Настройки (телефон, ссылки, почта) с учётом правок из панели управления */
+  (function () {
+    var o = (window.SITE_OVERRIDES || {}).settings || {}, r = {};
+    (window.SITE_EDIT.settings || []).forEach(function (s) { r[s.key] = (o[s.key] != null && o[s.key] !== '') ? o[s.key] : s.def; });
+    window.SITE_SETTINGS = r;
+  })();
+</script>
+</head>
+<body>
+  
+  <!-- ПРЕЛОАДЕР -->
+  <div class="preloader" id="preloader">
+    <div>
+      <div class="loader-title">АНАСТАСИЯ</div>
+      <div class="loader-sub">ОНЛАЙН-ФИТНЕС-ТРЕНЕР</div>
+      <div class="loader-bar"><span></span></div>
+    </div>
+  </div>
+
+  <!-- ШАПКА -->
+  <header>
+    <div class="container nav-wrap">
+      <a href="#" class="logo">
+        <div class="logo-text">АНАСТАСИЯ<span>ОНЛАЙН-ФИТНЕС-ТРЕНЕР</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">Обо мне</a></li>
+        <li><a href="#cases">Результаты</a></li>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#approach">Мой подход</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+      <a href="#services" class="btn btn-primary" style="padding: 11px 22px; font-size: 0.8rem;"><span class="d-only">Выбрать формат работы</span><span class="m-only">Записаться</span></a>
+      <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+  <div class="mnav" id="mnav" aria-hidden="true">
+    <nav>
+      <a href="#about" style="--i:0"><em>01</em>Обо мне</a>
+      <a href="#cases" style="--i:1"><em>02</em>Результаты</a>
+      <a href="#services" style="--i:2"><em>03</em>Услуги</a>
+      <a href="#approach" style="--i:3"><em>04</em>Мой подход</a>
+      <a href="#faq" style="--i:4"><em>05</em>FAQ</a>
+      <a href="#contacts" style="--i:5"><em>06</em>Контакты</a>
+    </nav>
+    <div class="mnav-foot">
+      <a href="#services" class="btn btn-gold">Выбрать формат работы</a>
+      <div class="cta-socials mnav-soc"></div>
+    </div>
+  </div>
+
+  <!-- 1. ГЛАВНЫЙ ЭКРАН -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <span class="eyebrow">Возвращение к жизни с любовью и спортом</span>
+        <h1 class="hero-title">Тело меняется, когда появляется <i>система</i></h1>
+        <p class="hero-sub">
+          Помогаю выстроить тренировки и питание под твои цели, чтобы ты могла последовательно менять тело, видеть свой прогресс и понимать, что делаешь и зачем.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-gold" onclick="openModal('🎁 Пробная тренировка в подарок')">🎁 Пробная тренировка в подарок</button>
+          <a href="#services" class="btn btn-outline">Выбрать формат работы</a>
+        </div>
+        <a href="#cases" class="hero-link">Посмотреть результаты клиенток →</a>
+        <div class="hero-badges">
+          <div class="badge-item">
+            <strong>0 ₽</strong>
+            <span>пробная тренировка в подарок</span>
+          </div>
+          <div class="badge-item">
+            <strong>35–45 мин</strong>
+            <span>комфортный тайминг дома</span>
+          </div>
+          <div class="badge-item">
+            <strong>100%</strong>
+            <span>личный контроль техники</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <img data-slot="hero" src="photos/hero.jpg" onerror="photoFallback(this)" alt="Анастасия — онлайн-фитнес-тренер">
+        <div class="hero-floating-card">
+          <div>
+            <strong style="display:block; font-size:0.92rem; color:var(--deep-choco);">Первая тренировка — в подарок 🎁</strong>
+            <span style="font-size:0.8rem; color:var(--text-muted);">Познакомимся и подберём формат под твой график</span>
+          </div>
+          <button class="btn btn-primary" style="padding:10px 18px; font-size:0.78rem;" onclick="openModal('🎁 Пробная тренировка в подарок')">Забрать</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. С КАКИМИ ЦЕЛЯМИ Я ПОМОГАЮ -->
+  <section class="goals-sec">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Направления работы</span>
+          <h2 class="section-title">С какими целями я <i>помогаю</i></h2>
+        </div>
+        <p class="section-desc">
+          Работаем не ради временного эффекта к дате, а выстраиваем устойчивую форму, здоровье спины и высокое качество жизни.
+        </p>
+      </div>
+      <div class="goals-grid" id="goalsContainer"></div>
+    </div>
+  </section>
+
+  <!-- 3. РЕЗУЛЬТАТЫ КЛИЕНТОК -->
+  <section class="cases-sec" id="cases">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Реальные истории</span>
+          <h2 class="section-title">Результаты и <i>кейсы</i> клиенток</h2>
+        </div>
+        <p class="section-desc">
+          Фотографии до/после, динамика замеров и живые истории девушек, которые занимались дома и в зале по моей системе.
+        </p>
+      </div>
+      <div class="cases-tabs" id="casesTabs"></div>
+      <div id="caseContent"></div>
+      <div id="caseCards"></div>
+    </div>
+  </section>
+
+  <!-- ПОДАРОК: ПРОБНАЯ ТРЕНИРОВКА -->
+  <section class="gift-sec" id="gift">
+    <div class="container">
+      <div class="gift-card reveal">
+        <div class="gift-art">
+          <span class="sp s1">✦</span><span class="sp s2">✦</span><span class="sp s3">✦</span>
+          <svg class="gift-svg" viewBox="0 0 120 120" aria-hidden="true"><rect x="18" y="52" width="84" height="58" rx="6" fill="#E0A862"/><rect x="54" y="52" width="12" height="58" fill="#FFF1D6"/><g class="gift-lid"><rect x="12" y="38" width="96" height="18" rx="6" fill="#F0BE7E"/><rect x="54" y="38" width="12" height="18" fill="#FFF1D6"/><path d="M60 38C46 20 28 24 35 34c4 6 16 4 25 4zM60 38c14-18 32-14 25-4-4 6-16 4-25 4z" fill="#FFF1D6"/></g></svg>
+        </div>
+        <div>
+          <span class="eyebrow">Подарок новой подопечной</span>
+          <h2>Первая пробная тренировка — <i>за мой счёт</i></h2>
+          <p>Давай знакомиться! Встретимся по видеосвязи, я посмотрю, как ты двигаешься, мы обсудим твою цель, и ты спокойно решишь, твоё ли это. Никаких обязательств 💛</p>
+          <ul class="gift-list">
+            <li>Живая тренировка по видеосвязи в подарок</li>
+            <li>Разбор твоей цели и стартовой точки</li>
+            <li>Подсказка, с чего начать и какой формат подойдёт</li>
+          </ul>
+          <button class="btn btn-gold" onclick="openModal('🎁 Пробная тренировка в подарок')">Забрать подарок 🎁</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. ОТЗЫВЫ -->
+  <section class="reviews-sec">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Обратная связь</span>
+          <h2 class="section-title">Что говорят <i>подопечные</i></h2>
+        </div>
+        <p class="section-desc">
+          Впечатления девушек о тренировках по видеосвязи, разборах питания и ежедневной поддержке в чате.
+        </p>
+      </div>
+      <div class="reviews-grid" id="reviewsContainer"></div>
+      <div class="prism" id="reviewsPrism" data-src="reviewsContainer" data-auto="1"></div>
+    </div>
+  </section>
+
+  <!-- 5. ОБО МНЕ -->
+  <section class="about-sec" id="about">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Знакомство</span>
+          <h2 class="section-title">Обо мне и моей <i>философии</i></h2>
+        </div>
+      </div>
+
+      <div class="about-tabs">
+        <button class="about-tab-btn active" onclick="switchAboutTab('bio', this)">01. Опыт и философия</button>
+        <button class="about-tab-btn" onclick="switchAboutTab('gallery', this)">02. Практика и эстетика</button>
+        <button class="about-tab-btn" onclick="switchAboutTab('certs', this)">03. Образование и сертификаты</button>
+      </div>
+
+      <!-- Вкладка 1 -->
+      <div class="about-slide active" id="about-bio">
+        <div class="about-bio-grid">
+          <div class="about-photo-main">
+            <img data-slot="about-main" src="photos/about-main.jpg" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="Анастасия">
+          </div>
+          <div>
+            <span class="eyebrow">Онлайн-фитнес-тренер</span>
+            <h3 style="font-size: 2.2rem; margin-bottom: 16px;">Привет! Я Настя — твой проводник к сильному, здоровому и эстетичному телу</h3>
+            <p style="color: var(--text-muted); margin-bottom: 16px;">
+              Всю свою жизнь я в спорте и знаю изнутри, как физическая дисциплина способна не только менять пропорции тела, но и буквально вытаскивать из самого тяжёлого стресса и возвращать опору под ногами.
+            </p>
+            <p style="color: var(--text-muted);">
+              В моей работе нет бездумных марафонов и голодных диет. Мы выстраиваем персональную систему тренировок и питания, которая органично вписывается в твой ритм жизни, бережёт суставы и даёт прогнозируемый результат.
+            </p>
+            <div class="about-points">
+              <div class="about-point">
+                <strong>Индивидуальная система</strong>
+                <span>Программа под твои цели, уровень подготовки и инвентарь</span>
+              </div>
+              <div class="about-point">
+                <strong>Контроль биомеханики</strong>
+                <span>Отстройка техники каждого упражнения и работа с осанкой</span>
+              </div>
+              <div class="about-point">
+                <strong>Комфортный рацион</strong>
+                <span>Расчёт КБЖУ и вкусное питание из обычных продуктов</span>
+              </div>
+              <div class="about-point">
+                <strong>Постоянный контакт</strong>
+                <span>Личная обратная связь, проверка отчётов и поддержка</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вкладка 2 -->
+      <div class="about-slide" id="about-gallery">
+        <div class="about-gallery-grid">
+          <div class="gallery-card">
+            <img data-slot="gallery-1" src="photos/gallery-1.jpg" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="Биомеханика и осанка">
+            <div class="gallery-card-body">
+              <h4 style="font-size: 1.4rem; margin-bottom: 6px;">Работа с осанкой и дыханием</h4>
+              <p style="font-size: 0.86rem; color: var(--text-muted);">Убираем зажимы в грудном отделе и пояснице, чтобы тело включалось в работу гармонично.</p>
+            </div>
+          </div>
+          <div class="gallery-card">
+            <img data-slot="gallery-2" src="photos/gallery-2.jpg" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="Онлайн-контроль">
+            <div class="gallery-card-body">
+              <h4 style="font-size: 1.4rem; margin-bottom: 6px;">Живое ведение по видеосвязи</h4>
+              <p style="font-size: 0.86rem; color: var(--text-muted);">Контролирую каждый угол движения через камеру так же точно, как если бы стояла рядом.</p>
+            </div>
+          </div>
+          <div class="gallery-card">
+            <img data-slot="gallery-3" src="photos/gallery-3.jpg" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="Сила и эстетика">
+            <div class="gallery-card-body">
+              <h4 style="font-size: 1.4rem; margin-bottom: 6px;">Эстетика и мышечный тонус</h4>
+              <p style="font-size: 0.86rem; color: var(--text-muted);">Формируем упругий рельеф, крепкие ягодицы и здоровую спину без перегрузок.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Вкладка 3 -->
+      <div class="about-slide" id="about-certs">
+        <div class="certs-grid">
+          <div class="cert-card">
+            <span class="eyebrow">Диплом</span>
+            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Персональный фитнес-тренер</h4>
+            <p style="font-size: 0.86rem; color: var(--text-muted);">Анатомия, физиология и построение индивидуальных тренировочных циклов.</p>
+          </div>
+          <div class="cert-card">
+            <span class="eyebrow">Сертификат</span>
+            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Биомеханика и коррекция осанки</h4>
+            <p style="font-size: 0.86rem; color: var(--text-muted);">Функциональная диагностика опорно-двигательного аппарата и безопасный тренинг.</p>
+          </div>
+          <div class="cert-card">
+            <span class="eyebrow">Сертификат</span>
+            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Нутрициология и расчёт КБЖУ</h4>
+            <p style="font-size: 0.86rem; color: var(--text-muted);">Коррекция состава тела через сбалансированный рацион и пищевые привычки.</p>
+          </div>
+          <div class="cert-card">
+            <span class="eyebrow">Повышение квалификации</span>
+            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Стретчинг и МФР</h4>
+            <p style="font-size: 0.86rem; color: var(--text-muted);">Развитие мобильности суставов, миофасциальный релиз и снятие мышечного гипертонуса.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. МОЙ ПОДХОД К РАБОТЕ -->
+  <section class="approach-sec" id="approach">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Организация сопровождения</span>
+          <h2 class="section-title">Как устроена <i>система</i> работы</h2>
+        </div>
+        <p class="section-desc">
+          Прозрачный и структурированный процесс: ты всегда знаешь свой план на неделю, рабочие веса и задачи по питанию.
+        </p>
+      </div>
+      <div class="approach-grid" id="approachContainer"></div>
+    </div>
+  </section>
+
+  <!-- 7. УСЛУГИ И ФОРМАТЫ РАБОТЫ (ПО СКРИНУ 1) -->
+  <section class="services-sec" id="services">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Коммерческие предложения</span>
+          <h2 class="section-title">Услуги и <i>форматы</i> работы</h2>
+        </div>
+        <p class="section-desc" style="color: var(--deep-choco); opacity: 0.8;">
+          Четыре понятных направления: от полного личного онлайн-ведения до индивидуальных программ и занятий по растяжке.
+        </p>
+      </div>
+
+      <div class="services-tabs" id="serviceTabs"></div>
+
+      <div class="included-box" id="personalIncludedBox">
+        <div class="included-box-title">Что входит во все форматы личного ведения:</div>
+        <div class="included-list">
+          <div class="included-item">Индивидуальная программа тренировок в Google Таблице</div>
+          <div class="included-item">Онлайн-тренировки в соответствии с выбранным тарифом</div>
+          <div class="included-item">Видео с разбором техники упражнений</div>
+          <div class="included-item">Дополнительные тренировки</div>
+          <div class="included-item">Информация и рекомендации по питанию</div>
+          <div class="included-item">Расчёт КБЖУ</div>
+          <div class="included-item">Проверка отчётов</div>
+          <div class="included-item">Обратная связь</div>
+          <div class="included-item">Контроль прогресса и корректировки тренировочного процесса</div>
+        </div>
+      </div>
+
+      <div class="tariffs-grid" id="tariffsContainer"></div>
+    </div>
+  </section>
+
+  <!-- 8. КАК ПРОХОДИТ РАБОТА -->
+  <section class="steps-sec">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Последовательность</span>
+          <h2 class="section-title">Как проходит <i>работа</i> со мной</h2>
+        </div>
+      </div>
+      <div class="steps-grid" id="stepsContainer"></div>
+      <div class="prism" id="stepsPrism" data-src="stepsContainer"></div>
+    </div>
+  </section>
+
+  <!-- 9. FAQ (ПО СКРИНУ 2) -->
+  <section class="faq-sec" id="faq">
+    <div class="faq-container">
+      <div class="faq-head">
+        <span class="faq-badge">FAQ</span>
+        <span class="eyebrow">Ответы на частые вопросы</span>
+        <h2 class="section-title">Вопросы и <i>ответы</i></h2>
+      </div>
+      <div class="faq-list" id="faqContainer"></div>
+      <button class="faq-more" onclick="toggleFaqMore(this)">Показать ещё вопросы</button>
+    </div>
+  </section>
+
+  <!-- 10. ФИНАЛЬНАЯ ЗАПИСЬ И КОНТАКТЫ (ПО СКРИНУ 3) -->
+  <section class="cta-sec" id="contacts">
+    <div class="container cta-grid">
+      <div>
+        <span class="eyebrow">Финальный шаг</span>
+        <h2 class="cta-title">Готова начать работать над своей <i>целью</i>?</h2>
+        <p class="cta-sub">
+          Оставь заявку в форме или напиши мне напрямую в удобной социальной сети — мы разберём твою задачу и подберём оптимальный формат работы.
+        </p>
+        <div class="cta-buttons">
+          <a href="#services" class="cta-btn-light">Выбрать формат работы</a>
+          <button type="button" class="cta-btn-ghost" onclick="openModal('Задать вопрос тренеру')">Задать вопрос</button>
+        </div>
+        <div class="cta-socials">
+          <a href="https://t.me/parfenova_nastya" target="_blank" rel="noopener">TELEGRAM →</a>
+          <a href="https://t.me/anast_eish_a" target="_blank" rel="noopener">TELEGRAM-КАНАЛ →</a>
+          <a href="https://www.instagram.com/a_nasteisha.a._?exln=MWt2NTNpZjdoaG4zOQ==" target="_blank" rel="noopener">INSTAGRAM →</a>
+          <a href="https://www.avito.ru/samara/predlozheniya_uslug/fitnes_trener_onlayn_8482983402" target="_blank" rel="noopener">АВИТО →</a>
+          <a href="tel:+79377913253">8 (937) 791-32-53</a>
+        </div>
+      </div>
+
+      <div class="cta-form-card">
+        <h3>Оставить заявку</h3>
+        <p>Заполни короткую форму, и я свяжусь с тобой в ближайшее время.</p>
+        <div class="form-gift">🎁 Первая пробная тренировка — в подарок</div>
+        <form onsubmit="handleFormSubmit(event, 'Основная форма в блоке контактов')">
+          <div class="form-group">
+            <label class="form-label">Имя</label>
+            <input type="text" class="form-control" placeholder="Твоё имя" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Контакт (Telegram / Телефон)</label>
+            <input type="text" class="form-control" placeholder="@username или +7 (___) ___-__-__" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Формат работы</label>
+            <select class="form-control" id="contactFormatSelect">
+              <option value="🎁 Пробная тренировка (в подарок)" selected>🎁 Пробная тренировка — в подарок</option>
+              <option value="Полное ведение (15 000 ₽)">Личное ведение — Полное ведение (15 000 ₽)</option>
+              <option value="Ведение (12 000 ₽)">Личное ведение — Ведение (12 000 ₽)</option>
+              <option value="Ведение без онлайн-тренировок (9 000 ₽)">Личное ведение без онлайн-тренировок (9 000 ₽)</option>
+              <option value="Программа тренировок + питание (6 500 ₽)">Программа тренировок + питание (6 500 ₽)</option>
+              <option value="Индивидуальная программа (4 500 ₽)">Индивидуальное составление программы (4 500 ₽)</option>
+              <option value="Мини-группа (10 000 ₽)">Занятия в мини-группе (10 000 ₽)</option>
+              <option value="Растяжка — 12 занятий (13 500 ₽)">Растяжка — Пакет на 12 занятий (13 500 ₽)</option>
+              <option value="Растяжка — 8 занятий (9 600 ₽)">Растяжка — Пакет на 8 занятий (9 600 ₽)</option>
+              <option value="Растяжка — 4 занятия (5 200 ₽)">Растяжка — Пакет на 4 занятия (5 200 ₽)</option>
+              <option value="Нужна консультация по выбору">Помочь выбрать подходящий формат</option>
+            </select>
+          </div>
+          <button type="submit" class="form-submit">Отправить</button>
+          <span class="form-note">Нажимая кнопку, вы соглашаетесь с политикой обработки персональных данных.</span>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПОДВАЛ (ПО СКРИНУ 3) -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <a href="#" class="logo footer-logo">
+          <div class="logo-text">АНАСТАСИЯ<span>ОНЛАЙН-ФИТНЕС-ТРЕНЕР</span></div>
+        </a>
+        <div class="footer-nav">
+          <a href="#about">Обо мне</a>
+          <a href="#cases">Результаты</a>
+          <a href="#services">Услуги</a>
+          <a href="#approach">Мой подход</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contacts">Контакты</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>© 2026 Анастасия. Все права защищены.</div>
+        <div class="footer-legal">
+          <a href="#contacts">Политика конфиденциальности</a>
+          <a href="#contacts">Пользовательское соглашение</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- МОДАЛЬНОЕ ОКНО -->
+  <div class="modal-backdrop" id="bookingModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <span class="eyebrow">Быстрая запись</span>
+      <h3 style="font-size: 1.95rem; margin-bottom: 6px;">Оставить заявку</h3>
+      <p id="modalSelectedService" style="font-size: 0.86rem; color: var(--accent-brown); font-weight: 700; margin-bottom: 20px;"></p>
+      <form onsubmit="handleFormSubmit(event, 'Модальное окно записи')">
+        <div class="form-group">
+          <label class="form-label">Имя</label>
+          <input type="text" class="form-control" placeholder="Твоё имя" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Контакт (Telegram / WhatsApp / Телефон)</label>
+          <input type="text" class="form-control" placeholder="@username или +7 (___) ___-__-__" required>
+        </div>
+        <button type="submit" class="form-submit">Отправить заявку</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ДАННЫЕ И ЛОГИКА САЙТА -->
+  <script>
+    const SITE_DATA = {
+      goals: [
+        { num: "01", title: "Похудение и рельеф", text: "Изменение композиции тела, уменьшение объёмов и уход от отёков без жёстких диет." },
+        { num: "02", title: "Подтянутое тело и тонус", text: "Упругость мышц, здоровая осанка и уверенность в каждом движении." },
+        { num: "03", title: "Набор мышечной массы", text: "Грамотный силовой прогресс и проработка пропорций с отстройкой биомеханики." },
+        { num: "04", title: "Сила и выносливость", text: "Повышение уровня энергии, физической функциональности и качества сна." },
+        { num: "05", title: "Системные тренировки", text: "Регулярная дисциплина и понятный план без выгорания и срывов." }
+      ],
+      cases: [
+        {
+          name: "Мария, 31 год",
+          title: "Минус 6 кг и здоровая спина за 8 недель на удалёнке",
+          metrics: ["Срок: 8 недель", "-6.2 кг веса", "-7 см в талии"],
+          quote: "«Я сижу за ноутбуком по 9 часов. С Настей за два месяца не просто ушёл живот, который я годами пыталась закачать прессом, но и полностью расправились плечи!»",
+          imgBefore: "photos/case-1-before.jpg",
+          imgAfter: "photos/case-1-after.jpg"
+        },
+        {
+          name: "Алина, 27 лет",
+          title: "Подтянутое тело и плоский живот без тренажёрного зала",
+          metrics: ["Срок: 6 недель", "-5 см в бёдрах", "Тонус и рельеф"],
+          quote: "«Занималась дома в гостиной с гантелями и резинками. Впервые в жизни увидела рельеф на животе и подтянутые руки, при этом ела вкусно и сытно!»",
+          imgBefore: "photos/case-2-before.jpg",
+          imgAfter: "photos/case-2-after.jpg"
+        },
+        {
+          name: "Дарья, 29 лет",
+          title: "Изменение пропорций и укрепление ягодиц",
+          metrics: ["Срок: 2 месяца", "-6 см в талии", "+3 см в ягодицах"],
+          quote: "«Раньше от приседаний росли только бёдра и болели колени. Настя по видеосвязи за одно занятие перестроила мне технику. Результат на фото говорит сам за себя!»",
+          imgBefore: "photos/case-3-before.jpg",
+          imgAfter: "photos/case-3-after.jpg"
+        },
+        {
+          name: "Екатерина, 36 лет",
+          title: "Минус 8 см в талии и уверенная осанка без зала",
+          metrics: ["Срок: 10 недель", "-8 см в талии", "Осанка и тонус"],
+          quote: "«Боялась, что без зала ничего не получится. Тренировки дома с резинками и гантелями — и через 10 недель одежда сидит иначе, а спина к вечеру больше не ноет!»",
+          imgBefore: "photos/case-4-before.jpg",
+          imgAfter: "photos/case-4-after.jpg"
+        }
+      ],
+      reviews: [
+        {
+          name: "Елена, 33 года",
+          program: "Полное ведение • 12 тренировок",
+          badge: "-5.5 кг и осанка",
+          text: "«Никогда не думала, что онлайн-тренировки могут быть эффективнее зала. Настя видит каждый миллиметр движения через камеру и всегда поддерживает в чате!»",
+          img: "photos/review-1.jpg"
+        },
+        {
+          name: "Ольга, 28 лет",
+          program: "Мини-группа",
+          badge: "-6 см в талии",
+          text: "«Формат мини-группы — это невероятная энергия и дисциплина. Тренируемся вместе с девочками, делимся тарелками, а Настя следит за техникой каждой.»",
+          img: "photos/review-2.jpg"
+        },
+        {
+          name: "Кристина, 35 лет",
+          program: "Ведение • 8 тренировок",
+          badge: "-7 кг без диет",
+          text: "«Разбор моих тарелок в Телеграме — это отдельная любовь! Ем пасту, шоколад к кофе и при этом стабильно худею каждую неделю без срывов.»",
+          img: "photos/review-3.jpg"
+        },
+        {
+          name: "Анна, 26 лет",
+          program: "Растяжка • 12 занятий",
+          badge: "Гибкость и 0 боли",
+          text: "«После вечерней растяжки с Настей спится как в детстве. Ушли зажимы в шее и пояснице, тело стало лёгким, пластичным и женственным!»",
+          img: "photos/review-4.jpg"
+        }
+      ],
+      approach: [
+        {
+          title: "01. Персональная таблица",
+          text: "Вся программа, рабочие веса, повторения и видео с техникой собраны в удобной личной Google Таблице.",
+          img: "photos/approach-1.jpg"
+        },
+        {
+          title: "02. Внимание к технике",
+          text: "Детальный контроль каждого движения на онлайн-тренировках по видеосвязи и подробный разбор твоих видеоотчётов.",
+          img: "photos/approach-2.jpg"
+        },
+        {
+          title: "03. Рацион без голодовок",
+          text: "Индивидуальный расчёт КБЖУ и рекомендации по питанию из привычных продуктов без жёстких запретов.",
+          img: "photos/approach-3.jpg"
+        }
+      ],
+      services: {
+        personal: {
+          label: "А. Личное онлайн-ведение",
+          showIncluded: true,
+          items: [
+            {
+              tag: "Максимальный контроль",
+              title: "Полное ведение",
+              pill: "12 онлайн-тренировок в месяц",
+              desc: "Для тех, кому нужен регулярный личный контроль на каждом занятии (3 раза в неделю по видеосвязи) и полное сопровождение по всем вопросам.",
+              price: "15 000 ₽",
+              period: "/ в месяц",
+              featured: true
+            },
+            {
+              tag: "Оптимальный баланс",
+              title: "Ведение",
+              pill: "8 онлайн-тренировок в месяц",
+              desc: "Сочетание совместных онлайн-занятий со мной (2 раза в неделю) и самостоятельной работы по индивидуальному плану в Google Таблице.",
+              price: "12 000 ₽",
+              period: "/ в месяц",
+              featured: false
+            },
+            {
+              tag: "Самостоятельный темп",
+              title: "Личное ведение без онлайн-тренировок",
+              pill: "Сопровождение по видеоотчётам",
+              desc: "Для тех, кто хочет заниматься в свободном графике дома или в зале, но с индивидуальной системой, проверкой видео техники и контролем питания.",
+              price: "9 000 ₽",
+              period: "/ в месяц",
+              featured: false
+            }
+          ]
+        },
+        plans: {
+          label: "Б. Программы тренировок",
+          showIncluded: false,
+          items: [
+            {
+              tag: "Комплексный маршрут",
+              title: "Программа тренировок + питание",
+              pill: "План в Google Таблице + расчёт КБЖУ",
+              desc: "Индивидуально составленная программа тренировок для дома или зала с видео-примерами техники, расчётом КБЖУ и рекомендациями по рациону.",
+              price: "6 500 ₽",
+              period: "/ разово",
+              featured: true
+            },
+            {
+              tag: "Персональный план",
+              title: "Индивидуальное составление программы",
+              pill: "Персональная система в Google Таблице",
+              desc: "Структурированный тренировочный план под твои задачи, уровень подготовки и доступный инвентарь с подробными видео-инструкциями.",
+              price: "4 500 ₽",
+              period: "/ разово",
+              featured: false
+            }
+          ]
+        },
+        groups: {
+          label: "В. Мини-группы",
+          showIncluded: false,
+          items: [
+            {
+              tag: "Энергия комьюнити",
+              title: "Занятия в мини-группе",
+              pill: "Онлайн-тренировки + общий чат и контроль техники",
+              desc: "Тренировки в небольшой группе девушек по видеосвязи: моё личное внимание к технике каждой участницы, работа с питанием и взаимная мотивация.",
+              price: "10 000 ₽",
+              period: "/ в месяц за чел.",
+              featured: true
+            }
+          ]
+        },
+        stretch: {
+          label: "Г. Растяжка и мобильность",
+          showIncluded: false,
+          items: [
+            {
+              tag: "Системная пластика",
+              title: "Пакет на 12 занятий",
+              pill: "3 раза в неделю • глубокая работа",
+              desc: "Последовательное развитие гибкости, снятие зажимов в спине и шее, улучшение осанки и лёгкости во всём теле.",
+              price: "13 500 ₽",
+              period: "/ за 12 занятий",
+              featured: true
+            },
+            {
+              tag: "Регулярный тонус",
+              title: "Пакет на 8 занятий",
+              pill: "2 раза в неделю • лёгкость в теле",
+              desc: "Бережная работа над раскрытием грудного отдела, подвижностью тазобедренных суставов и эластичностью мышц.",
+              price: "9 600 ₽",
+              period: "/ за 8 занятий",
+              featured: false
+            },
+            {
+              tag: "Мягкий старт",
+              title: "Пакет на 4 занятия",
+              pill: "1 раз в неделю • разгрузка спины",
+              desc: "Отличный вариант, чтобы снять накопившуюся усталость после рабочей недели и мягко познакомиться с направлением.",
+              price: "5 200 ₽",
+              period: "/ за 4 занятия",
+              featured: false
+            }
+          ]
+        }
+      },
+      steps: [
+        { num: "ШАГ 01", title: "Пробная тренировка 🎁", text: "Дарю знакомство по видеосвязи: смотрю, как ты двигаешься, обсуждаем цель, и ты решаешь — твоё или нет." },
+        { num: "ШАГ 02", title: "Выбираем формат и цель", text: "Уточняем цели, исходные данные, особенности здоровья и инвентарь, подбираем формат под твой график." },
+        { num: "ШАГ 03", title: "Выстраиваем систему", text: "Формируем индивидуальную программу в Google Таблице, рассчитываем КБЖУ и запускаем сопровождение." },
+        { num: "ШАГ 04", title: "Работаем на результат", text: "Тренируемся, проверяем отчёты, отслеживаем прогресс и своевременно корректируем нагрузку." }
+      ],
+      faq: [
+        {
+          q: "Как проходит онлайн-сопровождение?",
+          a: "После выбора тарифа мы проводим стартовую диагностику, определяем точку А и цели. Я создаю для тебя персональную Google Таблицу с программой и видео каждого движения, рассчитываю КБЖУ, и мы начинаем тренироваться по видеосвязи или по видеоотчётам с ежедневной связью в личном чате."
+        },
+        {
+          q: "Как проходит пробная тренировка?",
+          a: "Это знакомство по видеосвязи, которое я дарю: смотрю, как ты двигаешься, обсуждаем цель и график, и в конце я подсказываю, с чего лучше начать. Никаких обязательств — просто попробуй, подходит ли тебе такой формат 💛"
+        },
+        {
+          q: "Чем отличаются форматы ведения?",
+          a: "Главное отличие — в количестве совместных онлайн-тренировок по видеосвязи: в «Полном ведении» их 12 в месяц, в тарифе «Ведение» — 8 в месяц, а в формате без онлайн-тренировок ты занимаешься в удобное время, присылая мне видео подходов на проверку."
+        },
+        {
+          q: "Что входит в личное ведение?",
+          a: "Во все три тарифа личного ведения входят индивидуальная программа в Google Таблице, видео с разбором техники, дополнительные тренировки, расчёт КБЖУ, рекомендации по питанию, проверка отчётов, обратная связь и регулярная корректировка плана."
+        },
+        {
+          q: "Можно ли заниматься дома?",
+          a: "Да, большинство моих подопечных тренируются дома. Достаточно коврика, пары разборных гантелей и набора фитнес-резинок — я подскажу, какой инвентарь лучше заказать."
+        },
+        {
+          q: "Нужен ли тренажёрный зал?",
+          a: "Тренажёрный зал не обязателен: добиться отличного тонуса, похудения и здоровой осанки можно и дома. Если же у тебя есть абонемент в зал, я составлю программу специально под оборудование твоего клуба."
+        },
+        {
+          q: "Как составляется индивидуальная программа?",
+          a: "Программа создаётся строго под твои параметры: учитываются цели, опыт тренировок, режим дня, особенности спины и суставов, а также то, где ты планируешь заниматься — дома или в зале."
+        },
+        {
+          q: "Как проходит контроль прогресса?",
+          a: "Мы регулярно фиксируем рабочие веса в Google Таблице, разбираем технику по видеосвязи или видеоотчётам, а также отслеживаем динамику по замерам и фотографиям, своевременно адаптируя нагрузку."
+        },
+        {
+          q: "Что входит в работу с питанием?",
+          a: "Индивидуальный расчёт твоей нормы калорий, белков, жиров и углеводов (КБЖУ), понятные рекомендации по составлению сытных тарелок из обычных продуктов и проверка отчётов по рациону без голодовок."
+        },
+        {
+          q: "Чем составление программы отличается от личного ведения?",
+          a: "Составление программы — это разовая услуга, в которой ты получаешь готовый персональный план в Google Таблице с видео-инструкциями для самостоятельной работы. Личное ведение включает ежедневную обратную связь, совместные тренировки, проверку отчётов и ведение за руку весь месяц."
+        },
+        {
+          q: "Как выбрать подходящий формат?",
+          a: "Если сомневаешься, просто оставь заявку в форме ниже или нажми кнопку «Задать вопрос» — мы обсудим твои задачи и график, и я помогу выбрать оптимальный вариант."
+        },
+        {
+          q: "Как происходит оплата и начало работы?",
+          a: "После заявки я пишу тебе лично: мы обсуждаем цель, выбираем формат, согласуем условия оплаты и назначаем дату старта. Всё прозрачно и заранее, без сюрпризов."
+        },
+        {
+          q: "Что делать, если у меня меняется расписание или возникают сложности?",
+          a: "Просто напиши мне — вместе посмотрим, как скорректировать нагрузку и график, чтобы ты не выпадала из процесса. Точные условия переноса занятий мы фиксируем при записи."
+        }
+      ]
+    };
+
+    // Рендер целей
+    function renderGoals() {
+      const container = document.getElementById('goalsContainer');
+      container.innerHTML = SITE_DATA.goals.map(g => `
+        <div class="goal-card">
+          <span class="goal-num">${g.num}</span>
+          <h3>${g.title}</h3>
+          <p>${g.text}</p>
+        </div>
+      `).join('');
+    }
+
+    // Рендер кейсов
+    let currentCaseIdx = 0;
+    function renderCases() {
+      const tabsEl = document.getElementById('casesTabs');
+      const contentEl = document.getElementById('caseContent');
+
+      tabsEl.innerHTML = SITE_DATA.cases.map((c, idx) => `
+        <button class="case-tab-btn ${idx === currentCaseIdx ? 'active' : ''}" onclick="selectCase(${idx})">
+          ${c.name}
+        </button>
+      `).join('');
+
+      const item = SITE_DATA.cases[currentCaseIdx];
+      contentEl.innerHTML = `
+        <div class="case-view">
+          <div class="case-photos">
+            <div class="case-photo-box">
+              <img src="${item.imgBefore}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="До — ${item.name}">
+              <span class="case-photo-tag">Точка А</span>
+            </div>
+            <div class="case-photo-box">
+              <img src="${item.imgAfter}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="После — ${item.name}">
+              <span class="case-photo-tag">Результат</span>
+            </div>
+          </div>
+          <div>
+            <span class="eyebrow">${item.name}</span>
+            <h3 style="font-size: 2rem; margin-bottom: 10px;">${item.title}</h3>
+            <div class="case-metrics">
+              ${item.metrics.map(m => `<span class="metric-pill">${m}</span>`).join('')}
+            </div>
+            <p class="case-quote">${item.quote}</p>
+            <button class="btn btn-primary" onclick="openModal('Хочу результат как у: ${item.name}')">Хочу такой же результат</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectCase(idx) {
+      currentCaseIdx = idx;
+      renderCases();
+    }
+
+    // Рендер отзывов
+    function renderReviews() {
+      const container = document.getElementById('reviewsContainer');
+      container.innerHTML = SITE_DATA.reviews.map(r => `
+        <div class="review-card">
+          <div>
+            <div class="review-top">
+              <div class="review-avatar">
+                <img src="${r.img}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="${r.name}">
+              </div>
+              <div>
+                <strong style="display:block; font-size:0.95rem; color:var(--deep-choco);">${r.name}</strong>
+                <span style="font-size:0.78rem; color:var(--text-muted);">${r.program}</span>
+              </div>
+            </div>
+            <span class="review-badge">${r.badge}</span>
+            <p class="review-text">${r.text}</p>
+          </div>
+          <button class="btn btn-outline" style="width:100%; padding:10px 16px; font-size:0.78rem;" onclick="openModal('${r.program}')">Выбрать этот формат</button>
+        </div>
+      `).join('');
+    }
+
+    // Переключение табов в блоке «Обо мне»
+    function switchAboutTab(tabId, btnEl) {
+      document.querySelectorAll('.about-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.about-slide').forEach(s => s.classList.remove('active'));
+      btnEl.classList.add('active');
+      document.getElementById('about-' + tabId).classList.add('active');
+      setTimeout(refreshCars, 30);
+    }
+
+    // Рендер подхода
+    function renderApproach() {
+      const container = document.getElementById('approachContainer');
+      container.innerHTML = SITE_DATA.approach.map(a => `
+        <div class="approach-card">
+          <img src="${a.img}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="${a.title}">
+          <div class="approach-card-body">
+            <h3>${a.title}</h3>
+            <p>${a.text}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Рендер услуг (Категории А, Б, В, Г)
+    let activeServiceKey = 'personal';
+    function renderServices() {
+      const tabsEl = document.getElementById('serviceTabs');
+      const includedBox = document.getElementById('personalIncludedBox');
+      const tariffsEl = document.getElementById('tariffsContainer');
+
+      tabsEl.innerHTML = Object.keys(SITE_DATA.services).map(key => `
+        <button class="service-tab-btn ${key === activeServiceKey ? 'active' : ''}" onclick="selectServiceCategory('${key}')">
+          ${SITE_DATA.services[key].label}
+        </button>
+      `).join('');
+
+      const currentCategory = SITE_DATA.services[activeServiceKey];
+      includedBox.style.display = currentCategory.showIncluded ? 'block' : 'none';
+
+      tariffsEl.innerHTML = currentCategory.items.map(item => `
+        <div class="tariff-card ${item.featured ? 'featured' : ''}">
+          <div>
+            <span class="tariff-tag">${item.tag}</span>
+            <h3 class="tariff-title">${item.title}</h3>
+            <span class="tariff-pill">${item.pill}</span>
+            <p class="tariff-desc">${item.desc}</p>
+          </div>
+          <div>
+            <div class="tariff-price-wrap">
+              <span class="tariff-price">${item.price}</span>
+              <span class="tariff-period">${item.period}</span>
+            </div>
+            <button class="tariff-btn" onclick="openModal('${item.title} (${item.price})')">Выбрать тариф</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectServiceCategory(key) {
+      activeServiceKey = key;
+      renderServices();
+      const t = document.getElementById('tariffsContainer'); t.scrollLeft = 0; initCarousel(t);
+    }
+
+    // Рендер шагов работы
+    function renderSteps() {
+      const container = document.getElementById('stepsContainer');
+      container.innerHTML = SITE_DATA.steps.map(s => `
+        <div class="step-card">
+          <span class="step-num">${s.num}</span>
+          <h3>${s.title}</h3>
+          <p>${s.text}</p>
+        </div>
+      `).join('');
+    }
+
+    // Рендер FAQ (первый открыт со значком ×, остальные закрыты со значком +)
+    function renderFaq() {
+      const container = document.getElementById('faqContainer');
+      container.innerHTML = SITE_DATA.faq.map((item, idx) => `
+        <div class="faq-item ${idx === 0 ? 'open' : ''} ${idx >= 5 ? 'faq-extra' : ''}">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>${item.q}</span>
+            <span class="faq-icon">${idx === 0 ? '×' : '+'}</span>
+          </button>
+          <div class="faq-answer">
+            <p>${item.a}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleFaq(btnEl) {
+      const itemEl = btnEl.parentElement;
+      const iconEl = btnEl.querySelector('.faq-icon');
+      const isOpen = itemEl.classList.contains('open');
+
+      document.querySelectorAll('.faq-item').forEach(el => {
+        el.classList.remove('open');
+        const ic = el.querySelector('.faq-icon');
+        if (ic) ic.textContent = '+';
+      });
+
+      if (!isOpen) {
+        itemEl.classList.add('open');
+        iconEl.textContent = '×';
+      }
+    }
+
+    // Модальное окно и отправка форм
+    function openModal(serviceName) {
+      document.getElementById('modalSelectedService').textContent = 'Выбранное направление: ' + serviceName;
+      document.getElementById('bookingModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('bookingModal').classList.remove('open');
+    }
+
+    const LEAD_EMAIL = (window.SITE_SETTINGS && SITE_SETTINGS.leadEmail) || 'parfenovanastya86@gmail.com';  // заявки приходят на эту почту
+    const LEAD_TG = ((window.SITE_SETTINGS && SITE_SETTINGS.telegram) || 'https://t.me/parfenova_nastya').replace(/^.*t\.me\//, '').replace(/^@/, '').replace(/[\/?#].*$/, '');           // запасной канал: Telegram Насти
+    const LEAD_PHONE_TEXT = '8 (937) 791-32-53';
+
+    function leadStatus(form, kind, text, link) {
+      let el = form.querySelector('.form-status');
+      if (!el) { el = document.createElement('p'); el.setAttribute('role', 'status'); form.appendChild(el); }
+      el.className = 'form-status ' + kind;
+      el.textContent = text;
+      if (link) { el.appendChild(document.createTextNode(' ')); el.appendChild(link); }
+    }
+    function tgLink(text, label) {
+      const a = document.createElement('a');
+      a.href = 'https://t.me/' + LEAD_TG + '?text=' + encodeURIComponent(text);
+      a.target = '_blank'; a.rel = 'noopener'; a.textContent = label;
+      return a;
+    }
+
+    async function handleFormSubmit(e, sourceName) {
+      e.preventDefault();
+      const form = e.target;
+      const fields = {};
+      form.querySelectorAll('.form-group').forEach(g => {
+        const l = g.querySelector('.form-label'), c = g.querySelector('input,select,textarea');
+        if (l && c) fields[l.textContent.trim()] = c.value.trim();
+      });
+      const inModal = !!form.closest('.modal-box');
+      const picked = inModal ? document.getElementById('modalSelectedService').textContent.trim() : '';
+      const lines = ['Заявка с сайта (' + sourceName + ')'].concat(Object.keys(fields).map(k => k + ': ' + (fields[k] || '—')));
+      if (picked) lines.push(picked);
+      const text = lines.join('\n');
+      const btn = form.querySelector('button[type=submit]');
+      const label = btn.textContent;
+
+      // e-mail ещё не подключён: открываем Telegram Насти с уже готовой заявкой
+      if (!LEAD_EMAIL) {
+        window.open(tgLink(text, '').href, '_blank', 'noopener');
+        leadStatus(form, 'ok', 'Открыли Telegram с готовой заявкой — осталось нажать «Отправить».');
+        return;
+      }
+
+      btn.disabled = true; btn.textContent = 'Отправляем…';
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 20000);
+      try {
+        const payload = Object.assign({}, fields, { 'Источник': sourceName, _subject: 'Заявка с сайта Анастасии', _template: 'table', _captcha: 'false' });
+        if (picked) payload['Направление'] = picked;
+        const res = await fetch('https://formsubmit.co/ajax/' + LEAD_EMAIL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && (data.success === true || data.success === 'true')) {
+          leadStatus(form, 'ok', 'Спасибо! Заявка отправлена — Анастасия свяжется с тобой в ближайшее время 💛');
+          form.reset();
+          if (inModal) setTimeout(closeModal, 2800);
+        } else { throw new Error(data.message || ('HTTP ' + res.status)); }
+      } catch (err) {
+        console.warn('Заявка не ушла автоматически:', err);
+        leadStatus(form, 'err', 'Не получилось отправить автоматически. Напиши Насте в Telegram — заявка уже подготовлена:', tgLink(text, 'открыть Telegram'));
+      } finally {
+        clearTimeout(timer); btn.disabled = false; btn.textContent = label;
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderGoals();
+      renderCases();
+      renderReviews();
+      renderApproach();
+      renderServices();
+      renderSteps();
+      renderFaq();
+
+      const seen = (() => { try { return sessionStorage.getItem('ls'); } catch (e) { return null; } })();
+      try { sessionStorage.setItem('ls', '1'); } catch (e) {}
+      setTimeout(() => {
+        document.getElementById('preloader').classList.add('hidden');
+        setTimeout(() => document.body.classList.add('loaded'), seen ? 100 : 450);
+      }, seen ? 350 : 2200);
+    });
+  </script>
+
+  <script>
+    function cur(el){const c=el.scrollLeft+el.clientWidth/2;let b=0,bd=1e9;[...el.children].forEach((k,i)=>{const d=Math.abs(k.offsetLeft+k.clientWidth/2-c);if(d<bd){bd=d;b=i}});return b}
+    function mark(el){const i=cur(el);[...el.children].forEach((k,j)=>k.classList.toggle('is-active',j===i));const n=el.nextElementSibling;if(n&&n.classList.contains('c-nav'))n.querySelectorAll('.c-dots i').forEach((d,j)=>d.classList.toggle('on',j===i))}
+    function go(el,d){const k=[...el.children],t=k[Math.max(0,Math.min(k.length-1,cur(el)+d))];el.scrollTo({left:t.offsetLeft-(el.clientWidth-t.clientWidth)/2,behavior:'smooth'})}
+    function initCarousel(el){
+      if(!el)return;
+      el.classList.add('m-car');
+      let nav=el.nextElementSibling;
+      if(!nav||!nav.classList.contains('c-nav')){
+        nav=document.createElement('div');nav.className='c-nav';
+        nav.innerHTML='<button class="c-arr" aria-label="Назад">‹</button><div class="c-dots"></div><button class="c-arr" aria-label="Вперёд">›</button>';
+        el.after(nav);
+        const b=nav.querySelectorAll('.c-arr');b[0].onclick=()=>go(el,-1);b[1].onclick=()=>go(el,1);
+        el.addEventListener('scroll',()=>{cancelAnimationFrame(el._r);el._r=requestAnimationFrame(()=>mark(el))},{passive:true});
+      }
+      nav.querySelector('.c-dots').innerHTML=[...el.children].map(()=>'<i></i>').join('');
+      mark(el);
+    }
+    function refreshCars(){document.querySelectorAll('.m-car').forEach(mark)}
+    function renderCaseCards(){
+      document.getElementById('caseCards').innerHTML=SITE_DATA.cases.map(c=>`
+        <div class="case-card">
+          <div class="cc-photos">
+            <div class="case-photo-box"><img src="${c.imgBefore}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="До — ${c.name}"><span class="case-photo-tag">Точка А</span></div>
+            <div class="case-photo-box"><img src="${c.imgAfter}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="После — ${c.name}"><span class="case-photo-tag">Результат</span></div>
+          </div>
+          <div class="cc-body">
+            <span class="eyebrow">${c.name}</span>
+            <h3>${c.title}</h3>
+            <div class="case-metrics">${c.metrics.map(m=>`<span class="metric-pill">${m}</span>`).join('')}</div>
+            <p class="case-quote">${c.quote}</p>
+            <button class="btn btn-primary" style="width:100%" onclick="openModal('Хочу результат как у: ${c.name}')">Хочу такой же результат</button>
+          </div>
+        </div>`).join('');
+    }
+    function toggleFaqMore(b){const l=document.getElementById('faqContainer');l.classList.toggle('expanded');b.textContent=l.classList.contains('expanded')?'Скрыть':'Показать ещё вопросы'}
+    window.addEventListener('DOMContentLoaded',()=>{
+      renderCaseCards();
+      ['goalsContainer','caseCards','approachContainer','tariffsContainer'].forEach(id=>initCarousel(document.getElementById(id)));
+      document.querySelectorAll('.about-gallery-grid,.certs-grid').forEach(initCarousel);
+      const t=document.querySelector('.included-box-title');
+      if(t)t.addEventListener('click',()=>document.getElementById('personalIncludedBox').classList.toggle('open'));
+      document.querySelectorAll('.goals-grid,.reviews-grid,.approach-grid,.tariffs-grid,.steps-grid,.about-gallery-grid,.certs-grid,.faq-list').forEach(e=>e.classList.add('stagger'));
+      const items=document.querySelectorAll('.section-head,.cases-tabs,#caseCards,.about-tabs,.about-bio-grid,.services-tabs,.included-box,.faq-head,.gift-card,.cta-grid>*,.stagger');
+      items.forEach(e=>{if(!e.classList.contains('stagger')&&!e.classList.contains('gift-card'))e.classList.add('reveal')});
+      if(!('IntersectionObserver' in window)){items.forEach(e=>e.classList.add('in'));return}
+      const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);setTimeout(refreshCars,50)}}),{threshold:.05,rootMargin:'0px 0px -40px 0px'});
+      items.forEach(e=>io.observe(e));
+      window.addEventListener('resize',refreshCars);
+    });
+  </script>
+
+  <script>
+  (function () {
+    var prisms = [];
+    function splitWords(el) {
+      var k = 0, last = null;
+      (function walk(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            n.textContent.split(/(\s+)/).forEach(function (t) {
+              if (!t) return;
+              if (/^\s+$/.test(t)) { frag.appendChild(document.createTextNode(' ')); return; }
+              if (/^[.,!?:;»)]+$/.test(t) && last) { last.textContent += t; return; }
+              var w = document.createElement('span'); w.className = 'w';
+              var s = document.createElement('span'); s.textContent = t; s.style.setProperty('--k', k++);
+              w.appendChild(s); frag.appendChild(w); last = s;
+            });
+            n.replaceWith(frag);
+          } else if (n.nodeType === 1) walk(n);
+        });
+      })(el);
+      el.classList.add('split');
+    }
+    function buildPrism(mount) {
+      var src = document.getElementById(mount.dataset.src);
+      var cards = Array.prototype.slice.call(src.children);
+      var n = cards.length;
+      if (n < 3) return null;
+      var idx = 0, drag = 0, w = 0, cw = 0, R = 0, step = 0, user = false, visible = true;
+      mount.innerHTML = '<div class="prism-scene"><div class="prism-box"></div></div><div class="c-nav"><button class="c-arr" aria-label="Назад">‹</button><div class="c-dots">' + cards.map(function () { return '<i></i>'; }).join('') + '</div><button class="c-arr" aria-label="Вперёд">›</button></div>';
+      var scene = mount.querySelector('.prism-scene'), box = mount.querySelector('.prism-box');
+      var faces = cards.map(function (c) { var f = document.createElement('div'); f.className = 'prism-face'; f.appendChild(c.cloneNode(true)); box.appendChild(f); f._d = null; f._r = 0; return f; });
+      function wrap(d) { return (((d + n / 2) % n) + n) % n - n / 2; }
+      function paint(anim) {
+        var pos = idx + drag;
+        faces.forEach(function (f, i) {
+          var d = wrap(i - pos), a = Math.abs(d);
+          var jump = f._d !== null && Math.abs(d - f._d) > n / 2 + 0.01;
+          f._d = d; f._r = Math.round(d);
+          f.style.transition = anim ? (jump ? 'transform 0s, opacity .9s' : '') : 'none';
+          f.style.transform = 'translateZ(' + (-R) + 'px) rotateY(' + (d * step) + 'deg) translateZ(' + R + 'px)';
+          f.style.opacity = a <= 1 ? 1 : Math.max(0, 2 - a);
+          f.style.setProperty('--sh', (Math.min(1, a) * 0.6).toFixed(3));
+          f.style.pointerEvents = a > 1.3 ? 'none' : '';
+        });
+        var cur = ((idx % n) + n) % n;
+        mount.querySelectorAll('.c-dots i').forEach(function (dot, j) { dot.classList.toggle('on', j === cur); });
+      }
+      function layout() {
+        w = scene.clientWidth; if (!w) return;
+        var desk = w > 720;
+        cw = desk ? Math.min(460, w * 0.4) : Math.min(w * 0.76, 330);
+        step = desk ? 40 : 44;
+        R = (cw / 2) / Math.tan(step * Math.PI / 360) * 1.02;
+        scene.style.perspective = Math.round(cw * (desk ? 3.4 : 3)) + 'px';
+        faces.forEach(function (f) { f.style.width = cw + 'px'; f.style.marginLeft = (-cw / 2) + 'px'; f.style.height = ''; f._d = null; });
+        var h = Math.max.apply(null, faces.map(function (f) { return f.offsetHeight; }));
+        scene.style.height = h + 'px';
+        faces.forEach(function (f) { f.style.height = h + 'px'; });
+        paint(false);
+      }
+      function go(d) { user = true; idx += d; drag = 0; paint(true); }
+      var arr = mount.querySelectorAll('.c-arr');
+      arr[0].onclick = function () { go(-1); }; arr[1].onclick = function () { go(1); };
+      var sx = 0, down = false, moving = false, moved = false;
+      scene.addEventListener('pointerdown', function (e) { down = true; moving = false; moved = false; sx = e.clientX; });
+      scene.addEventListener('pointermove', function (e) {
+        if (!down) return;
+        var dx = e.clientX - sx;
+        if (!moving && Math.abs(dx) > 6) { moving = true; user = true; try { scene.setPointerCapture(e.pointerId); } catch (x) {} }
+        if (moving) { drag = Math.max(-1, Math.min(1, -dx / (cw * 0.7))); paint(false); }
+      });
+      scene.addEventListener('pointerup', function (e) {
+        if (!down) return; down = false;
+        if (moving) { moved = true; var dx = e.clientX - sx; if (Math.abs(dx) > cw * 0.14) idx += dx < 0 ? 1 : -1; drag = 0; paint(true); }
+        moving = false;
+      });
+      scene.addEventListener('pointercancel', function () { down = false; moving = false; drag = 0; paint(true); });
+      scene.addEventListener('click', function (e) {
+        if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; return; }
+        var f = e.target.closest ? e.target.closest('.prism-face') : null;
+        if (f && f._r) { e.stopPropagation(); e.preventDefault(); go(f._r); }
+      }, true);
+      if (mount.dataset.auto && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { visible = es[0].isIntersecting; }).observe(mount);
+        setInterval(function () { if (!user && visible && !document.hidden && w) { idx++; paint(true); } }, 4800);
+      }
+      layout();
+      return { layout: layout };
+    }
+    function layoutAll() { prisms.forEach(function (p) { p.layout(); }); }
+    window.addEventListener('DOMContentLoaded', function () {
+      var titles = document.querySelectorAll('.hero-title,.section-title,.cta-title,.gift-card h2');
+      titles.forEach(splitWords);
+      var later = document.querySelectorAll('.section-title,.cta-title,.gift-card h2');
+      if ('IntersectionObserver' in window) {
+        var io2 = new IntersectionObserver(function (es) { es.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('in'); io2.unobserve(x.target); } }); }, { threshold: 0.2 });
+        later.forEach(function (e) { io2.observe(e); });
+      } else { later.forEach(function (e) { e.classList.add('in'); }); }
+      document.querySelectorAll('.prism').forEach(function (m) { var p = buildPrism(m); if (p) prisms.push(p); });
+      var bg = document.getElementById('burger'), mn = document.getElementById('mnav');
+      function setMenu(o) { document.body.classList.toggle('menu-open', o); bg.setAttribute('aria-expanded', o); mn.setAttribute('aria-hidden', !o); }
+      bg.addEventListener('click', function () { setMenu(!document.body.classList.contains('menu-open')); });
+      mn.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+      window.addEventListener('resize', function () { if (innerWidth > 720) setMenu(false); layoutAll(); });
+      var soc = document.querySelector('#contacts .cta-socials');
+      if (soc) {
+        mn.querySelector('.mnav-soc').innerHTML = soc.innerHTML;
+        var ft = document.querySelector('.footer-top');
+        if (ft) { var d = document.createElement('div'); d.className = 'cta-socials footer-soc'; d.innerHTML = soc.innerHTML; ft.appendChild(d); }
+      }
+    });
+    window.addEventListener('load', layoutAll);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutAll);
+  })();
+  </script>
+<script>
+(function () {
+  var CFG = window.SITE_EDIT || {};
+  var OV = window.SITE_OVERRIDES || {};
+  var T = OV.texts || {}, S = OV.settings || {}, PH = OV.photos || {}, L = OV.lists || {}, M = OV.meta || {};
+  var SKIP = { SCRIPT: 1, STYLE: 1, SVG: 1, NOSCRIPT: 1, SELECT: 1, OPTION: 1, TEXTAREA: 1, TITLE: 1, CODE: 1, IFRAME: 1 };
+  function up(el) { return (el.tagName || '').toUpperCase(); }
+  function hash(s) { var h = 5381; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return 't' + (h >>> 0).toString(36); }
+  function clean(s) { return s.replace(/[ \t\r\n]+/g, ' ').replace(/ ?\u0001 ?/g, '\n').trim(); }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function toHtml(v) { return esc(v).replace(/\*([^*\n]+)\*/g, '<i>$1</i>').replace(/\n/g, '<br>'); }
+  function purelyText(el) { for (var n = el.firstChild; n; n = n.nextSibling) if (n.nodeType === 1) return false; return true; }
+  function unitText(el) {
+    var out = '';
+    for (var n = el.firstChild; n; n = n.nextSibling) {
+      if (n.nodeType === 3) out += n.nodeValue;
+      else if (n.nodeType === 8) continue;
+      else if (n.nodeType === 1 && (up(n) === 'I' || up(n) === 'EM')) { if (!purelyText(n)) return null; out += '*' + n.textContent + '*'; }
+      else if (n.nodeType === 1 && up(n) === 'BR') out += '\u0001';
+      else return null;
+    }
+    return out;
+  }
+  function meaningful(t) { return t.length > 1 && /[A-Za-zА-Яа-яЁё0-9]/.test(t); }
+  var units = [];
+  function walk(el) {
+    if (SKIP[up(el)] || el.hasAttribute('data-noedit')) return;
+    var raw = unitText(el);
+    if (raw !== null) { var t = clean(raw); if (meaningful(t)) units.push({ el: el, node: null, text: t }); return; }
+    for (var n = el.firstChild; n; n = n.nextSibling) {
+      if (n.nodeType === 3) { var t2 = clean(n.nodeValue); if (meaningful(t2)) units.push({ el: el, node: n, text: t2 }); }
+      else if (n.nodeType === 1) walk(n);
+    }
+  }
+  walk(document.body);
+  function groupOf(el) { var g = CFG.groups || []; for (var i = 0; i < g.length; i++) { try { if (el.closest(g[i][0])) return g[i][1]; } catch (e) {} } return 'Прочее'; }
+  var fields = {}, order = [];
+  units.forEach(function (u) {
+    u.key = hash(u.text);
+    var f = fields[u.key];
+    if (!f) { f = fields[u.key] = { key: u.key, text: u.text, group: groupOf(u.el), count: 0, multi: u.text.length > 70 || u.text.indexOf('\n') >= 0 }; order.push(f); }
+    f.count++;
+  });
+  function metaContent(attr, name) { var m = document.querySelector('meta[' + attr + '="' + name + '"]'); return m ? m.getAttribute('content') || '' : ''; }
+  var metaOrig = { title: document.title, description: metaContent('name', 'description') };
+
+  /* ---- настройки: телефон, ссылки, почта ---- */
+  var SS = {};
+  (CFG.settings || []).forEach(function (st) { SS[st.key] = (S[st.key] != null && S[st.key] !== '') ? S[st.key] : st.def; });
+  window.SITE_SETTINGS = SS;
+  function telOf(v) { var d = String(v).replace(/\D/g, ''); if (d.length === 11 && (d[0] === '8' || d[0] === '7')) return '+7' + d.slice(1); if (d.length === 10) return '+7' + d; return d ? '+' + d : ''; }
+  function replaceText(a, b) {
+    var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null), n, list = [];
+    while ((n = w.nextNode())) { var p = n.parentNode && up(n.parentNode); if (p === 'SCRIPT' || p === 'STYLE') continue; if (n.nodeValue.indexOf(a) >= 0) list.push(n); }
+    list.forEach(function (x) { x.nodeValue = x.nodeValue.split(a).join(b); });
+  }
+  function replaceHref(a, b) {
+    document.querySelectorAll('[href]').forEach(function (e) { var h = e.getAttribute('href'); if (h && h.indexOf(a) === 0) e.setAttribute('href', b + h.slice(a.length)); });
+  }
+  (CFG.settings || []).forEach(function (st) {
+    var v = SS[st.key]; if (!v || v === st.def) return;
+    if (st.kind === 'phone') { replaceText(st.def, v); replaceHref('tel:' + telOf(st.def), 'tel:' + telOf(v)); }
+    else if (st.kind === 'email') { replaceText(st.def, v); replaceHref('mailto:' + st.def, 'mailto:' + v); }
+    else if (st.kind === 'url') { replaceHref(st.def, v); }
+  });
+
+  /* ---- фото ---- */
+  var photoSrc = {};
+  document.querySelectorAll('img[data-slot]').forEach(function (img) {
+    var slot = img.getAttribute('data-slot');
+    if (PH[slot]) img.setAttribute('src', PH[slot]);
+    if (!photoSrc[slot]) photoSrc[slot] = img.getAttribute('src');
+  });
+
+  /* ---- списки (карточки, отзывы, FAQ …) ---- */
+  if (typeof SITE_DATA !== 'undefined') {
+    window.SITE_DEFAULTS = JSON.parse(JSON.stringify(SITE_DATA));
+    Object.keys(L).forEach(function (k) { SITE_DATA[k] = L[k]; });
+    window.SITE_DATA_REF = SITE_DATA;
+  }
+
+  /* ---- название страницы для ссылки ---- */
+  function setMeta(attr, name, val) { var m = document.querySelector('meta[' + attr + '="' + name + '"]'); if (m) m.setAttribute('content', val); }
+  if (M.title) { document.title = M.title; setMeta('property', 'og:title', M.title); }
+  if (M.description) { setMeta('name', 'description', M.description); setMeta('property', 'og:description', M.description); }
+
+  /* ---- тексты ---- */
+  units.forEach(function (u) {
+    var v = T[u.key];
+    if (v == null || v === '' || v === u.text) return;
+    if (u.node) { var raw = u.node.nodeValue, lead = raw.match(/^\s*/)[0], trail = raw.match(/\s*$/)[0]; u.node.nodeValue = lead + v.replace(/\*/g, '') + trail; }
+    else u.el.innerHTML = toHtml(v);
+  });
+
+  window.SITE_EDIT_INDEX = { fields: order, meta: metaOrig, photoSrc: photoSrc };
+  if (window.SITE_AFTER_OVERRIDES) window.SITE_AFTER_OVERRIDES();
+})();
+</script>
+</body>
+</html>

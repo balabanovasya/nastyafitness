@@ -1,15 +1,11 @@
 /* Этот файл создаёт панель управления. Вручную не редактируйте. */
 window.SITE_OVERRIDES = {
  "texts": {
-  "t17rgsm5": "ANASTASIA"
+  "t17rgsm5": "ANASTASIA",
+  "t12t9b0a": "60 мин"
  },
  "settings": {},
- "photos": {
-  "hero": "photos/hero-mwb2lrj9.jpg",
-  "about-main": "photos/about-main-mwb2ons3.jpg",
-  "gallery-1": "photos/gallery-1-mwb2qda1.jpg",
-  "gallery-3": "photos/gallery-3-mwb2qu1u.jpg"
- },
+ "photos": {},
  "lists": {},
  "meta": {}
 };

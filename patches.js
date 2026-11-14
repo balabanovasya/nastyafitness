@@ -1103,3 +1103,34 @@
     setTimeout(initAllPatches, 30);
   }
 })();
+/* === ПРАВКА 1: Удлиняем главное фото на телефоне без обрезки === */
+(function fixHeroPhotoMobile() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @media (max-width: 768px) {
+      .hero-visual,
+      .hero-photo-wrap,
+      .hero-img-box {
+        aspect-ratio: 3 / 4.2 !important;
+        min-height: 470px !important;
+        max-height: none !important;
+        height: auto !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+        border-radius: 24px !important;
+        overflow: hidden !important;
+      }
+      .hero-visual img,
+      .hero-photo-wrap img {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 470px !important;
+        object-fit: cover !important;
+        object-position: center top !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();

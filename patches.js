@@ -1134,3 +1134,96 @@
   `;
   document.head.appendChild(style);
 })();
+/* === ПРАВКА 2: Стили подсказки пролистывания для блока услуг === */
+(function addSwipeHintStyles() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .mobile-swipe-hint {
+      display: none;
+    }
+    @media (max-width: 900px) {
+      .mobile-swipe-hint {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin: 6px 0 12px 0;
+        padding: 6px 14px;
+        background: rgba(201, 144, 78, 0.14);
+        border: 1px solid rgba(201, 144, 78, 0.35);
+        border-radius: 999px;
+        color: #3F291B;
+        font-family: 'Manrope', sans-serif;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+        user-select: none;
+      }
+      .mobile-swipe-hint svg {
+        width: 16px;
+        height: 16px;
+        stroke: #C9904E;
+        stroke-width: 2.2;
+        fill: none;
+        animation: swipeArrowMove 1.4s ease-in-out infinite;
+      }
+      @keyframes swipeArrowMove {
+        0%, 100% { transform: translateX(0); opacity: 0.6; }
+        50% { transform: translateX(5px); opacity: 1; }
+      }
+    }
+  `;
+  document.head.appendChild(style);
+})();
+/* === ПРАВКА 3: Вставка подсказки «Листайте вбок» под вкладками услуг === */
+(function insertSwipeHint() {
+  function mountHint() {
+    if (document.querySelector('.mobile-swipe-hint')) return;
+
+    // Ищем кнопку вкладки «А. ЛИЧНОЕ ОНЛАЙН-ВЕДЕНИЕ»
+    const allEls = document.querySelectorAll('button, div, span, a');
+    let tabBtn = null;
+    for (const el of allEls) {
+      if (el.children.length === 0 && el.textContent.includes('ЛИЧНОЕ ОНЛАЙН-ВЕДЕНИЕ')) {
+        tabBtn = el;
+        break;
+      }
+    }
+    if (!tabBtn) return;
+
+    // Берем контейнер вкладок (строку с кнопками А и Б)
+    const tabsRow = tabBtn.parentElement;
+    if (!tabsRow || !tabsRow.parentElement) return;
+
+    // Создаем плашку-подсказку со стрелкой
+    const hint = document.createElement('div');
+    hint.className = 'mobile-swipe-hint';
+    hint.innerHTML = `
+      <span>Листайте карточки и вкладки вбок</span>
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </svg>
+    `;
+
+    // При клике на подсказку плавно прокручиваем карточки вправо
+    hint.addEventListener('click', () => {
+      const nextBlock = hint.nextElementSibling;
+      const scroller =
+        (nextBlock && (nextBlock.scrollWidth > nextBlock.clientWidth ? nextBlock : nextBlock.querySelector('*'))) ||
+        tabsRow;
+      if (scroller && scroller.scrollBy) {
+        scroller.scrollBy({ left: 260, behavior: 'smooth' });
+      }
+    });
+
+    // Вставляем ровно между вкладками и карточками (где красная стрелка на скрине)
+    tabsRow.insertAdjacentElement('afterend', hint);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', mountHint);
+  } else {
+    mountHint();
+  }
+  setTimeout(mountHint, 1000);
+})();

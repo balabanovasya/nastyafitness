@@ -4,7 +4,9 @@ window.SITE_OVERRIDES = {
   "t17rgsm5": "ANASTASIA",
   "t12t9b0a": "60 мин"
  },
- "settings": {},
+ "settings": {
+  "leadEmail": "fitness.nastya@mail.ru"
+ },
  "photos": {
   "hero": "photos/hero-mwggwv3f.jpg",
   "gallery-2": "photos/gallery-2-mwghglam.jpg",

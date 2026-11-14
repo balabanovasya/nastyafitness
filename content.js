@@ -7,8 +7,12 @@ window.SITE_OVERRIDES = {
  "settings": {},
  "photos": {
   "hero": "photos/hero-mwggwv3f.jpg",
-  "gallery-2": "photos/gallery-2-mwggy1ky.jpg",
-  "gallery-1": "photos/gallery-1-mwggyb1z.jpg"
+  "gallery-2": "photos/gallery-2-mwghglam.jpg",
+  "gallery-1": "photos/gallery-1-mwghghyz.jpg",
+  "about-main": "photos/about-main-mwghg9qf.jpg",
+  "gallery-3": "photos/gallery-3-mwghgpat.jpg",
+  "cert-1": "photos/cert-1-mwghgyg2.jpg",
+  "cert-2": "photos/cert-2-mwghh46m.jpg"
  },
  "lists": {},
  "meta": {},

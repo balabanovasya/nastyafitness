@@ -14,7 +14,25 @@ window.SITE_OVERRIDES = {
   "cert-1": "photos/cert-1-mwghgyg2.jpg",
   "cert-2": "photos/cert-2-mwghh46m.jpg"
  },
- "lists": {},
+ "lists": {
+  "approach": [
+   {
+    "title": "01. Персональная таблица",
+    "text": "Вся программа, рабочие веса, повторения и видео с техникой собраны в удобной личной Google Таблице.",
+    "img": "photos/approach-1-img-mwghl2rw.jpg"
+   },
+   {
+    "title": "02. Внимание к технике",
+    "text": "Детальный контроль каждого движения на онлайн-тренировках по видеосвязи и подробный разбор твоих видеоотчётов.",
+    "img": "photos/approach-2-img-mwghmt1l.jpg"
+   },
+   {
+    "title": "03. Рацион без голодовок",
+    "text": "Индивидуальный расчёт КБЖУ и рекомендации по питанию из привычных продуктов без жёстких запретов.",
+    "img": "photos/approach-3-img-mwghm4hs.jpg"
+   }
+  ]
+ },
  "meta": {},
  "design": {}
 };

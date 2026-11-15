@@ -5,7 +5,8 @@ window.SITE_OVERRIDES = {
   "t12t9b0a": "60 мин"
  },
  "settings": {
-  "leadEmail": "fitness.nastya@mail.ru"
+  "leadEmail": "fitness.nastya@mail.ru",
+  "legalInn": "632512011220"
  },
  "photos": {
   "hero": "photos/hero-mwggwv3f.jpg",

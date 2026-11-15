@@ -1,0 +1,51 @@
+name: Deploy Nastya Site to Yandex Cloud
+on:
+push:
+branches:
+- main
+jobs:
+deploy:
+runs-on: ubuntu-latest
+steps:
+- name: Checkout repository
+uses: actions/checkout@v4
+- name: Sync files to Yandex Object Storage
+env:
+AWS
+ACCESS
+KEY
+_
+_
+_
+ID: ${{ secrets.YC
+KEY
+_
+_
+ID }}
+AWS
+SECRET
+ACCESS
+_
+_
+_
+KEY: ${{ secrets.YC
+_
+SECRET }}
+AWS
+DEFAULT
+REGION: ru-central1
+_
+_
+run: |
+aws s3 sync .
+"s3://${{ secrets.YC
+_
+BUCKET }}" \
+--endpoint-url https://storage.yandexcloud.net \
+--delete \
+--exclude "
+--exclude "
+--exclude "*
+.git/*" \
+.github/*" \
+.md"

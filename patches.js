@@ -1017,3 +1017,321 @@
     setTimeout(initAllPatches, 30);
   }
 })();
+/* === ОБНОВЛЕНИЕ: 1) Фото на мобильном, 2) Указатель свайпа услуг, 3) Скриншоты в отзывах === */
+(function applyNastyaFixes() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    /* 1. Удлиняем главное фото на телефоне без обрезки */
+    @media (max-width: 768px) {
+      .hero-visual, .hero-photo-wrap, .hero-img-box {
+        aspect-ratio: 3 / 4.2 !important;
+        min-height: 470px !important;
+        max-height: none !important;
+        height: auto !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+        border-radius: 24px !important;
+        overflow: hidden !important;
+      }
+      .hero-visual img, .hero-photo-wrap img {
+        width: 100% !important;
+        height: 100% !important;
+        min-height: 470px !important;
+        object-fit: cover !important;
+        object-position: center top !important;
+        -webkit-mask-image: none !important;
+        mask-image: none !important;
+      }
+    }
+
+    /* 2. Плашка «Листайте вбок» в блоке Услуги и форматы работы */
+    .services-swipe-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0 14px 0;
+      padding: 8px 14px;
+      background: rgba(201, 144, 78, 0.14);
+      border: 1px solid rgba(201, 144, 78, 0.38);
+      border-radius: 999px;
+      color: #3F291B;
+      font-family: 'Manrope', sans-serif;
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .services-swipe-bar .swipe-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .services-swipe-bar .swipe-arrows {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .services-swipe-bar button {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(63, 41, 27, 0.25);
+      background: #FFFBF5;
+      color: #3F291B;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      font-size: 14px;
+      line-height: 1;
+    }
+    .services-swipe-bar svg.anim-arrow {
+      width: 18px;
+      height: 18px;
+      stroke: #C9904E;
+      stroke-width: 2.3;
+      fill: none;
+      animation: nastyaSwipeMove 1.3s ease-in-out infinite;
+    }
+    @keyframes nastyaSwipeMove {
+      0%, 100% { transform: translateX(0); opacity: 0.55; }
+      50% { transform: translateX(6px); opacity: 1; }
+    }
+
+    /* 3. Карточки отзывов: убираем круглую аватарку и кнопку «Выбрать этот формат» */
+    .rev-card-cleaned .rev-avatar-hidden {
+      display: none !important;
+    }
+    .rev-card-cleaned .rev-btn-hidden {
+      display: none !important;
+    }
+    .rev-chat-screen-wrap {
+      margin-top: 14px;
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(63, 41, 27, 0.14);
+      background: #F7EFE4;
+      position: relative;
+      cursor: zoom-in;
+      min-height: 210px;
+      max-height: 310px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rev-chat-screen-wrap img {
+      width: 100% !important;
+      height: 100% !important;
+      max-height: 310px !important;
+      object-fit: cover !important;
+      object-position: top center !important;
+      border-radius: 0 !important;
+      display: block !important;
+    }
+    .rev-chat-zoom-badge {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      background: rgba(63, 41, 27, 0.82);
+      color: #FFFBF5;
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(4px);
+    }
+    .rev-chat-placeholder {
+      padding: 28px 16px;
+      text-align: center;
+      color: rgba(63, 41, 27, 0.55);
+      font-family: 'Manrope', sans-serif;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+  `;
+  document.head.appendChild(style);
+
+  /* --- Вставка указателя пролистывания в блок «Услуги и форматы работы» --- */
+  function mountServicesSwipeIndicator() {
+    if (document.querySelector('.services-swipe-bar')) return;
+
+    // Ищем без учета регистра кнопку «А. Личное онлайн-ведение» или плашку «Что входит во все форматы»
+    const candidates = document.querySelectorAll('button, div, span, a, p');
+    let anchorRow = null;
+
+    for (const el of candidates) {
+      const txt = (el.textContent || '').trim().toUpperCase();
+      if (txt.includes('ЧТО ВХОДИТ ВО ВСЕ ФОРМАТЫ') && el.tagName !== 'BODY' && el.tagName !== 'SECTION') {
+        anchorRow = el.closest('div') || el;
+        break;
+      }
+    }
+    if (!anchorRow) {
+      for (const el of candidates) {
+        const txt = (el.textContent || '').trim().toUpperCase();
+        if ((txt === 'А. ЛИЧНОЕ ОНЛАЙН-ВЕДЕНИЕ' || txt.includes('ЛИЧНОЕ ОНЛАЙН-ВЕДЕНИЕ')) && el.children.length <= 2) {
+          anchorRow = el.parentElement;
+          break;
+        }
+      }
+    }
+    if (!anchorRow) return;
+
+    const bar = document.createElement('div');
+    bar.className = 'services-swipe-bar';
+    bar.innerHTML = `
+      <span class="swipe-text">
+        <span>Листайте категории и тарифы вбок</span>
+        <svg class="anim-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+      </span>
+      <span class="swipe-arrows">
+        <button type="button" data-dir="-1" aria-label="Назад">‹</button>
+        <button type="button" data-dir="1" aria-label="Вперед">›</button>
+      </span>
+    `;
+
+    function findScrollableContainer() {
+      let cur = bar.nextElementSibling;
+      for (let i = 0; i < 4 && cur; i++) {
+        if (cur.scrollWidth > cur.clientWidth + 10) return cur;
+        const inner = Array.from(cur.querySelectorAll('div')).find(d => d.scrollWidth > d.clientWidth + 10);
+        if (inner) return inner;
+        cur = cur.nextElementSibling;
+      }
+      return anchorRow;
+    }
+
+    bar.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const dir = Number(btn.getAttribute('data-dir')) || 1;
+        const scroller = findScrollableContainer();
+        if (scroller && scroller.scrollBy) {
+          scroller.scrollBy({ left: dir * 280, behavior: 'smooth' });
+        }
+      });
+    });
+
+    anchorRow.insertAdjacentElement('afterend', bar);
+  }
+
+  /* --- Лайтбокс для увеличения скриншотов переписок --- */
+  function openChatLightbox(src) {
+    if (!src) return;
+    let lb = document.getElementById('nastyaChatLightbox');
+    if (!lb) {
+      lb = document.createElement('div');
+      lb.id = 'nastyaChatLightbox';
+      lb.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(25,16,10,0.88);display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;backdrop-filter:blur(6px);';
+      lb.innerHTML = '<img style="max-width:94vw;max-height:90vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain;" alt="Скриншот отзыва">';
+      lb.addEventListener('click', () => { lb.style.display = 'none'; });
+      document.body.appendChild(lb);
+    }
+    lb.querySelector('img').src = src;
+    lb.style.display = 'flex';
+  }
+
+  /* --- Переделка карточек отзывов: без круглого фото и со скриншотом вместо кнопки --- */
+  function upgradeReviewCards() {
+    const overrides = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.reviewsCustom) || [];
+    const photos = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.photos) || {};
+
+    // Находим все кнопки «Выбрать этот формат» внутри карточек отзывов
+    const allBtns = Array.from(document.querySelectorAll('button, a, div'));
+    const formatBtns = allBtns.filter(el => {
+      const t = (el.textContent || '').trim().toLowerCase();
+      return el.children.length === 0 && (t === 'выбрать этот формат' || t === 'выбрать формат');
+    });
+
+    formatBtns.forEach((btn, idx) => {
+      // Находим саму карточку отзыва
+      const card = btn.closest('.rev-card, .fandeck-card, .review-card, .prism-card, article') || btn.parentElement;
+      if (!card) return;
+      card.classList.add('rev-card-cleaned');
+
+      // 1. Прячем кнопку «Выбрать этот формат»
+      btn.classList.add('rev-btn-hidden');
+
+      // 2. Прячем круглую фотографию автора отзыва в шапке карточки
+      const imgs = card.querySelectorAll('img:not(.rev-chat-img)');
+      imgs.forEach(img => {
+        img.classList.add('rev-avatar-hidden');
+        // Если аватарка обернута в маленький круглый контейнер — прячем и его
+        if (img.parentElement && img.parentElement !== card && img.parentElement.children.length === 1) {
+          img.parentElement.classList.add('rev-avatar-hidden');
+        }
+      });
+
+      // Также прячем CSS-аватарки без <img> (если сделаны через background-image)
+      card.querySelectorAll('[class*="avatar"], [class*="ava"], [class*="author-photo"], [class*="user-pic"]').forEach(el => {
+        el.classList.add('rev-avatar-hidden');
+      });
+
+      // 3. Применяем отредактированные в админке тексты (Имя, программа, плашка), если они заданы
+      const customData = overrides[idx] || {};
+      const headings = card.querySelectorAll('h3, h4, strong, [class*="name"], [class*="title"]');
+      if (customData.name && headings[0]) headings[0].textContent = customData.name;
+
+      const subs = card.querySelectorAll('p, span, [class*="sub"], [class*="prog"], [class*="meta"]');
+      if (customData.program && subs[0]) subs[0].textContent = customData.program;
+      if (customData.badge && subs[1]) subs[1].textContent = customData.badge;
+
+      // 4. Вставляем блок скриншота переписки на место кнопки
+      const slotKey = 'rev-screen-' + (idx + 1);
+      const screenSrc = customData.screenshot || photos[slotKey] || '';
+
+      let screenWrap = card.querySelector('.rev-chat-screen-wrap');
+      if (!screenWrap) {
+        screenWrap = document.createElement('div');
+        screenWrap.className = 'rev-chat-screen-wrap';
+        screenWrap.setAttribute('data-photo-slot', slotKey);
+        btn.insertAdjacentElement('beforebegin', screenWrap);
+      }
+
+      if (screenSrc && screenWrap.getAttribute('data-rendered-src') !== screenSrc) {
+        screenWrap.setAttribute('data-rendered-src', screenSrc);
+        screenWrap.innerHTML = `
+          <img class="rev-chat-img" src="${screenSrc}" alt="Скриншот переписки">
+          <span class="rev-chat-zoom-badge">🔍 Увеличить скрин</span>
+        `;
+        screenWrap.onclick = (e) => {
+          e.stopPropagation();
+          openChatLightbox(screenSrc);
+        };
+      } else if (!screenSrc && !screenWrap.querySelector('.rev-chat-placeholder')) {
+        screenWrap.innerHTML = `
+          <div class="rev-chat-placeholder">
+            Скриншот переписки #${idx + 1}<br>
+            <small>(загружается в панели управления)</small>
+          </div>
+        `;
+      }
+    });
+  }
+
+  function runAll() {
+    mountServicesSwipeIndicator();
+    upgradeReviewCards();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runAll);
+  } else {
+    runAll();
+  }
+  setTimeout(runAll, 600);
+  setTimeout(runAll, 1800);
+
+  // Следим за переключением карточек в карусели, чтобы изменения держались всегда
+  const observer = new MutationObserver(() => {
+    mountServicesSwipeIndicator();
+    upgradeReviewCards();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+})();

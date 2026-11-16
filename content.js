@@ -39,7 +39,7 @@ window.SITE_OVERRIDES = {
   "hero": "photos/hero-mwggwv3f.jpg",
   "gallery-2": "photos/gallery-2-mwj3nrce.jpg",
   "gallery-1": "photos/gallery-1-mwghghyz.jpg",
-  "about-main": "photos/about-main-mwj3nfhk.jpg",
+  "about-main": "photos/about-main-mwjg5f4v.jpg",
   "gallery-3": "photos/gallery-3-mwj3o06v.jpg",
   "cert-1": "photos/cert-1-mwghgyg2.jpg",
   "cert-2": "photos/cert-2-mwghh46m.jpg"
@@ -92,7 +92,7 @@ window.SITE_OVERRIDES = {
      "-4 кг",
      "-10 см в талии"
     ],
-    "quote": "Алина совмещала заботу о малыше и работу над собой.\n\n\nИЗ ОТЗЫВА: «Ты создаёшь все условия для полного доверия и открытости. Полное сопровождение в питании, тренировках и вообще во всем - ты всегда готова придти на помощь»",
+    "quote": "Алина совмещала заботу о малыше и работу над собой.\n\nИЗ ОТЗЫВА: «Ты создаёшь все условия для полного доверия и открытости. Полное сопровождение в питании, тренировках и вообще во всем - ты всегда готова придти на помощь»",
     "imgBefore": "photos/cases-2-imgbefore-mwiz4qxx.jpg",
     "imgAfter": "photos/cases-2-imgafter-mwiz4tuo.jpg"
    },

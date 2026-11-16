@@ -22,7 +22,13 @@ window.SITE_OVERRIDES = {
   "trdwcd3": "Более 2-х лет с клиентами и 10 лет в спорте",
   "t19kcd11": "Десятки довольных клиентов и результатов",
   "t1viuh53": "Онлайн — формат работы с клиентами",
-  "t1yyo7cj": "Постоянное развитие и повышение квалификации"
+  "t1yyo7cj": "Постоянное развитие и повышение квалификации",
+  "tc06jhi": "Индивидуальный подход",
+  "t1rqbwfs": "Учитываю цели, физическую подготовку, особенности тела и образ жизни. Подбираю нагрузку, которая подходит именно тебе.",
+  "t33qvpt": "Питание без крайностей",
+  "tfqqh4c": "Помогаю выстроить комфортный рацион, рассчитать КБЖУ и наладить питание без жёстких ограничений.",
+  "t1eprir7": "Контроль и сопровождение",
+  "t1qwetvi": "Отслеживаю динамику, проверяю технику выполнения упражнений, корректирую программу и остаюсь на связи в процессе работы."
  },
  "settings": {
   "leadEmail": "fitness.nastya@mail.ru",
@@ -30,10 +36,10 @@ window.SITE_OVERRIDES = {
  },
  "photos": {
   "hero": "photos/hero-mwggwv3f.jpg",
-  "gallery-2": "photos/gallery-2-mwghglam.jpg",
+  "gallery-2": "photos/gallery-2-mwj3nrce.jpg",
   "gallery-1": "photos/gallery-1-mwghghyz.jpg",
-  "about-main": "photos/about-main-mwghg9qf.jpg",
-  "gallery-3": "photos/gallery-3-mwghgpat.jpg",
+  "about-main": "photos/about-main-mwj3nfhk.jpg",
+  "gallery-3": "photos/gallery-3-mwj3o06v.jpg",
   "cert-1": "photos/cert-1-mwghgyg2.jpg",
   "cert-2": "photos/cert-2-mwghh46m.jpg"
  },

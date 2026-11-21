@@ -1,20 +1,29 @@
 /**
- * patches.js — ЧАСТЬ 1 из 2
- * Визуальные, 3D, структурные и юридические обновления поверх index.html
+ * patches.js — Чистый модульный слой поверх index.html (Шаг 1)
+ * - Тёмно-шоколадная шапка с золотой кнопкой как на эталоне
+ * - Полная мобильная адаптация (включая длинное главное фото без обрезки)
+ * - Точное сохранение переносов строк и абзацев из панели управления (1-в-1)
+ * - Отсутствие перекрытий на фото кейсов («Точка А» / «Результат» убраны)
+ * - Блок подарка: большая гантелька с бантиком наверху, пульсирующий палец на кнопку (без гантельки в кнопке)
+ * - Услуги: порядок А -> Б (Мини-группы) -> В (Программы) -> Г (Растяжка) + указатель свайпа НАВЕРХУ под заголовком
+ * - Форма «Оставить заявку»: автоподтяжка актуальных цен из блока «Коммерческие предложения»
+ * - Блок «Образование»: ровно 2 фото-блока (Диплом и Сертификат) с заголовками сверху и лайтбоксом
+ * - Блок «Отзывы»: чистая 3D-призма со скриншотами переписок (без круглых аватарок и без кнопки «Выбрать формат»)
+ * - Хуки для модулей Шага 2 (reliefs.js) и Шага 3 (lusion3d.js)
  */
 (function () {
   'use strict';
 
   // ==========================================================================
-  // 1. ПРЕДОХРАНИТЕЛЬ ПРЕЛОАДЕРА И СИНХРОНИЗАЦИЯ ФОТО (БЕЗ ПРОПАДАНИЯ)
+  // 1. ПРЕДОХРАНИТЕЛЬ ПРЕЛОАДЕРА И СИНХРОНИЗАЦИЯ ФОТО
   // ==========================================================================
   function unlockPreloader() {
     var pre = document.getElementById('preloader');
     if (pre) pre.classList.add('hidden');
     document.body.classList.add('loaded');
   }
-  setTimeout(unlockPreloader, 1200);
-  window.addEventListener('load', function () { setTimeout(unlockPreloader, 600); });
+  setTimeout(unlockPreloader, 1100);
+  window.addEventListener('load', function () { setTimeout(unlockPreloader, 500); });
 
   var ORIG_EXT = ['jpg', 'jpeg', 'png', 'webp'];
   window.photoFallback = function (img) {
@@ -50,68 +59,258 @@
     var ph = ov.photos || {};
     document.querySelectorAll('img[data-slot]').forEach(function (img) {
       var slot = img.getAttribute('data-slot');
-      if (slot && ph[slot]) {
-        img.src = ph[slot];
-      }
+      if (slot && ph[slot]) img.src = ph[slot];
     });
-    if (window.SITE_DATA) {
-      if (ov.lists) {
-        Object.keys(ov.lists).forEach(function (k) {
-          if (ov.lists[k]) window.SITE_DATA[k] = ov.lists[k];
-        });
-      }
+    if (window.SITE_DATA && ov.lists) {
+      Object.keys(ov.lists).forEach(function (k) {
+        if (ov.lists[k]) window.SITE_DATA[k] = ov.lists[k];
+      });
     }
   }
 
   // ==========================================================================
-  // 2. ИНЪЕКЦИЯ СТИЛЕЙ (МАСКИ ФОТО, БАРЕЛЬЕФЫ, 3D LUSION, КАРУСЕЛЬ, ЗАКОН)
+  // 2. ИНЪЕКЦИЯ СТИЛЕЙ (АДАПТИВ, ШАПКА, ПЕРЕНОСЫ СТРОК, ПРАВКИ)
   // ==========================================================================
   var styleEl = document.createElement('style');
   styleEl.id = 'nastya-patches-css';
   styleEl.textContent = [
-    '/* 1. Убираем плашку с первого фото */',
-    '.hero-floating-card { display: none !important; }',
+    '/* 0. Безопасность от горизонтального скролла на телефонах */',
+    'html, body { overflow-x: clip !important; }',
 
-    '/* 2. Плавное слияние фото Насти с фоном и легкое парение */',
+    '/* 1. Точное сохранение абзацев и переносов строк из панели управления 1-в-1 */',
+    '.case-quote, .case-metrics, .hero-sub, .section-desc, .goal-card p, .tariff-desc,',
+    '.step-card p, .approach-card-body p, .faq-answer p, .about-bio-grid p, .gift-card p,',
+    '.cta-sub, .lusion-info p, .gallery-card-body p {',
+    '  white-space: pre-line !important;',
+    '}',
+
+    '/* 2. Фирменная тёмно-шоколадная шапка с золотой кнопкой (эталон) */',
+    'header {',
+    '  background: rgba(54, 34, 21, 0.96) !important;',
+    '  border-bottom: 1px solid rgba(224, 168, 98, 0.22) !important;',
+    '  box-shadow: 0 8px 28px rgba(30, 18, 10, 0.16);',
+    '}',
+    'header .logo { color: #FFFBF5 !important; }',
+    'header .logo-text span {',
+    '  background: linear-gradient(90deg, #F0C48B, #D99B58) !important;',
+    '  -webkit-background-clip: text !important;',
+    '  background-clip: text !important;',
+    '  -webkit-text-fill-color: transparent !important;',
+    '}',
+    'header .nav-links a { color: rgba(255, 251, 245, 0.86) !important; }',
+    'header .nav-links a:hover { color: #F6D9A8 !important; }',
+    'header .btn.btn-primary {',
+    '  background: linear-gradient(135deg, #EDBB75, #C0803A) !important;',
+    '  color: #2B1A0E !important;',
+    '  font-weight: 700 !important;',
+    '  box-shadow: 0 6px 18px rgba(192, 128, 58, 0.35) !important;',
+    '  border: none !important;',
+    '}',
+    'header .burger {',
+    '  border-color: rgba(246, 217, 168, 0.35) !important;',
+    '  background: rgba(255, 251, 245, 0.08) !important;',
+    '}',
+    'header .burger span { background: #FFF6E8 !important; }',
+    'body.menu-open header { background: transparent !important; border-color: transparent !important; box-shadow: none !important; }',
+
+    '/* 3. Главное фото и фото «Обо мне»: убираем плашку, удлиняем на телефоне без обрезки */',
+    '.hero-floating-card { display: none !important; }',
     '@keyframes softLevitate {',
     '  0%, 100% { transform: translateY(0px); }',
     '  50% { transform: translateY(calc(-1 * var(--float-amp, 7px))); }',
     '}',
     '.hero-visual, .about-photo-main {',
-    '  background: transparent !important;',
-    '  box-shadow: none !important;',
-    '  overflow: visible !important;',
-    '  position: relative;',
-    '}',
-    '.hero-visual::before, .about-photo-main::before {',
-    '  content: "";',
-    '  position: absolute;',
-    '  inset: 6% 4%;',
-    '  border-radius: 50%;',
-    '  background: radial-gradient(circle, rgba(224,168,98,0.24) 0%, rgba(138,100,70,0.08) 55%, transparent 78%);',
-    '  filter: blur(22px);',
-    '  z-index: 0;',
-    '  pointer-events: none;',
+    '  background: var(--bg-milk) !important;',
+    '  overflow: hidden !important;',
+    '  border-radius: 26px !important;',
+    '  box-shadow: 0 22px 46px rgba(63, 41, 27, 0.12) !important;',
     '}',
     '.hero-visual img, .about-photo-main img {',
-    '  position: relative;',
-    '  z-index: 1;',
-    '  border-radius: 28px;',
-    '  -webkit-mask-image: radial-gradient(ellipse var(--feather-x, 88%) var(--feather-y, 88%) at 50% 48%, #000 58%, rgba(0,0,0,0.65) 78%, transparent 100%);',
-    '  mask-image: radial-gradient(ellipse var(--feather-x, 88%) var(--feather-y, 88%) at 50% 48%, #000 58%, rgba(0,0,0,0.65) 78%, transparent 100%);',
-    '  animation: softLevitate 6.5s ease-in-out infinite !important;',
-    '  filter: drop-shadow(0 22px 38px rgba(63,41,27,0.12));',
+    '  width: 100% !important;',
+    '  height: 100% !important;',
+    '  object-fit: cover !important;',
+    '  object-position: center top !important;',
+    '  -webkit-mask-image: none !important;',
+    '  mask-image: none !important;',
+    '}',
+    '@media (min-width: 721px) {',
+    '  .hero-visual { animation: softLevitate 6.5s ease-in-out infinite; }',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .hero-visual {',
+    '    aspect-ratio: 3 / 4.2 !important;',
+    '    min-height: 440px !important;',
+    '    height: auto !important;',
+    '    animation: none !important;',
+    '  }',
+    '  .about-photo-main {',
+    '    aspect-ratio: 4 / 4.5 !important;',
+    '    max-height: none !important;',
+    '  }',
     '}',
 
-    '/* 3. Иконка гантельки с бантиком */',
-    '. bow-dumbbell-ico { display: inline-flex; align-items: center; vertical-align: middle; width: 28px; height: 18px; margin-right: 6px; flex-shrink: 0; }',
+    '/* 4. Кейсы («Реальные истории»): убираем плашки «Точка А» и «Результат» */',
+    '.case-photo-tag { display: none !important; }',
+
+    '/* 5. Блок «Знакомство»: 4 карточки только с жирным текстом */',
+    '.about-point {',
+    '  display: flex;',
+    '  align-items: center;',
+    '  min-height: 66px;',
+    '  padding: 16px 20px !important;',
+    '}',
+    '.about-point strong {',
+    '  margin-bottom: 0 !important;',
+    '  font-size: 0.94rem !important;',
+    '  line-height: 1.35;',
+    '}',
+    '.about-point span { display: none !important; }',
+
+    '/* 6. Блок «Образование»: ровно 2 фото с текстом сверху */',
+    '.certs-two-grid {',
+    '  display: grid !important;',
+    '  grid-template-columns: repeat(2, 1fr) !important;',
+    '  gap: 24px !important;',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .certs-two-grid {',
+    '    grid-template-columns: 1fr !important;',
+    '    gap: 18px !important;',
+    '  }',
+    '}',
+    '.cert-scan-card {',
+    '  background: var(--bg-milk);',
+    '  border: 1px solid var(--border-soft);',
+    '  border-radius: 20px;',
+    '  padding: 20px;',
+    '  cursor: zoom-in;',
+    '  display: flex;',
+    '  flex-direction: column;',
+    '  gap: 14px;',
+    '  transition: var(--transition);',
+    '}',
+    '.cert-scan-card:hover {',
+    '  transform: translateY(-4px);',
+    '  box-shadow: 0 18px 38px rgba(63, 41, 27, 0.13);',
+    '}',
+    '.cert-scan-top-title {',
+    '  font-family: "Manrope", sans-serif;',
+    '  font-size: 0.96rem;',
+    '  font-weight: 700;',
+    '  color: var(--deep-choco);',
+    '  text-align: center;',
+    '  line-height: 1.35;',
+    '}',
+    '.cert-scan-img-wrap {',
+    '  width: 100%;',
+    '  aspect-ratio: 4 / 3;',
+    '  border-radius: 12px;',
+    '  overflow: hidden;',
+    '  background: var(--bg-soft);',
+    '  border: 1px solid rgba(201, 144, 78, 0.28);',
+    '  display: flex;',
+    '  align-items: center;',
+    '  justify-content: center;',
+    '}',
+    '.cert-scan-img-wrap img {',
+    '  width: 100%;',
+    '  height: 100%;',
+    '  object-fit: contain;',
+    '}',
+
+    '/* 7. Блок подарка: пульсирующий палец на кнопку «Забрать подарок», без гантельки внутри кнопки */',
+    '.gift-cta-row {',
+    '  display: inline-flex;',
+    '  align-items: center;',
+    '  gap: 12px;',
+    '  max-width: 100%;',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .gift-cta-row {',
+    '    display: flex;',
+    '    justify-content: center;',
+    '    width: 100%;',
+    '  }',
+    '  .gift-cta-row .gift-claim-btn { flex: 1; max-width: 260px; }',
+    '}',
+    '.gift-claim-btn .bow-dumbbell-ico { display: none !important; }',
+    '.gift-finger-pointer {',
+    '  display: inline-flex;',
+    '  align-items: center;',
+    '  justify-content: center;',
+    '  width: 38px;',
+    '  height: 38px;',
+    '  flex-shrink: 0;',
+    '  animation: fingerPointPulse 1.25s ease-in-out infinite;',
+    '  filter: drop-shadow(0 4px 10px rgba(224, 168, 98, 0.45));',
+    '}',
+    '.gift-finger-pointer svg { width: 34px; height: 34px; }',
+    '@keyframes fingerPointPulse {',
+    '  0%, 100% { transform: translateX(0) scale(1); opacity: 0.85; }',
+    '  50% { transform: translateX(7px) scale(1.1); opacity: 1; }',
+    '}',
+
+    '/* 8. Указатель свайпа НАВЕРХУ под заголовком «Услуги и форматы работы» */',
+    '.services-swipe-bar {',
+    '  position: relative;',
+    '  z-index: 3;',
+    '  display: flex;',
+    '  align-items: center;',
+    '  justify-content: space-between;',
+    '  gap: 12px;',
+    '  margin: -18px 0 22px 0;',
+    '  padding: 9px 14px 9px 18px;',
+    '  max-width: 480px;',
+    '  background: rgba(255, 251, 245, 0.78);',
+    '  backdrop-filter: blur(8px);',
+    '  border: 1px solid rgba(138, 100, 70, 0.28);',
+    '  border-radius: 999px;',
+    '  color: var(--deep-choco);',
+    '  font-size: 0.82rem;',
+    '  font-weight: 600;',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .services-swipe-bar { margin: -6px 0 16px 0; max-width: 100%; font-size: 0.78rem; padding: 8px 10px 8px 14px; }',
+    '}',
+    '.services-swipe-bar .swipe-text { display: inline-flex; align-items: center; gap: 8px; }',
+    '.services-swipe-bar .swipe-arrows { display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }',
+    '.services-swipe-bar button {',
+    '  width: 30px; height: 30px; border-radius: 50%;',
+    '  border: 1px solid rgba(63, 41, 27, 0.2);',
+    '  background: #FFFBF5; color: var(--deep-choco);',
+    '  display: inline-flex; align-items: center; justify-content: center;',
+    '  cursor: pointer; font-size: 16px; line-height: 1;',
+    '}',
+    '.services-swipe-bar svg.anim-arrow {',
+    '  width: 18px; height: 18px; stroke: #C9904E; stroke-width: 2.2; fill: none;',
+    '  animation: nastyaSwipeMove 1.3s ease-in-out infinite;',
+    '}',
+    '@keyframes nastyaSwipeMove {',
+    '  0%, 100% { transform: translateX(0); opacity: 0.55; }',
+    '  50% { transform: translateX(5px); opacity: 1; }',
+    '}',
+
+    '/* 9. Плашка актуальной цены в форме «Оставить заявку» */',
+    '.form-price-badge {',
+    '  display: inline-block;',
+    '  margin-top: 8px;',
+    '  padding: 6px 14px;',
+    '  border-radius: 999px;',
+    '  background: rgba(201, 144, 78, 0.18);',
+    '  color: var(--deep-choco);',
+    '  font-size: 0.8rem;',
+    '  font-weight: 700;',
+    '}',
+
+    '/* 10. Гантелька с бантиком (мини) */',
+    '.bow-dumbbell-ico { display: inline-flex; align-items: center; vertical-align: middle; width: 26px; height: 18px; margin-right: 6px; flex-shrink: 0; }',
     '.bow-dumbbell-ico svg { width: 100%; height: 100%; overflow: visible; }',
 
-    '/* 4. 3D-блок в стиле Lusion.co (размер под карточку подарка) */',
+    '/* 11. 3D-блок в стиле Lusion.co */',
     '.lusion-sec { padding: 8px 0 76px; position: relative; z-index: 2; }',
     '.lusion-card {',
     '  position: relative;',
-    '  height: var(--lusion-h, 330px);',
+    '  height: var(--lusion-h, 360px);',
     '  border-radius: 32px;',
     '  overflow: hidden;',
     '  background: radial-gradient(620px 320px at 86% 12%, rgba(224,168,98,0.34), transparent 62%), linear-gradient(135deg, #3F291B 0%, #5A3823 55%, #2B1B11 100%);',
@@ -125,76 +324,66 @@
     '}',
     '.lusion-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; cursor: grab; }',
     '.lusion-canvas:active { cursor: grabbing; }',
-    '.lusion-info { position: relative; z-index: 2; max-width: 390px; pointer-events: none; }',
+    '.lusion-info {',
+    '  position: relative; z-index: 2; max-width: 440px; pointer-events: none;',
+    '  background: rgba(34, 21, 13, 0.36); backdrop-filter: blur(6px);',
+    '  padding: 20px 24px; border-radius: 22px;',
+    '  border: 1px solid rgba(246, 217, 168, 0.16);',
+    '}',
     '.lusion-info .eyebrow { color: #E7C08A; margin-bottom: 8px; }',
-    '.lusion-info h3 { color: #FFF6E8; font-size: clamp(1.75rem, 3.1vw, 2.45rem); margin-bottom: 10px; line-height: 1.12; }',
+    '.lusion-info h3 { color: #FFF6E8; font-size: clamp(1.6rem, 2.9vw, 2.35rem); margin-bottom: 10px; line-height: 1.12; }',
     '.lusion-info h3 i { background: linear-gradient(100deg, #F6D9A8, #E0A862); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }',
-    '.lusion-info p { color: rgba(255,246,232,0.8); font-size: 0.9rem; line-height: 1.55; margin: 0; }',
+    '.lusion-info p { color: rgba(255,246,232,0.88); font-size: 0.9rem; line-height: 1.55; margin: 0; }',
     '.lusion-hint {',
-    '  position: absolute; right: 28px; bottom: 20px; z-index: 2; pointer-events: none;',
-    '  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;',
-    '  color: rgba(246,217,168,0.75); background: rgba(30,20,14,0.38);',
+    '  position: absolute; right: 24px; bottom: 18px; z-index: 2; pointer-events: none;',
+    '  font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;',
+    '  color: rgba(246,217,168,0.8); background: rgba(30,20,14,0.42);',
     '  backdrop-filter: blur(8px); padding: 7px 14px; border-radius: 999px;',
-    '  border: 1px solid rgba(246,217,168,0.2);',
+    '  border: 1px solid rgba(246,217,168,0.22);',
     '}',
     '@media (max-width: 720px) {',
-    '  .lusion-sec { padding: 4px 0 46px; }',
-    '  .lusion-card { height: 290px; padding: 24px 20px; align-items: flex-start; border-radius: 26px; }',
-    '  .lusion-info { max-width: 100%; }',
-    '  .lusion-info h3 { font-size: 1.55rem; }',
-    '  .lusion-info p { font-size: 0.82rem; }',
-    '  .lusion-hint { right: 16px; bottom: 14px; font-size: 0.65rem; }',
+    '  .lusion-sec { padding: 4px 0 44px; }',
+    '  .lusion-card { height: 320px; padding: 20px 16px; align-items: flex-start; border-radius: 26px; }',
+    '  .lusion-info { max-width: 100%; padding: 16px 18px; }',
+    '  .lusion-info h3 { font-size: 1.48rem; }',
+    '  .lusion-info p { font-size: 0.8rem; }',
+    '  .lusion-hint { right: 14px; bottom: 12px; font-size: 0.64rem; }',
     '}',
 
-    '/* 5. Скульптурные барельефы на стенах (15 точек равномерно по сайту) */',
+    '/* 12. Базовые стили для 15 скульптурных барельефов (подробно наполняются в Шаге 2 — reliefs.js) */',
     '.wall-relief-host { position: relative; overflow: hidden; }',
     '.wall-relief-host > .container, .wall-relief-host > .faq-container { position: relative; z-index: 2; }',
     '.wall-sculpture {',
-    '  position: absolute;',
-    '  pointer-events: none;',
-    '  z-index: 1;',
-    '  opacity: var(--relief-opacity, 0.22);',
-    '  transition: opacity 0.4s ease;',
-    '  filter: drop-shadow(-4px -4px 7px rgba(255,255,255,0.92)) drop-shadow(5px 7px 12px rgba(63,41,27,0.19));',
-    '}',
-    '.wall-sculpture.on-dark {',
-    '  opacity: calc(var(--relief-opacity, 0.22) * 0.9);',
-    '  filter: drop-shadow(-3px -3px 6px rgba(255,238,210,0.16)) drop-shadow(5px 8px 14px rgba(0,0,0,0.55));',
-    '}',
-    '@media (max-width: 720px) {',
-    '  .wall-sculpture { transform: scale(0.68); opacity: calc(var(--relief-opacity, 0.22) * 0.75); }',
+    '  position: absolute; pointer-events: none; z-index: 1;',
+    '  opacity: var(--relief-opacity, 0.28);',
     '}',
 
-    '/* 6. Отзывы (только фото без цитат) и Сертификаты (сканы) */',
-    '.review-card .review-text { display: none !important; }',
+    '/* 13. Отзывы: скриншоты переписок без круглых аватарок и без кнопки */',
+    '.review-card .review-text, .review-card .review-avatar { display: none !important; }',
     '.review-photo-shot {',
-    '  width: 100%; aspect-ratio: 3 / 3.8; border-radius: 14px; overflow: hidden;',
-    '  background: var(--bg-taupe); margin: 6px 0 16px; position: relative;',
+    '  width: 100%; aspect-ratio: 3 / 3.7; border-radius: 14px; overflow: hidden;',
+    '  background: var(--bg-milk); margin: 10px 0 0; position: relative;',
     '  border: 1px solid var(--border-soft); cursor: zoom-in;',
+    '  display: flex; align-items: center; justify-content: center;',
     '}',
-    '.review-photo-shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.45s ease; }',
+    '.review-photo-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.45s ease; }',
     '.review-photo-shot:hover img { transform: scale(1.03); }',
     '.review-zoom-tag {',
     '  position: absolute; right: 10px; bottom: 10px;',
-    '  background: rgba(63,41,27,0.78); color: #FFFBF5;',
-    '  font-size: 0.68rem; font-weight: 600; padding: 4px 10px; border-radius: 999px;',
+    '  background: rgba(63,41,27,0.82); color: #FFFBF5;',
+    '  font-size: 0.7rem; font-weight: 600; padding: 5px 11px; border-radius: 999px;',
     '}',
-    '.cert-scan-card {',
-    '  background: var(--bg-milk); border: 1px solid var(--border-soft);',
-    '  border-radius: var(--radius-md); padding: 14px; cursor: zoom-in;',
-    '  transition: var(--transition); position: relative; overflow: hidden;',
+    '.review-empty-placeholder {',
+    '  padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 0.82rem; line-height: 1.45;',
     '}',
-    '.cert-scan-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(63,41,27,0.14); }',
-    '.cert-scan-card img { width: 100%; aspect-ratio: 3 / 4.1; object-fit: cover; border-radius: 10px; background: var(--bg-taupe); }',
-    '.cert-scan-caption { font-size: 0.8rem; font-weight: 600; color: var(--deep-choco); text-align: center; margin-top: 10px; }',
 
-    '/* 7. Веерная 3D-карусель (Fan Deck) для блока "Как устроена работа" */',
-    '.fandeck-wrap { position: relative; padding: 18px 0 10px; user-select: none; }',
+    '/* 14. Веерная 3D-карусель (Fan Deck) */',
+    '.fandeck-wrap { position: relative; padding: 14px 0 8px; user-select: none; }',
     '.fandeck-stage {',
     '  position: relative; width: 100%; max-width: 980px; margin: 0 auto;',
     '  height: 430px; perspective: 1400px; touch-action: pan-y; cursor: grab;',
     '}',
-    '.steps-sec .fandeck-stage { height: 280px; }',
+    '.steps-sec .fandeck-stage { height: 270px; }',
     '.fandeck-stage:active { cursor: grabbing; }',
     '.fandeck-item {',
     '  position: absolute; left: 50%; top: 10px;',
@@ -203,19 +392,20 @@
     '  border-radius: var(--radius-md); transform-origin: 50% 90%;',
     '}',
     '.fandeck-item > * { height: 100%; margin: 0 !important; }',
+    '.fandeck-wrap .c-nav { display: flex !important; align-items: center; justify-content: center; gap: 14px; margin-top: 22px; }',
 
-    '/* 8. Лайтбокс, Cookie-баннер и Юридические модалки */',
+    '/* 15. Лайтбокс, Cookie и Юридические модалки */',
     '#nastyaLightbox {',
     '  position: fixed; inset: 0; background: rgba(24,15,10,0.88); backdrop-filter: blur(8px);',
     '  z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px;',
     '  opacity: 0; visibility: hidden; transition: 0.3s ease; cursor: zoom-out;',
     '}',
     '#nastyaLightbox.open { opacity: 1; visibility: visible; }',
-    '#nastyaLightbox img { max-width: min(92vw, 760px); max-height: 88vh; border-radius: 16px; box-shadow: 0 28px 70px rgba(0,0,0,0.5); object-fit: contain; }',
+    '#nastyaLightbox img { max-width: min(92vw, 820px); max-height: 88vh; border-radius: 16px; box-shadow: 0 28px 70px rgba(0,0,0,0.5); object-fit: contain; }',
     '.cookie-float {',
-    '  position: fixed; left: 20px; bottom: 20px; z-index: 9500;',
-    '  max-width: 430px; background: rgba(255,251,245,0.96); backdrop-filter: blur(14px);',
-    '  border: 1px solid rgba(63,41,27,0.16); border-radius: 18px; padding: 16px 20px;',
+    '  position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 9500;',
+    '  max-width: 440px; background: rgba(255,251,245,0.96); backdrop-filter: blur(14px);',
+    '  border: 1px solid rgba(63,41,27,0.16); border-radius: 18px; padding: 14px 18px;',
     '  box-shadow: 0 18px 42px rgba(63,41,27,0.18); display: flex; align-items: center; gap: 14px;',
     '  font-size: 0.78rem; color: var(--text-main); line-height: 1.45;',
     '}',
@@ -232,12 +422,12 @@
     '.legal-check-row a { color: var(--deep-choco); text-decoration: underline; cursor: pointer; }',
     '.legal-modal-box { max-width: 680px !important; max-height: 84vh; display: flex; flex-direction: column; }',
     '.legal-modal-body { overflow-y: auto; padding-right: 8px; font-size: 0.84rem; color: var(--text-main); line-height: 1.6; white-space: pre-line; margin-top: 12px; }',
-    '.footer-selfemployed { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(250,247,242,0.08); font-size: 0.73rem; color: rgba(250,247,242,0.42); line-height: 1.55; }'
+    '.footer-selfemployed { margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(250,247,242,0.08); font-size: 0.73rem; color: rgba(250,247,242,0.45); line-height: 1.55; }'
   ].join('\n');
   document.head.appendChild(styleEl);
 
   // ==========================================================================
-  // 3. ГАНТЕЛЬКА С БАНТИКОМ (ЗАМЕНА ПОДАРКОВ ВЕЗДЕ НА САЙТЕ)
+  // 3. ГАНТЕЛЬКА С БАНТИКОМ + ПУЛЬСИРУЮЩИЙ ПАЛЕЦ У КНОПКИ ПОДАРКА
   // ==========================================================================
   var DUMBBELL_BOW_MINI = '<span class="bow-dumbbell-ico" aria-hidden="true"><svg viewBox="0 0 64 36" fill="none"><rect x="3" y="9" width="7" height="18" rx="3" fill="#C9904E"/><rect x="11" y="6" width="8" height="24" rx="3.5" fill="#E0A862"/><rect x="45" y="6" width="8" height="24" rx="3.5" fill="#E0A862"/><rect x="54" y="9" width="7" height="18" rx="3" fill="#C9904E"/><rect x="18" y="15" width="28" height="6" rx="2" fill="#3F291B"/><path d="M32 16C25 6 16 9 20 16C16 21 24 25 32 18C40 25 48 21 44 16C48 9 39 6 32 16Z" fill="#FFF1D6" stroke="#B8733F" stroke-width="1.5"/><path d="M29 19L25 29M35 19L39 29" stroke="#FFF1D6" stroke-width="2.2" stroke-linecap="round"/><circle cx="32" cy="17" r="3" fill="#C9904E"/></svg></span>';
 
@@ -256,15 +446,11 @@
     '  </defs>',
     '  <ellipse cx="90" cy="114" rx="56" ry="7" fill="rgba(0,0,0,0.22)"/>',
     '  <g transform="rotate(-8 90 66)">',
-    '    <!-- Левые блины гантели -->',
     '    <rect x="14" y="42" width="14" height="48" rx="6" fill="url(#dbPlate)"/>',
     '    <rect x="30" y="32" width="18" height="68" rx="7" fill="url(#dbPlate)"/>',
-    '    <!-- Гриф -->',
     '    <rect x="46" y="58" width="88" height="16" rx="5" fill="#FFF1D6"/>',
-    '    <!-- Правые блины гантели -->',
     '    <rect x="132" y="32" width="18" height="68" rx="7" fill="url(#dbPlate)"/>',
     '    <rect x="152" y="42" width="14" height="48" rx="6" fill="url(#dbPlate)"/>',
-    '    <!-- Праздничный бантик на грифе -->',
     '    <g class="gift-lid" style="transform-origin: 90px 62px;">',
     '      <path d="M84 66 L72 98 L82 95 L88 103 L90 68" fill="url(#dbRibbon)" stroke="#C9904E" stroke-width="1.2"/>',
     '      <path d="M96 66 L108 98 L98 95 L92 103 L90 68" fill="url(#dbRibbon)" stroke="#C9904E" stroke-width="1.2"/>',
@@ -276,253 +462,227 @@
     '</svg>'
   ].join('');
 
+  var FINGER_POINTER_SVG = [
+    '<svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">',
+    '  <path d="M7 16.5C7 14.8 8.4 13.5 10.1 13.5H27.8C29.5 13.5 30.8 14.8 30.8 16.5C30.8 18.2 29.5 19.5 27.8 19.5H21.2C22.4 19.5 23.4 20.5 23.4 21.7C23.4 22.9 22.4 23.9 21.2 23.9H20.3C21.3 23.9 22.1 24.7 22.1 25.8C22.1 26.8 21.3 27.6 20.3 27.6H18.8C19.6 27.6 20.3 28.3 20.3 29.2C20.3 30.1 19.5 30.8 18.5 30.8H12.8C9.2 30.8 7 28.2 7 24.6V16.5Z" fill="#F6D9A8" stroke="#9E6324" stroke-width="1.6" stroke-linejoin="round"/>',
+    '  <path d="M12.5 13.5L15.2 9.2C16 7.9 17.7 7.6 18.9 8.4C20 9.2 20.2 10.8 19.4 11.9L18 13.5" fill="#F6D9A8" stroke="#9E6324" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+    '</svg>'
+  ].join('');
+
   function replaceAllGiftIcons() {
-    // 1. В <option> селекта убираем 🎁 (внутри option нельзя ставить тег svg)
     document.querySelectorAll('#contactFormatSelect option').forEach(function (opt) {
-      if (opt.textContent.indexOf('🎁') >= 0) {
-        opt.textContent = opt.textContent.replace(/🎁/g, '✦');
-      }
+      if (opt.textContent.indexOf('🎁') >= 0) opt.textContent = opt.textContent.replace(/🎁/g, '✦');
     });
-    // 2. В кнопках, плашке формы и заголовках шагов ставим SVG гантельки с бантиком
-    document.querySelectorAll('.btn-gold, .form-gift, .step-card h3').forEach(function (el) {
-      if (el.innerHTML.indexOf('🎁') >= 0) {
-        el.innerHTML = el.innerHTML.replace(/🎁/g, DUMBBELL_BOW_MINI);
-      }
+
+    document.querySelectorAll('.hero .btn-gold, .form-gift, .step-card h3').forEach(function (el) {
+      if (el.innerHTML.indexOf('🎁') >= 0) el.innerHTML = el.innerHTML.replace(/🎁/g, DUMBBELL_BOW_MINI);
     });
-    // 3. В секции подарка меняем коробку на большую гантельку с бантиком
+
     var giftSvg = document.querySelector('.gift-art .gift-svg');
-    if (giftSvg) {
-      giftSvg.outerHTML = DUMBBELL_BOW_HERO_SVG;
-    }
-  }
+    if (giftSvg) giftSvg.outerHTML = DUMBBELL_BOW_HERO_SVG;
 
-  // ==========================================================================
-  // 4. 15 БАРЕЛЬЕФОВ СПОРТ-ИНВЕНТАРЯ (РАВНОМЕРНО ПО ВСЕМУ САЙТУ)
-  // ==========================================================================
-  var RELIEF_SHAPES = {
-    dumbbell: '<g transform="rotate(-22 60 60)"><rect x="14" y="42" width="10" height="36" rx="4"/><rect x="26" y="34" width="13" height="52" rx="5"/><rect x="39" y="53" width="42" height="14" rx="4"/><rect x="81" y="34" width="13" height="52" rx="5"/><rect x="96" y="42" width="10" height="36" rx="4"/></g>',
-    kettlebell: '<path d="M42 36 C42 20, 78 20, 78 36 L72 44 C88 52, 92 76, 82 92 C74 102, 46 102, 38 92 C28 76, 32 52, 48 44 Z M50 36 C50 28, 70 28, 70 36 L66 42 L54 42 Z"/>',
-    barbell: '<g transform="rotate(16 60 60)"><rect x="6" y="56" width="108" height="8" rx="3"/><rect x="16" y="30" width="9" height="60" rx="3"/><rect x="27" y="38" width="7" height="44" rx="2.5"/><rect x="86" y="38" width="7" height="44" rx="2.5"/><rect x="95" y="30" width="9" height="60" rx="3"/></g>',
-    shaker: '<g transform="rotate(-12 60 60)"><path d="M44 20 H76 V28 H82 V38 H38 V28 H44 Z"/><path d="M40 42 H80 L75 102 C75 106, 45 106, 45 102 Z"/><rect x="46" y="56" width="28" height="6" rx="3" fill="rgba(63,41,27,0.12)"/></g>',
-    sneaker: '<g transform="rotate(-15 60 60)"><path d="M18 76 C22 60, 38 56, 52 44 L64 56 C76 58, 96 62, 104 74 C106 82, 100 88, 90 88 H22 C16 88, 15 82, 18 76 Z"/><rect x="16" y="84" width="88" height="9" rx="4.5"/></g>',
-    pilatesRing: '<g><circle cx="60" cy="60" r="34" stroke="currentColor" stroke-width="10" fill="none"/><rect x="52" y="16" width="16" height="10" rx="4"/><rect x="52" y="94" width="16" height="10" rx="4"/></g>',
-    jumprope: '<g><path d="M30 84 C18 42, 42 18, 60 18 C78 18, 102 42, 90 84" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/><rect x="23" y="80" width="12" height="26" rx="4"/><rect x="85" y="80" width="12" height="26" rx="4"/></g>',
-    plate: '<g><circle cx="60" cy="60" r="40" stroke="currentColor" stroke-width="16" fill="none"/><circle cx="60" cy="60" r="12" stroke="currentColor" stroke-width="6" fill="none"/></g>',
-    stopwatch: '<g><rect x="52" y="14" width="16" height="8" rx="3"/><circle cx="60" cy="64" r="36" stroke="currentColor" stroke-width="10" fill="none"/><path d="M60 44 V64 L74 72" stroke="currentColor" stroke-width="7" stroke-linecap="round" fill="none"/></g>',
-    matRoll: '<g transform="rotate(-28 60 60)"><rect x="20" y="44" width="80" height="32" rx="16"/><circle cx="34" cy="60" r="9" fill="rgba(63,41,27,0.15)"/></g>'
-  };
-
-  function injectBasReliefs() {
-    document.querySelectorAll('.wall-sculpture').forEach(function (e) { e.remove(); });
-    // 15 точек РАВНОМЕРНО по всей ширине и высоте сайта (слева, левее центра, по центру, правее центра, справа)
-    var placements = [
-      { sel: '.hero', shape: 'dumbbell', left: '4%', top: '14%', size: 150, rot: -15 },
-      { sel: '.hero', shape: 'pilatesRing', left: '46%', top: '76%', size: 130, rot: 12 },
-      { sel: '.goals-sec', shape: 'barbell', left: '18%', top: '10%', size: 165, rot: 8, dark: true },
-      { sel: '.goals-sec', shape: 'kettlebell', left: '78%', top: '68%', size: 145, rot: -14, dark: true },
-      { sel: '.cases-sec', shape: 'sneaker', left: '62%', top: '8%', size: 155, rot: -8 },
-      { sel: '.cases-sec', shape: 'shaker', left: '8%', top: '74%', size: 140, rot: 18 },
-      { sel: '.gift-sec', shape: 'plate', left: '86%', top: '18%', size: 140, rot: 0 },
-      { sel: '.reviews-sec', shape: 'jumprope', left: '28%', top: '12%', size: 150, rot: -10 },
-      { sel: '.reviews-sec', shape: 'dumbbell', left: '84%', top: '70%', size: 145, rot: 24 },
-      { sel: '.about-sec', shape: 'matRoll', left: '42%', top: '10%', size: 155, rot: 15 },
-      { sel: '.about-sec', shape: 'kettlebell', left: '6%', top: '78%', size: 140, rot: -12 },
-      { sel: '.approach-sec', shape: 'stopwatch', left: '72%', top: '14%', size: 145, rot: 10 },
-      { sel: '.services-sec', shape: 'barbell', left: '34%', top: '82%', size: 170, rot: -12 },
-      { sel: '.steps-sec', shape: 'sneaker', left: '12%', top: '18%', size: 150, rot: 14 },
-      { sel: '.faq-sec', shape: 'pilatesRing', left: '82%', top: '52%', size: 150, rot: -18 }
-    ];
-
-    placements.forEach(function (p) {
-      var host = document.querySelector(p.sel);
-      if (!host) return;
-      host.classList.add('wall-relief-host');
-      var wrap = document.createElement('div');
-      wrap.className = 'wall-sculpture' + (p.dark ? ' on-dark' : '');
-      wrap.style.left = p.left;
-      wrap.style.top = p.top;
-      wrap.style.width = p.size + 'px';
-      wrap.style.height = p.size + 'px';
-      wrap.style.transform = 'rotate(' + (p.rot || 0) + 'deg)';
-      var fillCol = p.dark ? '#4B3222' : '#EFE6D8';
-      wrap.innerHTML = '<svg viewBox="0 0 120 120" width="100%" height="100%" style="color:' + fillCol + '; fill:' + fillCol + '; overflow:visible;">' + RELIEF_SHAPES[p.shape] + '</svg>';
-      host.insertBefore(wrap, host.firstChild);
-    });
-  }
-
-  // ==========================================================================
-  // 5. 3D-АНИМАЦИЯ В СТИЛЕ LUSION.CO МЕЖДУ 1 И 2 БЛОКАМИ
-  // ==========================================================================
-  function insertLusionBlock() {
-    if (document.getElementById('lusionSection')) return;
-    var hero = document.querySelector('.hero');
-    if (!hero) return;
-    var sec = document.createElement('section');
-    sec.className = 'lusion-sec';
-    sec.id = 'lusionSection';
-    sec.innerHTML = [
-      '<div class="container">',
-      '  <div class="lusion-card">',
-      '    <canvas class="lusion-canvas" id="lusionCanvas"></canvas>',
-      '    <div class="lusion-info">',
-      '      <span class="eyebrow">Эстетика движения • 3D</span>',
-      '      <h3>Твоя форма — это <i>искусство</i></h3>',
-      '      <p>Коснись или проведи курсором: каждый снаряд и деталь тренировочного процесса работают в единой системе.</p>',
-      '    </div>',
-      '    <span class="lusion-hint">✦ Интерактивная 3D-сцена</span>',
-      '  </div>',
-      '</div>'
-    ].join('');
-    hero.insertAdjacentElement('afterend', sec);
-
-    if (window.THREE) {
-      startLusionScene();
-    } else {
-      var s = document.createElement('script');
-      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-      s.onload = startLusionScene;
-      document.head.appendChild(s);
-    }
-  }
-
-  function startLusionScene() {
-    var canvas = document.getElementById('lusionCanvas');
-    if (!canvas || !window.THREE) return;
-    var THREE = window.THREE;
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(38, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-    camera.position.set(0, 0, 11);
-
-    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-
-    scene.add(new THREE.AmbientLight(0xFFF6E8, 0.75));
-    var d1 = new THREE.DirectionalLight(0xF6D9A8, 1.35);
-    d1.position.set(6, 8, 7);
-    scene.add(d1);
-    var d2 = new THREE.PointLight(0xC9904E, 1.1, 20);
-    d2.position.set(-6, -4, 5);
-    scene.add(d2);
-
-    var mats = [
-      new THREE.MeshStandardMaterial({ color: 0xE0A862, metalness: 0.65, roughness: 0.22 }),
-      new THREE.MeshStandardMaterial({ color: 0xFFF3E0, metalness: 0.15, roughness: 0.35 }),
-      new THREE.MeshStandardMaterial({ color: 0x5A3A27, metalness: 0.25, roughness: 0.45 }),
-      new THREE.MeshStandardMaterial({ color: 0xC9904E, metalness: 0.8, roughness: 0.18 })
-    ];
-
-    function makeItem(kind, m1, m2) {
-      var g = new THREE.Group();
-      if (kind === 0) {
-        // 3D Гантель
-        var bar = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 1.25, 16), m2);
-        bar.rotation.z = Math.PI / 2;
-        g.add(bar);
-        [-0.55, -0.38, 0.38, 0.55].forEach(function (x, idx) {
-          var r = (idx === 0 || idx === 3) ? 0.34 : 0.44;
-          var w = new THREE.Mesh(new THREE.CylinderGeometry(r, r, 0.14, 20), m1);
-          w.rotation.z = Math.PI / 2;
-          w.position.x = x;
-          g.add(w);
-        });
-      } else if (kind === 1) {
-        // 3D Гиря
-        var body = new THREE.Mesh(new THREE.SphereGeometry(0.46, 20, 20), m1);
-        g.add(body);
-        var handle = new THREE.Mesh(new THREE.TorusGeometry(0.28, 0.08, 12, 24, Math.PI), m2);
-        handle.position.y = 0.38;
-        g.add(handle);
-      } else if (kind === 2) {
-        // 3D Шейкер / спортивная бутылка
-        var cup = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.26, 0.95, 20), m1);
-        g.add(cup);
-        var lid = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.16, 20), m2);
-        lid.position.y = 0.52;
-        g.add(lid);
+    var giftBtn = document.querySelector('.gift-sec .btn-gold');
+    if (giftBtn) {
+      giftBtn.classList.add('gift-claim-btn');
+      giftBtn.innerHTML = giftBtn.textContent.replace(/🎁/g, '').trim();
+      var finger = document.querySelector('.gift-sec .gift-finger-pointer');
+      if (finger) {
+        finger.innerHTML = FINGER_POINTER_SVG;
       } else {
-        // Стилизованный 3D-кроссовок / кольцо пилатеса
-        var sole = new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.22, 0.44), m2);
-        sole.position.y = -0.18;
-        g.add(sole);
-        var upper = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.34, 0.78, 16), m1);
-        upper.rotation.z = Math.PI / 2.3;
-        upper.position.set(-0.08, 0.06, 0);
-        g.add(upper);
+        var row = document.createElement('div');
+        row.className = 'gift-cta-row';
+        var span = document.createElement('span');
+        span.className = 'gift-finger-pointer';
+        span.setAttribute('aria-hidden', 'true');
+        span.innerHTML = FINGER_POINTER_SVG;
+        giftBtn.parentNode.insertBefore(row, giftBtn);
+        row.appendChild(span);
+        row.appendChild(giftBtn);
       }
-      return g;
     }
+  }
 
-    var items = [];
-    for (var i = 0; i < 16; i++) {
-      var m1 = mats[i % mats.length];
-      var m2 = mats[(i + 1) % mats.length];
-      var mesh = makeItem(i % 4, m1, m2);
-      var bx = (Math.random() - 0.32) * 7.5;
-      var by = (Math.random() - 0.5) * 3.2;
-      var bz = (Math.random() - 0.5) * 2.2;
-      mesh.position.set(bx, by, bz);
-      mesh.rotation.set(Math.random() * 3, Math.random() * 3, Math.random() * 3);
-      mesh.userData = {
-        home: new THREE.Vector3(bx, by, bz),
-        vel: new THREE.Vector3(),
-        rx: (Math.random() - 0.5) * 0.015,
-        ry: (Math.random() - 0.5) * 0.015
-      };
-      scene.add(mesh);
-      items.push(mesh);
-    }
-
-    var pointer = new THREE.Vector3(999, 999, 0);
-    function movePointer(clientX, clientY) {
-      var rect = canvas.getBoundingClientRect();
-      var nx = ((clientX - rect.left) / rect.width) * 2 - 1;
-      var ny = -((clientY - rect.top) / rect.height) * 2 + 1;
-      pointer.set(nx * 5.2, ny * 2.4, 0);
-    }
-    canvas.addEventListener('mousemove', function (e) { movePointer(e.clientX, e.clientY); });
-    canvas.addEventListener('mouseleave', function () { pointer.set(999, 999, 0); });
-    canvas.addEventListener('touchmove', function (e) {
-      if (e.touches && e.touches[0]) movePointer(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
-
-    function tick() {
-      requestAnimationFrame(tick);
-      items.forEach(function (it) {
-        var u = it.userData;
-        // Притяжение к домашней точке (пружина)
-        u.vel.x += (u.home.x - it.position.x) * 0.018;
-        u.vel.y += (u.home.y - it.position.y) * 0.018;
-        u.vel.z += (u.home.z - it.position.z) * 0.018;
-        // Отталкивание от курсора как на lusion.co
-        var dx = it.position.x - pointer.x;
-        var dy = it.position.y - pointer.y;
-        var d2 = dx * dx + dy * dy;
-        if (d2 < 3.6 && d2 > 0.001) {
-          var d = Math.sqrt(d2);
-          var f = (1.9 - d) * 0.065;
-          u.vel.x += (dx / d) * f;
-          u.vel.y += (dy / d) * f;
-          it.rotation.x += f * 0.4;
-          it.rotation.y += f * 0.4;
-        }
-        u.vel.multiplyScalar(0.9);
-        it.position.add(u.vel);
-        it.rotation.x += u.rx;
-        it.rotation.y += u.ry;
+  // ==========================================================================
+  // 4. ПОРЯДОК УСЛУГ (Б = МИНИ-ГРУППЫ, В = ПРОГРАММЫ) + УКАЗАТЕЛЬ СВАЙПА НАВЕРХУ
+  // ==========================================================================
+  function normalizeServicesAndSwipeBar() {
+    if (window.SITE_DATA && window.SITE_DATA.services) {
+      var srv = window.SITE_DATA.services;
+      var ordered = {};
+      ['personal', 'groups', 'plans', 'stretch'].forEach(function (k) {
+        if (srv[k]) ordered[k] = srv[k];
       });
-      renderer.render(scene, camera);
+      Object.keys(srv).forEach(function (k) {
+        if (!ordered[k]) ordered[k] = srv[k];
+      });
+      if (ordered.groups && ordered.groups.label) {
+        ordered.groups.label = ordered.groups.label.replace(/^В\./, 'Б.');
+      }
+      if (ordered.plans && ordered.plans.label) {
+        ordered.plans.label = ordered.plans.label.replace(/^Б\./, 'В.');
+      }
+      window.SITE_DATA.services = ordered;
+      if (typeof window.renderServices === 'function') {
+        window.renderServices();
+        var t = document.getElementById('tariffsContainer');
+        if (t && typeof window.initCarousel === 'function') window.initCarousel(t);
+      }
     }
-    tick();
 
-    window.addEventListener('resize', function () {
-      if (!canvas.clientWidth || !canvas.clientHeight) return;
-      camera.aspect = canvas.clientWidth / canvas.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+    document.querySelectorAll('.services-swipe-bar').forEach(function (el) { el.remove(); });
+
+    var servicesHead = document.querySelector('#services .section-head');
+    if (servicesHead) {
+      var bar = document.createElement('div');
+      bar.className = 'services-swipe-bar';
+      bar.innerHTML = [
+        '<span class="swipe-text">',
+        '  <span>Листайте категории и тарифы вбок</span>',
+        '  <svg class="anim-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">',
+        '    <path d="M5 12h14M13 6l6 6-6 6"/>',
+        '  </svg>',
+        '</span>',
+        '<span class="swipe-arrows">',
+        '  <button type="button" data-dir="-1" aria-label="Назад">‹</button>',
+        '  <button type="button" data-dir="1" aria-label="Вперёд">›</button>',
+        '</span>'
+      ].join('');
+
+      bar.querySelectorAll('button').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var dir = Number(btn.getAttribute('data-dir')) || 1;
+          var tabs = document.getElementById('serviceTabs');
+          var tariffs = document.getElementById('tariffsContainer');
+          if (tabs && tabs.scrollWidth > tabs.clientWidth + 8) {
+            tabs.scrollBy({ left: dir * 200, behavior: 'smooth' });
+          }
+          if (tariffs && tariffs.scrollWidth > tariffs.clientWidth + 8) {
+            tariffs.scrollBy({ left: dir * 280, behavior: 'smooth' });
+          }
+        });
+      });
+
+      servicesHead.insertAdjacentElement('afterend', bar);
+    }
+  }
+
+  // ==========================================================================
+  // 5. ДИНАМИЧЕСКАЯ ПОДТЯЖКА АКТУАЛЬНЫХ ЦЕН В ФОРМУ «ОСТАВИТЬ ЗАЯВКУ»
+  // ==========================================================================
+  function syncFormPrices() {
+    var select = document.getElementById('contactFormatSelect');
+    if (!select || !window.SITE_DATA || !window.SITE_DATA.services) return;
+
+    var prevVal = select.value;
+    var options = [
+      { value: 'Пробная тренировка — в подарок (0 ₽)', label: '✦ Пробная тренировка — в подарок (0 ₽)', price: '0 ₽ (в подарок)' }
+    ];
+
+    Object.keys(window.SITE_DATA.services).forEach(function (catKey) {
+      var cat = window.SITE_DATA.services[catKey];
+      if (!cat || !Array.isArray(cat.items)) return;
+      var catShort = String(cat.label || '').replace(/^[А-ЯA-Z]\.\s*/, '');
+      cat.items.forEach(function (item) {
+        var priceText = ((item.price || '') + ' ' + (item.period || '')).trim();
+        var fullLabel = catShort + ' — ' + item.title + ' (' + (item.price || '') + ')';
+        options.push({
+          value: item.title + ' (' + priceText + ')',
+          label: fullLabel,
+          price: priceText
+        });
+      });
     });
-  }// ==========================================================================
-  // 6. ЛАЙТБОКС ДЛЯ УВЕЛИЧЕНИЯ ОТЗЫВОВ И СЕРТИФИКАТОВ ПО КЛИКУ
+
+    options.push({
+      value: 'Помочь выбрать подходящий формат',
+      label: 'Помочь выбрать подходящий формат',
+      price: 'Подберём на бесплатной консультации'
+    });
+
+    select.innerHTML = options.map(function (o, idx) {
+      return '<option value="' + o.value.replace(/"/g, '&quot;') + '" data-price="' + o.price.replace(/"/g, '&quot;') + '"' + (idx === 0 ? ' selected' : '') + '>' + o.label + '</option>';
+    }).join('');
+
+    if (prevVal && Array.prototype.some.call(select.options, function (op) { return op.value === prevVal; })) {
+      select.value = prevVal;
+    }
+
+    var badge = document.getElementById('contactPriceBadge');
+    if (!badge) {
+      badge = document.createElement('div');
+      badge.id = 'contactPriceBadge';
+      badge.className = 'form-price-badge';
+      select.insertAdjacentElement('afterend', badge);
+    }
+
+    function updateBadge() {
+      var opt = select.options[select.selectedIndex];
+      var pr = (opt && opt.getAttribute('data-price')) || '';
+      badge.textContent = pr ? 'Актуальная стоимость: ' + pr : '';
+    }
+    select.onchange = updateBadge;
+    updateBadge();
+  }
+
+  // ==========================================================================
+  // 6. КЕЙСЫ И БЛОК «ЗНАКОМСТВО»: ЧИСТКА НА СЛУЧАЙ ДИНАМИЧЕСКОГО РЕНДЕРА
+  // ==========================================================================
+  function cleanCasesAndAbout() {
+    document.querySelectorAll('.case-photo-tag').forEach(function (el) { el.remove(); });
+    document.querySelectorAll('#about-bio p').forEach(function (p) {
+      if ((p.textContent || '').indexOf('бездумных марафонов') >= 0) p.remove();
+    });
+    document.querySelectorAll('.about-point span').forEach(function (s) { s.remove(); });
+  }
+
+  // ==========================================================================
+  // 7. ОБРАЗОВАНИЕ И СЕРТИФИКАТЫ: РОВНО 2 ФОТО С ТЕКСТОМ СВЕРХУ
+  // ==========================================================================
+  function setupCertificateScans() {
+    window.STOCK = window.STOCK || {};
+    var defStock = [
+      'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=900&q=80',
+      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80'
+    ];
+    for (var i = 1; i <= 2; i++) {
+      if (!window.STOCK['photos/cert-' + i]) window.STOCK['photos/cert-' + i] = defStock[i - 1];
+    }
+
+    if (window.SITE_DATA) {
+      var ovCerts = window.SITE_OVERRIDES && window.SITE_OVERRIDES.lists && window.SITE_OVERRIDES.lists.certs;
+      var baseCerts = (Array.isArray(ovCerts) && ovCerts.length) ? ovCerts.slice(0, 2) : [
+        { title: 'Диплом о профессиональной переподготовке', img: 'photos/cert-1.jpg' },
+        { title: 'Сертификат профильного обучения', img: 'photos/cert-2.jpg' }
+      ];
+      window.SITE_DATA.certs = baseCerts;
+    }
+
+    var certsGrid = document.querySelector('#about-certs .certs-grid');
+    if (!certsGrid || !window.SITE_DATA || !window.SITE_DATA.certs) return;
+    certsGrid.classList.add('certs-two-grid');
+    certsGrid.classList.remove('m-car');
+    if (certsGrid.nextElementSibling && certsGrid.nextElementSibling.classList.contains('c-nav')) {
+      certsGrid.nextElementSibling.remove();
+    }
+
+    var ovPhotos = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.photos) || {};
+    certsGrid.innerHTML = window.SITE_DATA.certs.slice(0, 2).map(function (c, idx) {
+      var slot = 'cert-' + (idx + 1);
+      var src = ovPhotos[slot] || c.img || ('photos/' + slot + '.jpg');
+      var safeTitle = (c.title || (idx === 0 ? 'Диплом' : 'Сертификат')).replace(/'/g, "\\'");
+      return [
+        '<div class="cert-scan-card" onclick="openNastyaLightbox(this.querySelector(\'img\').src, \'' + safeTitle + '\')">',
+        '  <div class="cert-scan-top-title">' + (c.title || '') + '</div>',
+        '  <div class="cert-scan-img-wrap">',
+        '    <img data-slot="' + slot + '" src="' + src + '" onerror="photoFallback(this)" loading="lazy" alt="' + safeTitle + '">',
+        '  </div>',
+        '</div>'
+      ].join('');
+    }).join('');
+  }
+
+  // ==========================================================================
+  // 8. ЛАЙТБОКС + ЧИСТЫЕ ОТЗЫВЫ (СКРИНШОТЫ ПЕРЕПИСОК БЕЗ КРУГЛЫХ ФОТО И КНОПКИ)
   // ==========================================================================
   window.openNastyaLightbox = function (src, alt) {
     if (!src) return;
@@ -540,54 +700,51 @@
     lb.classList.add('open');
   };
 
-  // ==========================================================================
-  // 7. ОТЗЫВЫ: ТОЛЬКО ФОТО БЕЗ ТЕКСТА С КАВЫЧКАМИ + ПЕРЕСБОРКА 3D-ПРИЗМЫ
-  // ==========================================================================
   function rebuildPhotoReviews() {
-    if (!window.SITE_DATA || !window.SITE_DATA.reviews) return;
     var container = document.getElementById('reviewsContainer');
     if (!container) return;
 
-    var ovPhotos = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.photos) || {};
-    container.innerHTML = window.SITE_DATA.reviews.map(function (r, idx) {
-      var slotKey = 'review-' + (idx + 1);
-      var imgSrc = ovPhotos[slotKey] || r.img || ('photos/' + slotKey + '.jpg');
+    var ov = window.SITE_OVERRIDES || {};
+    var ovPhotos = ov.photos || {};
+    var list = (Array.isArray(ov.reviewsCustom) && ov.reviewsCustom.length)
+      ? ov.reviewsCustom
+      : ((window.SITE_DATA && window.SITE_DATA.reviews) || []);
+
+    if (!list.length) return;
+
+    container.innerHTML = list.map(function (r, idx) {
+      var screenSlot = 'rev-screen-' + (idx + 1);
+      var legacySlot = 'review-' + (idx + 1);
+      var imgSrc = r.screenshot || ovPhotos[screenSlot] || ovPhotos[legacySlot] || r.img || '';
       var safeName = (r.name || '').replace(/'/g, "\\'");
-      var safeProg = (r.program || '').replace(/'/g, "\\'");
       return [
         '<div class="review-card">',
         '  <div>',
-        '    <div class="review-top">',
-        '      <div class="review-avatar">',
-        '        <img data-slot="' + slotKey + '" src="' + imgSrc + '" onerror="photoFallback(this)" loading="lazy" alt="' + safeName + '">',
-        '      </div>',
+        '    <div class="review-top" style="margin-bottom:10px;">',
         '      <div>',
-        '        <strong style="display:block; font-size:0.95rem; color:var(--deep-choco);">' + (r.name || '') + '</strong>',
-        '        <span style="font-size:0.78rem; color:var(--text-muted);">' + (r.program || '') + '</span>',
+        '        <strong style="display:block; font-size:1.02rem; color:var(--deep-choco);">' + (r.name || '') + '</strong>',
+        '        <span style="font-size:0.8rem; color:var(--text-muted);">' + (r.program || '') + '</span>',
         '      </div>',
         '    </div>',
         '    <span class="review-badge">' + (r.badge || '') + '</span>',
-        '    <div class="review-photo-shot" onclick="openNastyaLightbox(this.querySelector(\'img\').src, \'' + safeName + '\')">',
-        '      <img data-slot="' + slotKey + '" src="' + imgSrc + '" onerror="photoFallback(this)" loading="lazy" alt="Отзыв ' + safeName + '">',
-        '      <span class="review-zoom-tag">🔍 Увеличить</span>',
+        '    <div class="review-photo-shot"' + (imgSrc ? ' onclick="openNastyaLightbox(this.querySelector(\'img\').src, \'' + safeName + '\')"' : '') + '>',
+        imgSrc
+          ? ('<img data-slot="' + screenSlot + '" src="' + imgSrc + '" onerror="photoFallback(this)" loading="lazy" alt="Отзыв ' + safeName + '"><span class="review-zoom-tag">🔍 Увеличить</span>')
+          : ('<div class="review-empty-placeholder">Скриншот переписки #' + (idx + 1) + '<br><small>Загрузите в панели управления</small></div>'),
         '    </div>',
         '  </div>',
-        '  <button class="btn btn-outline" style="width:100%; padding:10px 16px; font-size:0.78rem;" onclick="openModal(\'' + safeProg + '\')">Выбрать этот формат</button>',
         '</div>'
       ].join('');
     }).join('');
 
-    // Пересобираем видимую 3D-призму #reviewsPrism с новыми фото-карточками
     var prismMount = document.getElementById('reviewsPrism');
-    if (prismMount) {
-      rebuildPrismWidget(prismMount, container);
-    }
+    if (prismMount) rebuildPrismWidget(prismMount, container);
   }
 
   function rebuildPrismWidget(mount, src) {
     var cards = Array.prototype.slice.call(src.children);
     var n = cards.length;
-    if (n < 3) return;
+    if (n < 2) return;
     var idx = 0, drag = 0, w = 0, cw = 0, R = 0, step = 0;
     mount.innerHTML = '<div class="prism-scene"><div class="prism-box"></div></div><div class="c-nav"><button class="c-arr" aria-label="Назад">‹</button><div class="c-dots">' + cards.map(function () { return '<i></i>'; }).join('') + '</div><button class="c-arr" aria-label="Вперёд">›</button></div>';
     var scene = mount.querySelector('.prism-scene'), box = mount.querySelector('.prism-box');
@@ -609,7 +766,7 @@
         f.style.transition = anim ? (jump ? 'transform 0s, opacity .9s' : '') : 'none';
         f.style.transform = 'translateZ(' + (-R) + 'px) rotateY(' + (d * step) + 'deg) translateZ(' + R + 'px)';
         f.style.opacity = a <= 1 ? 1 : Math.max(0, 2 - a);
-        f.style.setProperty('--sh', (Math.min(1, a) * 0.6).toFixed(3));
+        f.style.setProperty('--sh', (Math.min(1, a) * 0.55).toFixed(3));
         f.style.pointerEvents = a > 1.3 ? 'none' : '';
       });
       var cur = ((idx % n) + n) % n;
@@ -618,7 +775,7 @@
     function layout() {
       w = scene.clientWidth; if (!w) return;
       var desk = w > 720;
-      cw = desk ? Math.min(430, w * 0.38) : Math.min(w * 0.78, 320);
+      cw = desk ? Math.min(420, w * 0.38) : Math.min(w * 0.8, 325);
       step = desk ? 40 : 44;
       R = (cw / 2) / Math.tan(step * Math.PI / 360) * 1.02;
       scene.style.perspective = Math.round(cw * (desk ? 3.4 : 3)) + 'px';
@@ -649,49 +806,7 @@
   }
 
   // ==========================================================================
-  // 8. ОБРАЗОВАНИЕ И СЕРТИФИКАТЫ: ТОЛЬКО СКАНЫ С УВЕЛИЧЕНИЕМ ПО КЛИКУ
-  // ==========================================================================
-  function setupCertificateScans() {
-    window.STOCK = window.STOCK || {};
-    var defaultCertStock = [
-      'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=700&q=80',
-      'https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&fit=crop&w=700&q=80'
-    ];
-    for (var i = 1; i <= 4; i++) {
-      if (!window.STOCK['photos/cert-' + i]) window.STOCK['photos/cert-' + i] = defaultCertStock[i - 1];
-    }
-
-    if (window.SITE_DATA && !window.SITE_DATA.certs) {
-      var ovCerts = window.SITE_OVERRIDES && window.SITE_OVERRIDES.lists && window.SITE_OVERRIDES.lists.certs;
-      window.SITE_DATA.certs = ovCerts || [
-        { title: 'Диплом • Персональный фитнес-тренер', img: 'photos/cert-1.jpg' },
-        { title: 'Сертификат • Биомеханика и осанка', img: 'photos/cert-2.jpg' },
-        { title: 'Сертификат • Нутрициология и КБЖУ', img: 'photos/cert-3.jpg' },
-        { title: 'Сертификат • Стретчинг и МФР', img: 'photos/cert-4.jpg' }
-      ];
-    }
-
-    var certsGrid = document.querySelector('#about-certs .certs-grid');
-    if (!certsGrid || !window.SITE_DATA || !window.SITE_DATA.certs) return;
-    var ovPhotos = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.photos) || {};
-
-    certsGrid.innerHTML = window.SITE_DATA.certs.map(function (c, idx) {
-      var slot = 'cert-' + (idx + 1);
-      var src = ovPhotos[slot] || c.img || ('photos/' + slot + '.jpg');
-      var safeTitle = (c.title || 'Сертификат').replace(/'/g, "\\'");
-      return [
-        '<div class="cert-scan-card" onclick="openNastyaLightbox(this.querySelector(\'img\').src, \'' + safeTitle + '\')">',
-        '  <img data-slot="' + slot + '" src="' + src + '" onerror="photoFallback(this)" loading="lazy" alt="' + safeTitle + '">',
-        '  <div class="cert-scan-caption">' + (c.title || '') + '</div>',
-        '</div>'
-      ].join('');
-    }).join('');
-  }
-
-  // ==========================================================================
-  // 9. ВЕЕРНАЯ 3D-КАРУСЕЛЬ (FAN DECK) В БЛОКЕ «КАК УСТРОЕНА РАБОТА»
+  // 9. ВЕЕРНАЯ 3D-КАРУСЕЛЬ (FAN DECK)
   // ==========================================================================
   function buildFanDeckCarousel(containerId, hidePrismId) {
     var src = document.getElementById(containerId);
@@ -701,7 +816,6 @@
       if (pr) pr.style.setProperty('display', 'none', 'important');
     }
     src.style.setProperty('display', 'none', 'important');
-
     var cards = Array.prototype.slice.call(src.children);
     if (!cards.length) return;
 
@@ -713,7 +827,7 @@
     wrap.id = containerId + '_fandeck';
     wrap.innerHTML = [
       '<div class="fandeck-stage"></div>',
-      '<div class="c-nav" style="display:flex; margin-top:24px;">',
+      '<div class="c-nav">',
       '  <button class="c-arr" type="button" aria-label="Назад">‹</button>',
       '  <div class="c-dots">' + cards.map(function () { return '<i></i>'; }).join('') + '</div>',
       '  <button class="c-arr" type="button" aria-label="Вперёд">›</button>',
@@ -729,18 +843,15 @@
       var item = document.createElement('div');
       item.className = 'fandeck-item';
       item.appendChild(c.cloneNode(true));
-      item.onclick = function () {
-        if (active !== i) { active = i; renderDeck(); }
-      };
+      item.onclick = function () { if (active !== i) { active = i; renderDeck(); } };
       stage.appendChild(item);
       return item;
     });
 
     function renderDeck() {
       var isMobile = window.innerWidth <= 720;
-      var shiftX = isMobile ? 42 : 240;
+      var shiftX = isMobile ? 38 : 240;
       var maxH = 0;
-
       items.forEach(function (el, i) {
         var h = el.offsetHeight;
         if (h > maxH) maxH = h;
@@ -762,17 +873,14 @@
           el.style.boxShadow = '0 14px 30px rgba(63,41,27,0.12)';
         } else {
           var dir2 = diff > 0 ? 1 : -1;
-          el.style.transform = 'translate3d(' + (dir2 * shiftX * 1.55) + 'px, 28px, -120px) rotateZ(' + (dir2 * 8) + 'deg) scale(0.82)';
+          el.style.transform = 'translate3d(' + (dir2 * shiftX * 1.5) + 'px, 28px, -120px) rotateZ(' + (dir2 * 8) + 'deg) scale(0.82)';
           el.style.opacity = '0';
           el.style.zIndex = '2';
           el.style.boxShadow = 'none';
         }
       });
-
       if (maxH > 120) stage.style.height = (maxH + 28) + 'px';
-      wrap.querySelectorAll('.c-dots i').forEach(function (d, idx) {
-        d.classList.toggle('on', idx === active);
-      });
+      wrap.querySelectorAll('.c-dots i').forEach(function (d, idx) { d.classList.toggle('on', idx === active); });
     }
 
     var btns = wrap.querySelectorAll('.c-arr');
@@ -785,7 +893,7 @@
       if (!dragging) return;
       dragging = false;
       var dx = e.clientX - startX;
-      if (Math.abs(dx) > 40) {
+      if (Math.abs(dx) > 36) {
         active = dx < 0 ? (active + 1) % n : (active - 1 + n) % n;
         renderDeck();
       }
@@ -795,42 +903,55 @@
   }
 
   // ==========================================================================
-  // 10. ЮРИДИЧЕСКАЯ УПАКОВКА (САМОЗАНЯТАЯ, КУКИ, ЧЕКБОКСЫ, ПОЛИТИКА, ОФЕРТА)
+  // 10. КОНТЕЙНЕР 3D LUSION С ОБНОВЛЁННЫМИ ТЕКСТАМИ (СЦЕНА В ШАГЕ 3 — lusion3d.js)
+  // ==========================================================================
+  function ensureLusionSection() {
+    var sec = document.getElementById('lusionSection');
+    if (!sec) {
+      var hero = document.querySelector('.hero');
+      if (!hero) return;
+      sec = document.createElement('section');
+      sec.className = 'lusion-sec';
+      sec.id = 'lusionSection';
+      sec.innerHTML = [
+        '<div class="container">',
+        '  <div class="lusion-card">',
+        '    <canvas class="lusion-canvas" id="lusionCanvas"></canvas>',
+        '    <div class="lusion-info">',
+        '      <span class="eyebrow">Эстетика движения • 3D</span>',
+        '      <h3>Твоя форма рождается из <i>баланса</i></h3>',
+        '      <p>Проведи курсором сквозь невесомость:\n«тренировки, питание и восстановление — работают в единой системе»</p>',
+        '    </div>',
+        '    <span class="lusion-hint">✦ Интерактивная 3D-сцена</span>',
+        '  </div>',
+        '</div>'
+      ].join('');
+      hero.insertAdjacentElement('afterend', sec);
+    }
+
+    if (typeof window.initNastyaLusion3D === 'function') {
+      window.initNastyaLusion3D();
+    }
+  }
+
+  // ==========================================================================
+  // 11. ЮРИДИЧЕСКАЯ УПАКОВКА И ЯНДЕКС ФОРМЫ
   // ==========================================================================
   var DEFAULT_PRIVACY = [
     '1. ОБЩИЕ ПОЛОЖЕНИЯ',
-    'Настоящая Политика обработки персональных данных составлена в соответствии с Федеральным законом РФ от 27.07.2006 № 152-ФЗ «О персональных данных» и определяет порядок обработки и защиты персональных данных пользователей сайта.',
-    'Оператором персональных данных является плательщик налога на профессиональный доход (самозанятая) Парфенова Анастасия (далее — Оператор).',
+    'Настоящая Политика обработки персональных данных составлена в соответствии с Федеральным законом РФ от 27.07.2006 № 152-ФЗ «О персональных данных».',
+    'Оператором персональных данных является плательщик налога на профессиональный доход (самозанятая) Парфенова Анастасия.',
     '',
-    '2. КАКИЕ ДАННЫЕ ОБРАБАТЫВАЮТСЯ',
-    '• Имя пользователя;',
-    '• Контактный телефон, никнейм в мессенджере Telegram / WhatsApp или адрес электронной почты;',
-    '• Технические данные (файлы cookie) для корректной работы сайта.',
-    '',
-    '3. ЦЕЛИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ',
-    '• Обратная связь с пользователем для записи на пробную тренировку, консультацию и выбора формата онлайн-ведения;',
-    '• Заключение и исполнение договора оказания физкультурно-оздоровительных и консультационных услуг.',
-    '',
-    '4. ПОРЯДОК ЗАЩИТЫ И ОТЗЫВА СОГЛАСИЯ',
-    'Оператор не передает персональные данные третьим лицам без согласия пользователя, за исключением случаев, предусмотренных законодательством РФ. Пользователь вправе в любой момент отозвать согласие, направив обращение по контактам Оператора, указанным на сайте.'
+    '2. ДАННЫЕ И ЦЕЛИ ОБРАБОТКИ',
+    '• Имя, телефон или ник в мессенджере Telegram / WhatsApp — для обратной связи и записи на занятия;',
+    '• Технические файлы cookie — для корректной работы сайта.'
   ].join('\n');
 
   var DEFAULT_OFFER = [
     'ПУБЛИЧНАЯ ОФЕРТА НА ОКАЗАНИЕ ОНЛАЙН-УСЛУГ ПО ФИТНЕС-СОПРОВОЖДЕНИЮ',
     '',
-    '1. ОБЩИЕ ПОЛОЖЕНИЯ',
-    'Настоящий документ является официальным публичным предложением (офертой) плательщика налога на профессиональный доход (самозанятой, ФЗ № 422-ФЗ) Парфеновой Анастасии (далее — Исполнитель) заключить договор возмездного оказания услуг по проведению онлайн-тренировок, составлению тренировочных программ и рекомендаций по рациону питания.',
-    '',
-    '2. ПРЕДМЕТ ДОГОВОРА И ПОРЯДОК ОКАЗАНИЯ УСЛУГ',
-    '2.1. Исполнитель оказывает Заказчику услуги в соответствии с выбранным на сайте тарифом (Личное онлайн-ведение, Индивидуальная программа тренировок, Мини-группа или пакет занятий по растяжке).',
-    '2.2. Онлайн-тренировки проводятся дистанционно по видеосвязи по согласованному графику.',
-    '',
-    '3. ОПЛАТА И ЧЕКИ',
-    '3.1. Стоимость услуг указана в разделе «Услуги и форматы работы» на сайте.',
-    '3.2. После оплаты Исполнитель формирует и направляет Заказчику официальный чек из приложения ФНС «Мой налог».',
-    '',
-    '4. ОТВЕТСТВЕННОСТЬ И ПРОТИВОПОКАЗАНИЯ',
-    'Заказчик подтверждает отсутствие медицинских противопоказаний к физическим нагрузкам и обязуется заблаговременно сообщить Исполнителю об особенностях здоровья, травмах или ограничениях.'
+    'Исполнитель: плательщик НПД (самозанятая, ФЗ № 422-ФЗ) Парфенова Анастасия.',
+    'После оплаты выбранного на сайте тарифа Исполнитель формирует официальный чек в приложении ФНС «Мой налог».'
   ].join('\n');
 
   window.openLegalModal = function (kind) {
@@ -851,15 +972,12 @@
       document.body.appendChild(modal);
     }
     var st = window.SITE_SETTINGS || {};
-    var heading = document.getElementById('legalModalHeading');
-    var body = document.getElementById('legalModalText');
-    if (kind === 'offer') {
-      heading.textContent = 'Пользовательское соглашение (Публичная оферта)';
-      body.textContent = st.legalOffer || DEFAULT_OFFER;
-    } else {
-      heading.textContent = 'Политика конфиденциальности и обработки ПДн';
-      body.textContent = st.legalPrivacy || DEFAULT_PRIVACY;
-    }
+    document.getElementById('legalModalHeading').textContent = kind === 'offer'
+      ? 'Пользовательское соглашение (Публичная оферта)'
+      : 'Политика конфиденциальности и обработки ПДн';
+    document.getElementById('legalModalText').textContent = kind === 'offer'
+      ? (st.legalOffer || DEFAULT_OFFER)
+      : (st.legalPrivacy || DEFAULT_PRIVACY);
     modal.classList.add('open');
   };
 
@@ -868,7 +986,6 @@
     var fio = st.legalFio || 'Парфенова Анастасия';
     var inn = st.legalInn || 'уточняется при оформлении чека в «Мой налог»';
 
-    // 1. Привязываем ссылки в подвале к модальному окну документов
     var legalLinks = document.querySelectorAll('.footer-legal a');
     if (legalLinks.length >= 2) {
       legalLinks[0].href = 'javascript:void(0)';
@@ -877,7 +994,6 @@
       legalLinks[1].onclick = function (e) { e.preventDefault(); window.openLegalModal('offer'); };
     }
 
-    // 2. Добавляем строку реквизитов самозанятой и сноску про Meta в подвал
     var footerContainer = document.querySelector('footer .container');
     if (footerContainer && !footerContainer.querySelector('.footer-selfemployed')) {
       var info = document.createElement('div');
@@ -886,7 +1002,6 @@
       footerContainer.appendChild(info);
     }
 
-    // 3. Добавляем чекбоксы согласия ПДн в обе формы
     document.querySelectorAll('#contacts form, #bookingModal form').forEach(function (f) {
       if (f.querySelector('.legal-check-row')) return;
       var note = f.querySelector('.form-note');
@@ -899,28 +1014,21 @@
       else f.appendChild(row);
     });
 
-    // 4. Плашка Cookie внизу экрана
     try {
       if (!localStorage.getItem('nastya_cookie_ok') && !document.getElementById('nastyaCookieBar')) {
         var bar = document.createElement('div');
         bar.className = 'cookie-float';
         bar.id = 'nastyaCookieBar';
-        bar.innerHTML = [
-          '<div>Сайт использует файлы cookie для вашего удобства в соответствии с <a onclick="openLegalModal(\'privacy\')">Политикой конфиденциальности</a>.</div>',
-          '<button type="button" class="cookie-btn" onclick="localStorage.setItem(\'nastya_cookie_ok\',\'1\'); this.parentElement.remove();">Принять</button>'
-        ].join('');
+        bar.innerHTML = '<div>Сайт использует файлы cookie в соответствии с <a onclick="openLegalModal(\'privacy\')">Политикой конфиденциальности</a>.</div><button type="button" class="cookie-btn" onclick="localStorage.setItem(\'nastya_cookie_ok\',\'1\'); this.parentElement.remove();">Принять</button>';
         document.body.appendChild(bar);
       }
     } catch (e) {}
   }
 
-  // ==========================================================================
-  // 11. ЯНДЕКС ФОРМЫ С ПОЛНЫМ СОХРАНЕНИЕМ НАШЕГО СТИЛЯ
-  // ==========================================================================
   function hookYandexForms() {
     var origSubmit = window.handleFormSubmit;
     if (!origSubmit || origSubmit._hooked) return;
-    window.handleFormSubmit = async function (e, sourceName) {
+    window.handleFormSubmit = async function (e) {
       var form = e.target;
       var st = window.SITE_SETTINGS || {};
       var yaUrl = (st.yandexFormUrl || '').trim();
@@ -940,28 +1048,25 @@
   }
 
   // ==========================================================================
-  // 12. ПРИМЕНЕНИЕ НАСТРОЕК ВИЗУАЛА И РЕГИСТРАЦИЯ ПОЛЕЙ ДЛЯ ADMIN.HTML
+  // 12. РЕГИСТРАЦИЯ ПОЛЕЙ ДЛЯ ПАНЕЛИ УПРАВЛЕНИЯ (ADMIN.HTML)
   // ==========================================================================
   function registerAdminConfig() {
     if (!window.SITE_EDIT) return;
     window.SITE_EDIT.lists = window.SITE_EDIT.lists || {};
-    window.SITE_EDIT.lists.certs = 'Образование и сертификаты (сканы)';
+    window.SITE_EDIT.lists.certs = 'Образование (Диплом и Сертификат)';
 
     window.SITE_EDIT.photoSlots = window.SITE_EDIT.photoSlots || {};
-    for (var i = 1; i <= 4; i++) {
-      window.SITE_EDIT.photoSlots['cert-' + i] = {
-        label: 'Скан сертификата / диплома №' + i,
-        hint: 'вертикальный или горизонтальный скан'
-      };
-    }
+    delete window.SITE_EDIT.photoSlots['cert-3'];
+    delete window.SITE_EDIT.photoSlots['cert-4'];
+    window.SITE_EDIT.photoSlots['cert-1'] = { label: 'Фото диплома (Образование №1)', hint: 'текст над фото редактируется в разделе Образование' };
+    window.SITE_EDIT.photoSlots['cert-2'] = { label: 'Фото сертификата (Образование №2)', hint: 'текст над фото редактируется в разделе Образование' };
 
     var extraSettings = [
-      { key: 'yandexFormUrl', kind: 'plain', label: 'Ссылка на Яндекс Форму (необязательно)', def: '', hint: 'Стиль нашей формы полностью сохранится, заявки будут дублироваться в Яндекс Форму.' },
+      { key: 'yandexFormUrl', kind: 'plain', label: 'Ссылка на Яндекс Форму (необязательно)', def: '' },
       { key: 'legalFio', kind: 'plain', label: 'ФИО самозанятой (в подвале и оферте)', def: 'Парфенова Анастасия' },
       { key: 'legalInn', kind: 'plain', label: 'ИНН самозанятой', def: 'уточняется при оформлении чека' },
-      { key: 'featherEdge', kind: 'plain', label: 'Мягкость слияния краев фото Насти с фоном (75% - 98%)', def: '88%' },
-      { key: 'floatAmp', kind: 'plain', label: 'Амплитуда парения фото Насти (в px, например 7px)', def: '7px' },
-      { key: 'reliefOpacity', kind: 'plain', label: 'Заметность 15 фоновых барельефов (от 0.08 до 0.35)', def: '0.22' }
+      { key: 'floatAmp', kind: 'plain', label: 'Амплитуда парения фото Насти на ПК (например 7px)', def: '7px' },
+      { key: 'reliefOpacity', kind: 'plain', label: 'Заметность 15 фоновых барельефов (от 0.10 до 0.45)', def: '0.28' }
     ];
     window.SITE_EDIT.settings = window.SITE_EDIT.settings || [];
     extraSettings.forEach(function (es) {
@@ -970,23 +1075,16 @@
       }
     });
 
-    // Пересчитываем SITE_SETTINGS с учетом добавленных полей
     var o = (window.SITE_OVERRIDES || {}).settings || {};
     window.SITE_SETTINGS = window.SITE_SETTINGS || {};
     window.SITE_EDIT.settings.forEach(function (s) {
       window.SITE_SETTINGS[s.key] = (o[s.key] != null && o[s.key] !== '') ? o[s.key] : s.def;
     });
 
-    // Применяем CSS-переменные тонкой настройки дизайна
     var root = document.documentElement;
-    if (window.SITE_SETTINGS.featherEdge) {
-      root.style.setProperty('--feather-x', window.SITE_SETTINGS.featherEdge);
-      root.style.setProperty('--feather-y', window.SITE_SETTINGS.featherEdge);
-    }
     if (window.SITE_SETTINGS.floatAmp) root.style.setProperty('--float-amp', window.SITE_SETTINGS.floatAmp);
     if (window.SITE_SETTINGS.reliefOpacity) root.style.setProperty('--relief-opacity', window.SITE_SETTINGS.reliefOpacity);
 
-    // Применяем кастомные цвета, если заданы в SITE_OVERRIDES.design
     var d = (window.SITE_OVERRIDES || {}).design || {};
     Object.keys(d).forEach(function (cssVar) {
       if (d[cssVar]) root.style.setProperty(cssVar, d[cssVar]);
@@ -999,8 +1097,11 @@
   function initAllPatches() {
     registerAdminConfig();
     syncAllPhotos();
-    insertLusionBlock();
-    injectBasReliefs();
+    cleanCasesAndAbout();
+    ensureLusionSection();
+    if (typeof window.initNastyaReliefs === 'function') window.initNastyaReliefs();
+    normalizeServicesAndSwipeBar();
+    syncFormPrices();
     rebuildPhotoReviews();
     setupCertificateScans();
     replaceAllGiftIcons();
@@ -1012,326 +1113,37 @@
 
   window.SITE_AFTER_OVERRIDES = initAllPatches;
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(initAllPatches, 30); });
+    document.addEventListener('DOMContentLoaded', function () { setTimeout(initAllPatches, 40); });
   } else {
-    setTimeout(initAllPatches, 30);
+    setTimeout(initAllPatches, 40);
   }
 })();
-/* === ОБНОВЛЕНИЕ: 1) Фото на мобильном, 2) Указатель свайпа услуг, 3) Скриншоты в отзывах === */
-(function applyNastyaFixes() {
-  const style = document.createElement('style');
-  style.innerHTML = `
-    /* 1. Удлиняем главное фото на телефоне без обрезки */
-    @media (max-width: 768px) {
-      .hero-visual, .hero-photo-wrap, .hero-img-box {
-        aspect-ratio: 3 / 4.2 !important;
-        min-height: 470px !important;
-        max-height: none !important;
-        height: auto !important;
-        -webkit-mask-image: none !important;
-        mask-image: none !important;
-        border-radius: 24px !important;
-        overflow: hidden !important;
-      }
-      .hero-visual img, .hero-photo-wrap img {
-        width: 100% !important;
-        height: 100% !important;
-        min-height: 470px !important;
-        object-fit: cover !important;
-        object-position: center top !important;
-        -webkit-mask-image: none !important;
-        mask-image: none !important;
-      }
-    }
 
-    /* 2. Плашка «Листайте вбок» в блоке Услуги и форматы работы */
-    .services-swipe-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin: 10px 0 14px 0;
-      padding: 8px 14px;
-      background: rgba(201, 144, 78, 0.14);
-      border: 1px solid rgba(201, 144, 78, 0.38);
-      border-radius: 999px;
-      color: #3F291B;
-      font-family: 'Manrope', sans-serif;
-      font-size: 12.5px;
-      font-weight: 600;
-      letter-spacing: 0.03em;
-    }
-    .services-swipe-bar .swipe-text {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .services-swipe-bar .swipe-arrows {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .services-swipe-bar button {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid rgba(63, 41, 27, 0.25);
-      background: #FFFBF5;
-      color: #3F291B;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      padding: 0;
-      font-size: 14px;
-      line-height: 1;
-    }
-    .services-swipe-bar svg.anim-arrow {
-      width: 18px;
-      height: 18px;
-      stroke: #C9904E;
-      stroke-width: 2.3;
-      fill: none;
-      animation: nastyaSwipeMove 1.3s ease-in-out infinite;
-    }
-    @keyframes nastyaSwipeMove {
-      0%, 100% { transform: translateX(0); opacity: 0.55; }
-      50% { transform: translateX(6px); opacity: 1; }
-    }
+/* === STEP 4 PIXEL DESIGN CONTROLS === */
+(function applyPixelDesignVars() {
+  var st = document.createElement('style');
+  st.id = 'nastya-pixel-controls-css';
+  st.textContent = [
+    'html { font-size: var(--font-base-px, 16px) !important; }',
+    'header { background: var(--header-bg, rgba(54, 34, 21, 0.96)) !important; }',
+    '.goals-sec, .cases-sec, .reviews-sec, .about-sec, .approach-sec, .services-sec, .steps-sec, .faq-sec, .cta-sec {',
+    '  padding-top: var(--sec-pad-desk, 92px) !important;',
+    '  padding-bottom: var(--sec-pad-desk, 92px) !important;',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .goals-sec, .cases-sec, .reviews-sec, .about-sec, .approach-sec, .services-sec, .steps-sec, .faq-sec, .cta-sec {',
+    '    padding-top: var(--sec-pad-mob, 44px) !important;',
+    '    padding-bottom: var(--sec-pad-mob, 44px) !important;',
+    '  }',
+    '  .hero-visual { min-height: var(--hero-photo-mob-h, 440px) !important; }',
+    '  .lusion-card { height: var(--lusion-h-mob, 390px) !important; }',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
 
-    /* 3. Карточки отзывов: убираем круглую аватарку и кнопку «Выбрать этот формат» */
-    .rev-card-cleaned .rev-avatar-hidden {
-      display: none !important;
-    }
-    .rev-card-cleaned .rev-btn-hidden {
-      display: none !important;
-    }
-    .rev-chat-screen-wrap {
-      margin-top: 14px;
-      width: 100%;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(63, 41, 27, 0.14);
-      background: #F7EFE4;
-      position: relative;
-      cursor: zoom-in;
-      min-height: 210px;
-      max-height: 310px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .rev-chat-screen-wrap img {
-      width: 100% !important;
-      height: 100% !important;
-      max-height: 310px !important;
-      object-fit: cover !important;
-      object-position: top center !important;
-      border-radius: 0 !important;
-      display: block !important;
-    }
-    .rev-chat-zoom-badge {
-      position: absolute;
-      right: 10px;
-      bottom: 10px;
-      background: rgba(63, 41, 27, 0.82);
-      color: #FFFBF5;
-      font-family: 'Manrope', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      padding: 5px 10px;
-      border-radius: 999px;
-      pointer-events: none;
-      backdrop-filter: blur(4px);
-    }
-    .rev-chat-placeholder {
-      padding: 28px 16px;
-      text-align: center;
-      color: rgba(63, 41, 27, 0.55);
-      font-family: 'Manrope', sans-serif;
-      font-size: 12.5px;
-      line-height: 1.45;
-    }
-  `;
-  document.head.appendChild(style);
-
-  /* --- Вставка указателя пролистывания в блок «Услуги и форматы работы» --- */
-  function mountServicesSwipeIndicator() {
-    if (document.querySelector('.services-swipe-bar')) return;
-
-    // Ищем без учета регистра кнопку «А. Личное онлайн-ведение» или плашку «Что входит во все форматы»
-    const candidates = document.querySelectorAll('button, div, span, a, p');
-    let anchorRow = null;
-
-    for (const el of candidates) {
-      const txt = (el.textContent || '').trim().toUpperCase();
-      if (txt.includes('ЧТО ВХОДИТ ВО ВСЕ ФОРМАТЫ') && el.tagName !== 'BODY' && el.tagName !== 'SECTION') {
-        anchorRow = el.closest('div') || el;
-        break;
-      }
-    }
-    if (!anchorRow) {
-      for (const el of candidates) {
-        const txt = (el.textContent || '').trim().toUpperCase();
-        if ((txt === 'А. ЛИЧНОЕ ОНЛАЙН-ВЕДЕНИЕ' || txt.includes('ЛИЧНОЕ ОНЛАЙН-ВЕДЕНИЕ')) && el.children.length <= 2) {
-          anchorRow = el.parentElement;
-          break;
-        }
-      }
-    }
-    if (!anchorRow) return;
-
-    const bar = document.createElement('div');
-    bar.className = 'services-swipe-bar';
-    bar.innerHTML = `
-      <span class="swipe-text">
-        <span>Листайте категории и тарифы вбок</span>
-        <svg class="anim-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 12h14M13 6l6 6-6 6"/>
-        </svg>
-      </span>
-      <span class="swipe-arrows">
-        <button type="button" data-dir="-1" aria-label="Назад">‹</button>
-        <button type="button" data-dir="1" aria-label="Вперед">›</button>
-      </span>
-    `;
-
-    function findScrollableContainer() {
-      let cur = bar.nextElementSibling;
-      for (let i = 0; i < 4 && cur; i++) {
-        if (cur.scrollWidth > cur.clientWidth + 10) return cur;
-        const inner = Array.from(cur.querySelectorAll('div')).find(d => d.scrollWidth > d.clientWidth + 10);
-        if (inner) return inner;
-        cur = cur.nextElementSibling;
-      }
-      return anchorRow;
-    }
-
-    bar.querySelectorAll('button').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const dir = Number(btn.getAttribute('data-dir')) || 1;
-        const scroller = findScrollableContainer();
-        if (scroller && scroller.scrollBy) {
-          scroller.scrollBy({ left: dir * 280, behavior: 'smooth' });
-        }
-      });
-    });
-
-    anchorRow.insertAdjacentElement('afterend', bar);
-  }
-
-  /* --- Лайтбокс для увеличения скриншотов переписок --- */
-  function openChatLightbox(src) {
-    if (!src) return;
-    let lb = document.getElementById('nastyaChatLightbox');
-    if (!lb) {
-      lb = document.createElement('div');
-      lb.id = 'nastyaChatLightbox';
-      lb.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(25,16,10,0.88);display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;backdrop-filter:blur(6px);';
-      lb.innerHTML = '<img style="max-width:94vw;max-height:90vh;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.5);object-fit:contain;" alt="Скриншот отзыва">';
-      lb.addEventListener('click', () => { lb.style.display = 'none'; });
-      document.body.appendChild(lb);
-    }
-    lb.querySelector('img').src = src;
-    lb.style.display = 'flex';
-  }
-
-  /* --- Переделка карточек отзывов: без круглого фото и со скриншотом вместо кнопки --- */
-  function upgradeReviewCards() {
-    const overrides = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.reviewsCustom) || [];
-    const photos = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.photos) || {};
-
-    // Находим все кнопки «Выбрать этот формат» внутри карточек отзывов
-    const allBtns = Array.from(document.querySelectorAll('button, a, div'));
-    const formatBtns = allBtns.filter(el => {
-      const t = (el.textContent || '').trim().toLowerCase();
-      return el.children.length === 0 && (t === 'выбрать этот формат' || t === 'выбрать формат');
-    });
-
-    formatBtns.forEach((btn, idx) => {
-      // Находим саму карточку отзыва
-      const card = btn.closest('.rev-card, .fandeck-card, .review-card, .prism-card, article') || btn.parentElement;
-      if (!card) return;
-      card.classList.add('rev-card-cleaned');
-
-      // 1. Прячем кнопку «Выбрать этот формат»
-      btn.classList.add('rev-btn-hidden');
-
-      // 2. Прячем круглую фотографию автора отзыва в шапке карточки
-      const imgs = card.querySelectorAll('img:not(.rev-chat-img)');
-      imgs.forEach(img => {
-        img.classList.add('rev-avatar-hidden');
-        // Если аватарка обернута в маленький круглый контейнер — прячем и его
-        if (img.parentElement && img.parentElement !== card && img.parentElement.children.length === 1) {
-          img.parentElement.classList.add('rev-avatar-hidden');
-        }
-      });
-
-      // Также прячем CSS-аватарки без <img> (если сделаны через background-image)
-      card.querySelectorAll('[class*="avatar"], [class*="ava"], [class*="author-photo"], [class*="user-pic"]').forEach(el => {
-        el.classList.add('rev-avatar-hidden');
-      });
-
-      // 3. Применяем отредактированные в админке тексты (Имя, программа, плашка), если они заданы
-      const customData = overrides[idx] || {};
-      const headings = card.querySelectorAll('h3, h4, strong, [class*="name"], [class*="title"]');
-      if (customData.name && headings[0]) headings[0].textContent = customData.name;
-
-      const subs = card.querySelectorAll('p, span, [class*="sub"], [class*="prog"], [class*="meta"]');
-      if (customData.program && subs[0]) subs[0].textContent = customData.program;
-      if (customData.badge && subs[1]) subs[1].textContent = customData.badge;
-
-      // 4. Вставляем блок скриншота переписки на место кнопки
-      const slotKey = 'rev-screen-' + (idx + 1);
-      const screenSrc = customData.screenshot || photos[slotKey] || '';
-
-      let screenWrap = card.querySelector('.rev-chat-screen-wrap');
-      if (!screenWrap) {
-        screenWrap = document.createElement('div');
-        screenWrap.className = 'rev-chat-screen-wrap';
-        screenWrap.setAttribute('data-photo-slot', slotKey);
-        btn.insertAdjacentElement('beforebegin', screenWrap);
-      }
-
-      if (screenSrc && screenWrap.getAttribute('data-rendered-src') !== screenSrc) {
-        screenWrap.setAttribute('data-rendered-src', screenSrc);
-        screenWrap.innerHTML = `
-          <img class="rev-chat-img" src="${screenSrc}" alt="Скриншот переписки">
-          <span class="rev-chat-zoom-badge">🔍 Увеличить скрин</span>
-        `;
-        screenWrap.onclick = (e) => {
-          e.stopPropagation();
-          openChatLightbox(screenSrc);
-        };
-      } else if (!screenSrc && !screenWrap.querySelector('.rev-chat-placeholder')) {
-        screenWrap.innerHTML = `
-          <div class="rev-chat-placeholder">
-            Скриншот переписки #${idx + 1}<br>
-            <small>(загружается в панели управления)</small>
-          </div>
-        `;
-      }
-    });
-  }
-
-  function runAll() {
-    mountServicesSwipeIndicator();
-    upgradeReviewCards();
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', runAll);
-  } else {
-    runAll();
-  }
-  setTimeout(runAll, 600);
-  setTimeout(runAll, 1800);
-
-  // Следим за переключением карточек в карусели, чтобы изменения держались всегда
-  const observer = new MutationObserver(() => {
-    mountServicesSwipeIndicator();
-    upgradeReviewCards();
+  var d = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.design) || {};
+  var root = document.documentElement;
+  Object.keys(d).forEach(function (k) {
+    if (d[k] != null && d[k] !== '') root.style.setProperty(k, d[k]);
   });
-  observer.observe(document.documentElement, { childList: true, subtree: true });
 })();

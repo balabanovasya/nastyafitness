@@ -1702,7 +1702,7 @@
             <span>пробная тренировка в подарок</span>
           </div>
           <div class="badge-item">
-            <strong>35–45 мин</strong>
+            <strong>60 мин</strong>
             <span>комфортный тайминг дома</span>
           </div>
           <div class="badge-item">
@@ -1776,7 +1776,7 @@
             <li>Разбор твоей цели и стартовой точки</li>
             <li>Подсказка, с чего начать и какой формат подойдёт</li>
           </ul>
-          <button class="btn btn-gold" onclick="openModal('🎁 Пробная тренировка в подарок')">Забрать подарок 🎁</button>
+          <div class="gift-cta-row"><span class="gift-finger-pointer" aria-hidden="true"></span><button class="btn btn-gold gift-claim-btn" onclick="openModal('🎁 Пробная тренировка в подарок')">Забрать подарок</button></div>
         </div>
       </div>
     </div>
@@ -1827,29 +1827,23 @@
             <p style="color: var(--text-muted); margin-bottom: 16px;">
               Всю свою жизнь я в спорте и знаю изнутри, как физическая дисциплина способна не только менять пропорции тела, но и буквально вытаскивать из самого тяжёлого стресса и возвращать опору под ногами.
             </p>
-            <p style="color: var(--text-muted);">
-              В моей работе нет бездумных марафонов и голодных диет. Мы выстраиваем персональную систему тренировок и питания, которая органично вписывается в твой ритм жизни, бережёт суставы и даёт прогнозируемый результат.
-            </p>
             <div class="about-points">
               <div class="about-point">
-                <strong>Индивидуальная система</strong>
-                <span>Программа под твои цели, уровень подготовки и инвентарь</span>
+                <strong>Более 2 лет — работы с клиентами</strong>
               </div>
               <div class="about-point">
-                <strong>Контроль биомеханики</strong>
-                <span>Отстройка техники каждого упражнения и работа с осанкой</span>
+                <strong>Десятки довольных клиентов и результатов</strong>
               </div>
               <div class="about-point">
-                <strong>Комфортный рацион</strong>
-                <span>Расчёт КБЖУ и вкусное питание из обычных продуктов</span>
+                <strong>Более 10 лет — в спорте</strong>
               </div>
               <div class="about-point">
-                <strong>Постоянный контакт</strong>
-                <span>Личная обратная связь, проверка отчётов и поддержка</span>
+                <strong>Постоянное развитие и повышение квалификации</strong>
               </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
 
       <!-- Вкладка 2 -->
@@ -1881,26 +1875,18 @@
 
       <!-- Вкладка 3 -->
       <div class="about-slide" id="about-certs">
-        <div class="certs-grid">
-          <div class="cert-card">
-            <span class="eyebrow">Диплом</span>
-            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Персональный фитнес-тренер</h4>
-            <p style="font-size: 0.86rem; color: var(--text-muted);">Анатомия, физиология и построение индивидуальных тренировочных циклов.</p>
+        <div class="certs-grid certs-two-grid" id="certsContainer">
+          <div class="cert-scan-card" onclick="openNastyaLightbox(this.querySelector('img').src, 'Диплом')">
+            <div class="cert-scan-top-title">Диплом о профессиональной переподготовке</div>
+            <div class="cert-scan-img-wrap">
+              <img data-slot="cert-1" src="photos/cert-1.jpg" onerror="photoFallback(this)" loading="lazy" alt="Диплом">
+            </div>
           </div>
-          <div class="cert-card">
-            <span class="eyebrow">Сертификат</span>
-            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Биомеханика и коррекция осанки</h4>
-            <p style="font-size: 0.86rem; color: var(--text-muted);">Функциональная диагностика опорно-двигательного аппарата и безопасный тренинг.</p>
-          </div>
-          <div class="cert-card">
-            <span class="eyebrow">Сертификат</span>
-            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Нутрициология и расчёт КБЖУ</h4>
-            <p style="font-size: 0.86rem; color: var(--text-muted);">Коррекция состава тела через сбалансированный рацион и пищевые привычки.</p>
-          </div>
-          <div class="cert-card">
-            <span class="eyebrow">Повышение квалификации</span>
-            <h4 style="font-size: 1.4rem; margin-bottom: 8px;">Стретчинг и МФР</h4>
-            <p style="font-size: 0.86rem; color: var(--text-muted);">Развитие мобильности суставов, миофасциальный релиз и снятие мышечного гипертонуса.</p>
+          <div class="cert-scan-card" onclick="openNastyaLightbox(this.querySelector('img').src, 'Сертификат')">
+            <div class="cert-scan-top-title">Сертификат профильного обучения</div>
+            <div class="cert-scan-img-wrap">
+              <img data-slot="cert-2" src="photos/cert-2.jpg" onerror="photoFallback(this)" loading="lazy" alt="Сертификат">
+            </div>
           </div>
         </div>
       </div>
@@ -2214,8 +2200,23 @@
             }
           ]
         },
+        groups: {
+          label: "Б. Мини-группы",
+          showIncluded: false,
+          items: [
+            {
+              tag: "Энергия комьюнити",
+              title: "Занятия в мини-группе",
+              pill: "Онлайн-тренировки + общий чат и контроль техники",
+              desc: "Тренировки в небольшой группе девушек по видеосвязи: моё личное внимание к технике каждой участницы, работа с питанием и взаимная мотивация.",
+              price: "10 000 ₽",
+              period: "/ в месяц за чел.",
+              featured: true
+            }
+          ]
+        },
         plans: {
-          label: "Б. Программы тренировок",
+          label: "В. Программы тренировок",
           showIncluded: false,
           items: [
             {
@@ -2235,21 +2236,6 @@
               price: "4 500 ₽",
               period: "/ разово",
               featured: false
-            }
-          ]
-        },
-        groups: {
-          label: "В. Мини-группы",
-          showIncluded: false,
-          items: [
-            {
-              tag: "Энергия комьюнити",
-              title: "Занятия в мини-группе",
-              pill: "Онлайн-тренировки + общий чат и контроль техники",
-              desc: "Тренировки в небольшой группе девушек по видеосвязи: моё личное внимание к технике каждой участницы, работа с питанием и взаимная мотивация.",
-              price: "10 000 ₽",
-              period: "/ в месяц за чел.",
-              featured: true
             }
           ]
         },
@@ -2379,11 +2365,11 @@
           <div class="case-photos">
             <div class="case-photo-box">
               <img src="${item.imgBefore}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="До — ${item.name}">
-              <span class="case-photo-tag">Точка А</span>
+              
             </div>
             <div class="case-photo-box">
               <img src="${item.imgAfter}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="После — ${item.name}">
-              <span class="case-photo-tag">Результат</span>
+              
             </div>
           </div>
           <div>
@@ -2653,8 +2639,8 @@
       document.getElementById('caseCards').innerHTML=SITE_DATA.cases.map(c=>`
         <div class="case-card">
           <div class="cc-photos">
-            <div class="case-photo-box"><img src="${c.imgBefore}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="До — ${c.name}"><span class="case-photo-tag">Точка А</span></div>
-            <div class="case-photo-box"><img src="${c.imgAfter}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="После — ${c.name}"><span class="case-photo-tag">Результат</span></div>
+            <div class="case-photo-box"><img src="${c.imgBefore}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="До — ${c.name}"></div>
+            <div class="case-photo-box"><img src="${c.imgAfter}" onerror="photoFallback(this)" loading="lazy" decoding="async" alt="После — ${c.name}"></div>
           </div>
           <div class="cc-body">
             <span class="eyebrow">${c.name}</span>
@@ -2669,7 +2655,7 @@
     window.addEventListener('DOMContentLoaded',()=>{
       renderCaseCards();
       ['goalsContainer','caseCards','approachContainer','tariffsContainer'].forEach(id=>initCarousel(document.getElementById(id)));
-      document.querySelectorAll('.about-gallery-grid,.certs-grid').forEach(initCarousel);
+      document.querySelectorAll('.about-gallery-grid').forEach(initCarousel);
       const t=document.querySelector('.included-box-title');
       if(t)t.addEventListener('click',()=>document.getElementById('personalIncludedBox').classList.toggle('open'));
       document.querySelectorAll('.goals-grid,.reviews-grid,.approach-grid,.tariffs-grid,.steps-grid,.about-gallery-grid,.certs-grid,.faq-list').forEach(e=>e.classList.add('stagger'));
@@ -2892,6 +2878,8 @@
   if (window.SITE_AFTER_OVERRIDES) window.SITE_AFTER_OVERRIDES();
 })();
 </script>
+<script src="reliefs.js"></script>
+<script src="lusion3d.js"></script>
 <script src="patches.js"></script>
 </body>
 </html>

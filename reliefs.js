@@ -1,13 +1,9 @@
 /**
- * reliefs.js — 15 СКУЛЬПТУРНЫХ 3D-БАРЕЛЬЕФОВ (реальный Three.js PBR-рендер, уровень gift3d.js!)
- * - Вместо плоских SVG-рисунков использует реальную 3D-геометрию Three.js со студийным PMREM-освещением
- * - Один временный offscreen WebGLRenderer (512x512) запекает все 12 скульптур в HD PNG и сразу освобождает GPU
- *   (0 лишних WebGL-контекстов — работает идеально на iPhone Safari и на ПК!)
- * - Материал: матовый архитектурный гипс с лёгким шёлковым бликом на светлых секциях
- *   и скульптурный тёмный шоколадный камень / тёплая бронза на тёмных секциях (стиль immersive-g.com)
- * - Живая реакция на движение мыши (деликатный 3D-наклон и параллакс глубины, как у гантели в Блоке 5)
- * - Сохранены все позиции и правки: гиря «16 КГ» в «Направлениях», сдвинутая вниз гиря и развёрнутый
- *   фитнес-коврик в Блоке 7, спортивная бутылка в блоке FAQ
+ * reliefs.js — 15 матовых скульптурных 3D-барельефов (без свечения и сливания с фоном)
+ * - Реальный Three.js PBR-рендер в матовом травертине/глине (светлые блоки) и шоколадной бронзе (тёмные блоки)
+ * - Чёткое направленное боковое освещение — видны каждая грань, фаска, шнуровка, стрелки и насечка
+ * - Исправлена ориентация всех надписей: «16 КГ», «10 KG» и «WHEY ISOLATE» стоят строго ровно и лицом к зрителю
+ * - Один временный offscreen WebGLRenderer (512px) — мгновенная работа и 100% стабильность на iPhone
  */
 (function () {
   'use strict';
@@ -28,27 +24,16 @@
       '  pointer-events: none;',
       '  user-select: none;',
       '  z-index: 1;',
-      '  opacity: var(--relief-strength, 0.94);',
+      '  opacity: var(--relief-strength, 0.88);',
       '  transform-origin: center center;',
       '  perspective: 900px;',
       '  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);',
       '  will-change: transform;',
       '}',
-      '/* Плавный гипсовый/каменный наплыв стены за скульптурой — эффект «вылезает из стены» */',
-      '.wall-sculpture::before {',
-      '  content: "";',
-      '  position: absolute;',
-      '  inset: 10%;',
-      '  border-radius: 50%;',
-      '  background: radial-gradient(circle at 38% 36%, rgba(255, 255, 255, 0.85) 0%, rgba(215, 198, 176, 0.42) 52%, rgba(215, 198, 176, 0) 76%);',
-      '  filter: blur(10px);',
-      '  z-index: 0;',
-      '}',
+      '/* Никакого белого свечения вокруг фигур — только естественный объёмный рельеф и мягкая падающая тень */',
+      '.wall-sculpture::before { display: none !important; content: none !important; }',
       '.wall-sculpture.on-dark {',
-      '  opacity: var(--relief-strength-dark, 0.96);',
-      '}',
-      '.wall-sculpture.on-dark::before {',
-      '  background: radial-gradient(circle at 38% 36%, rgba(164, 114, 72, 0.28) 0%, rgba(18, 9, 4, 0.65) 55%, rgba(18, 9, 4, 0) 78%);',
+      '  opacity: var(--relief-strength-dark, 0.92);',
       '}',
       '.wall-sculpture-img {',
       '  position: relative;',
@@ -58,47 +43,45 @@
       '  object-fit: contain;',
       '  display: block;',
       '  filter:',
-      '    drop-shadow(-5px -5px 9px rgba(255, 255, 255, 0.90))',
-      '    drop-shadow(12px 18px 22px rgba(63, 41, 27, 0.28))',
-      '    drop-shadow(3px 6px 7px rgba(63, 41, 27, 0.16));',
+      '    drop-shadow(10px 15px 18px rgba(63, 41, 27, 0.22))',
+      '    drop-shadow(3px 5px 5px rgba(63, 41, 27, 0.14));',
       '}',
       '.wall-sculpture.on-dark .wall-sculpture-img {',
       '  filter:',
-      '    drop-shadow(-4px -4px 8px rgba(246, 217, 168, 0.16))',
-      '    drop-shadow(14px 20px 26px rgba(4, 2, 1, 0.86))',
-      '    drop-shadow(3px 6px 8px rgba(0, 0, 0, 0.68));',
+      '    drop-shadow(12px 18px 22px rgba(6, 3, 1, 0.78))',
+      '    drop-shadow(3px 5px 6px rgba(0, 0, 0, 0.58));',
       '}',
       '@media (max-width: 1024px) {',
-      '  .wall-sculpture { opacity: calc(var(--relief-strength, 0.94) * 0.92); }',
+      '  .wall-sculpture { opacity: calc(var(--relief-strength, 0.88) * 0.90); }',
       '}',
       '@media (max-width: 720px) {',
       '  .wall-sculpture {',
-      '    opacity: calc(var(--relief-strength, 0.94) * 0.86);',
-      '    max-width: 178px !important;',
-      '    max-height: 178px !important;',
+      '    opacity: calc(var(--relief-strength, 0.88) * 0.78);',
+      '    max-width: 174px !important;',
+      '    max-height: 174px !important;',
       '  }',
       '  .wall-sculpture.on-dark {',
-      '    opacity: calc(var(--relief-strength-dark, 0.96) * 0.92);',
+      '    opacity: calc(var(--relief-strength-dark, 0.92) * 0.88);',
       '  }',
       '  .wall-sculpture[data-shape="kettlebell16"].on-dark {',
-      '    max-width: 205px !important;',
-      '    max-height: 205px !important;',
+      '    max-width: 198px !important;',
+      '    max-height: 198px !important;',
       '  }',
       '  .wall-sculpture[data-shape="barbell"] {',
-      '    max-width: 215px !important;',
-      '    max-height: 165px !important;',
+      '    max-width: 210px !important;',
+      '    max-height: 160px !important;',
       '  }',
       '  .about-sec .wall-sculpture[data-shape="yogaMat"] {',
       '    left: auto !important; right: -8px !important; top: 6px !important;',
-      '    max-width: 195px !important; max-height: 165px !important;',
+      '    max-width: 192px !important; max-height: 162px !important;',
       '  }',
       '  .about-sec .wall-sculpture[data-shape="kettlebell16"] {',
       '    top: auto !important; bottom: -14px !important; left: 4px !important;',
-      '    max-width: 156px !important; max-height: 156px !important;',
+      '    max-width: 154px !important; max-height: 154px !important;',
       '  }',
       '  .faq-sec .wall-sculpture[data-shape="sportBottle"] {',
       '    left: auto !important; right: -4px !important; top: 44% !important;',
-      '    max-width: 162px !important; max-height: 202px !important;',
+      '    max-width: 158px !important; max-height: 198px !important;',
       '  }',
       '}',
       '.about-sec .about-photo-main, .about-sec .gallery-card, .about-sec .cert-scan-card { position: relative; z-index: 4; }',
@@ -108,22 +91,22 @@
     document.head.appendChild(st);
   }
 
-  // Студийная среда для скульптурного гипса / тёмного камня
+  // Спокойная матовая студийная карта без выжженных белых пятен
   function createSculptureEnv(THREE, renderer, dark) {
     var cv = document.createElement('canvas');
     cv.width = 512; cv.height = 256;
     var cx = cv.getContext('2d');
     var bg = cx.createLinearGradient(0, 0, 0, 256);
     if (dark) {
-      bg.addColorStop(0.0, '#785239');
-      bg.addColorStop(0.45, '#3E2618');
-      bg.addColorStop(0.65, '#1D110A');
-      bg.addColorStop(1.0, '#0E0703');
+      bg.addColorStop(0.0, '#4E3322');
+      bg.addColorStop(0.45, '#2A190F');
+      bg.addColorStop(0.70, '#160C06');
+      bg.addColorStop(1.0, '#0B0502');
     } else {
-      bg.addColorStop(0.0, '#FFFFFF');
-      bg.addColorStop(0.45, '#F3E9DC');
-      bg.addColorStop(0.65, '#D7C4AE');
-      bg.addColorStop(1.0, '#B59E85');
+      bg.addColorStop(0.0, '#DFD2C2');
+      bg.addColorStop(0.45, '#BFA992');
+      bg.addColorStop(0.72, '#8F7964');
+      bg.addColorStop(1.0, '#624F3F');
     }
     cx.fillStyle = bg; cx.fillRect(0, 0, 512, 256);
 
@@ -135,11 +118,11 @@
       cx.restore();
     }
     if (dark) {
-      box(125, 48, 120, 55, 'rgba(255,244,224,1)', 'rgba(240,196,136,0.55)');
-      box(400, 82, 110, 50, 'rgba(224,168,98,0.68)', 'rgba(138,90,50,0.22)');
+      box(120, 48, 105, 48, 'rgba(235, 198, 152, 0.72)', 'rgba(168, 118, 72, 0.28)');
+      box(400, 90, 95, 44, 'rgba(176, 126, 78, 0.36)', 'rgba(92, 58, 34, 0.12)');
     } else {
-      box(120, 44, 130, 58, 'rgba(255,255,255,1)', 'rgba(255,250,242,0.75)');
-      box(395, 95, 115, 52, 'rgba(255,245,232,0.85)', 'rgba(218,196,170,0.35)');
+      box(115, 46, 110, 48, 'rgba(255, 249, 240, 0.78)', 'rgba(222, 204, 182, 0.36)');
+      box(405, 100, 95, 44, 'rgba(232, 214, 192, 0.42)', 'rgba(155, 134, 112, 0.14)');
     }
 
     var tex = new THREE.CanvasTexture(cv);
@@ -152,43 +135,45 @@
     return env;
   }
 
-  function makeSculptTextTex(THREE, line1, line2, dark, isSquare) {
+  function makeSculptTextTex(THREE, line1, line2, dark, isCircle) {
     var cv = document.createElement('canvas');
-    cv.width = 512; cv.height = isSquare ? 512 : 256;
+    cv.width = 512; cv.height = isCircle ? 512 : 256;
     var cx = cv.getContext('2d');
     var w = cv.width, h = cv.height;
 
-    cx.fillStyle = dark ? '#4E3323' : '#E7DAC8';
+    cx.fillStyle = dark ? '#3C2518' : '#B8A28B';
     cx.fillRect(0, 0, w, h);
 
-    if (isSquare) {
-      cx.strokeStyle = dark ? '#CFA16D' : '#A9927A';
-      cx.lineWidth = 14;
-      cx.beginPath(); cx.arc(w / 2, h / 2, 214, 0, Math.PI * 2); cx.stroke();
-      cx.strokeStyle = dark ? 'rgba(255,244,224,0.45)' : 'rgba(255,255,255,0.85)';
-      cx.lineWidth = 5;
-      cx.beginPath(); cx.arc(w / 2, h / 2, 194, 0, Math.PI * 2); cx.stroke();
+    if (isCircle) {
+      cx.strokeStyle = dark ? '#C79662' : '#6A5542';
+      cx.lineWidth = 16;
+      cx.beginPath(); cx.arc(w / 2, h / 2, 224, 0, Math.PI * 2); cx.stroke();
+      cx.strokeStyle = dark ? 'rgba(246,217,168,0.42)' : 'rgba(255,248,238,0.55)';
+      cx.lineWidth = 6;
+      cx.beginPath(); cx.arc(w / 2, h / 2, 200, 0, Math.PI * 2); cx.stroke();
     } else {
-      cx.strokeStyle = dark ? '#CFA16D' : '#AE9880';
-      cx.lineWidth = 8;
-      cx.strokeRect(24, 24, w - 48, h - 48);
+      cx.fillStyle = dark ? '#2E1B11' : '#A68F78';
+      cx.fillRect(0, 0, w, h);
+      cx.strokeStyle = dark ? '#C79662' : '#5D4938';
+      cx.lineWidth = 10;
+      cx.strokeRect(20, 20, w - 40, h - 40);
     }
 
     cx.textAlign = 'center';
     var y1 = line2 ? (h * 0.48) : (h * 0.56);
-    var sz1 = isSquare ? 128 : 88;
+    var sz1 = isCircle ? 140 : 88;
     cx.font = '800 ' + sz1 + 'px Manrope, sans-serif';
-    cx.fillStyle = dark ? '#1A0E07' : '#FFFFFF';
+    cx.fillStyle = dark ? '#140A05' : '#EFE4D6';
     cx.fillText(line1, w / 2 + 3, y1 + 4);
-    cx.fillStyle = dark ? '#E8BE8A' : '#735B44';
+    cx.fillStyle = dark ? '#E2B682' : '#4C3929';
     cx.fillText(line1, w / 2, y1);
 
     if (line2) {
-      cx.font = '800 ' + (isSquare ? 68 : 42) + 'px Manrope, sans-serif';
-      cx.fillStyle = dark ? '#1A0E07' : '#FFFFFF';
-      cx.fillText(line2, w / 2 + 2, h * 0.72 + 3);
-      cx.fillStyle = dark ? '#E8BE8A' : '#735B44';
-      cx.fillText(line2, w / 2, h * 0.72);
+      cx.font = '800 ' + (isCircle ? 72 : 42) + 'px Manrope, sans-serif';
+      cx.fillStyle = dark ? '#140A05' : '#EFE4D6';
+      cx.fillText(line2, w / 2 + 2, h * 0.74 + 3);
+      cx.fillStyle = dark ? '#E2B682' : '#4C3929';
+      cx.fillText(line2, w / 2, h * 0.74);
     }
 
     var tex = new THREE.CanvasTexture(cv);
@@ -200,8 +185,8 @@
     var cv = document.createElement('canvas');
     cv.width = 256; cv.height = 256;
     var cx = cv.getContext('2d');
-    cx.fillStyle = '#808080'; cx.fillRect(0, 0, 256, 256);
-    cx.strokeStyle = '#ffffff'; cx.lineWidth = 4;
+    cx.fillStyle = '#707070'; cx.fillRect(0, 0, 256, 256);
+    cx.strokeStyle = '#ffffff'; cx.lineWidth = 5;
     for (var i = -256; i < 512; i += 14) {
       cx.beginPath(); cx.moveTo(i, 0); cx.lineTo(i + 256, 256); cx.stroke();
       cx.beginPath(); cx.moveTo(i + 256, 0); cx.lineTo(i, 256); cx.stroke();
@@ -212,49 +197,51 @@
     return tex;
   }
 
-  function makeScaleBumpTex(THREE, dark) {
+  function makeScaleTex(THREE, dark) {
     var cv = document.createElement('canvas');
     cv.width = 512; cv.height = 512;
     var cx = cv.getContext('2d');
-    cx.fillStyle = dark ? '#563928' : '#EFE4D6';
+    cx.fillStyle = dark ? '#4E3323' : '#C8B6A1';
     cx.fillRect(0, 0, 512, 512);
-    cx.strokeStyle = dark ? '#CFA16D' : '#967F68';
-    cx.fillStyle = dark ? '#E2B682' : '#7B644D';
-    cx.lineWidth = 6;
-    cx.font = '800 32px Manrope, sans-serif';
+    cx.strokeStyle = dark ? '#D4A570' : '#5E4B3A';
+    cx.fillStyle = dark ? '#E2B682' : '#4C3A2B';
+    cx.lineWidth = 7;
+    cx.font = '800 34px Manrope, sans-serif';
     cx.textAlign = 'right';
     [
-      { y: 120, lbl: '750' },
+      { y: 125, lbl: '750' },
       { y: 205, lbl: '' },
-      { y: 290, lbl: '500' },
-      { y: 375, lbl: '' },
-      { y: 440, lbl: '250' }
+      { y: 285, lbl: '500' },
+      { y: 365, lbl: '' },
+      { y: 435, lbl: '250' }
     ].forEach(function (t) {
       cx.beginPath();
-      cx.moveTo(t.lbl ? 250 : 280, t.y);
-      cx.lineTo(350, t.y);
+      cx.moveTo(t.lbl ? 245 : 278, t.y);
+      cx.lineTo(355, t.y);
       cx.stroke();
-      if (t.lbl) cx.fillText(t.lbl, 232, t.y + 11);
+      if (t.lbl) cx.fillText(t.lbl, 228, t.y + 12);
     });
     var tex = new THREE.CanvasTexture(cv);
     tex.encoding = THREE.sRGBEncoding;
     return tex;
   }
 
+  // Матовая скульптурная палитра: читается на любом фоне, НИКОГДА не выгорает в белый!
   function makeSculptMaterials(THREE, dark, knurlTex) {
     if (dark) {
       return {
-        main: new THREE.MeshPhysicalMaterial({ color: 0x5E3E2B, roughness: 0.42, metalness: 0.34, clearcoat: 0.24, clearcoatRoughness: 0.32 }),
-        accent: new THREE.MeshPhysicalMaterial({ color: 0x8F6543, roughness: 0.32, metalness: 0.56, clearcoat: 0.32 }),
-        deep: new THREE.MeshPhysicalMaterial({ color: 0x3A2417, roughness: 0.50, metalness: 0.25 }),
-        knurl: new THREE.MeshStandardMaterial({ color: 0x8A6242, roughness: 0.36, metalness: 0.58, bumpMap: knurlTex, bumpScale: 0.035 })
+        main:   new THREE.MeshStandardMaterial({ color: 0x5A3C29, roughness: 0.56, metalness: 0.24 }),
+        accent: new THREE.MeshStandardMaterial({ color: 0x865E40, roughness: 0.46, metalness: 0.36 }),
+        deep:   new THREE.MeshStandardMaterial({ color: 0x2F1D12, roughness: 0.68, metalness: 0.16 }),
+        knurl:  new THREE.MeshStandardMaterial({ color: 0x7A553A, roughness: 0.48, metalness: 0.38, bumpMap: knurlTex, bumpScale: 0.045 })
       };
     }
+    // Благородный тёплый травертин / глина (в палитре сайта #CDC7BF / #A49E95 / #6A6257)
     return {
-      main: new THREE.MeshPhysicalMaterial({ color: 0xEDE2D3, roughness: 0.46, metalness: 0.06, clearcoat: 0.22, clearcoatRoughness: 0.38 }),
-      accent: new THREE.MeshPhysicalMaterial({ color: 0xD9C5AE, roughness: 0.38, metalness: 0.14, clearcoat: 0.30 }),
-      deep: new THREE.MeshPhysicalMaterial({ color: 0xC6B097, roughness: 0.54, metalness: 0.06 }),
-      knurl: new THREE.MeshStandardMaterial({ color: 0xDCC9B3, roughness: 0.42, metalness: 0.16, bumpMap: knurlTex, bumpScale: 0.038 })
+      main:   new THREE.MeshStandardMaterial({ color: 0xCAB9A5, roughness: 0.64, metalness: 0.05 }),
+      accent: new THREE.MeshStandardMaterial({ color: 0xA6917B, roughness: 0.56, metalness: 0.08 }),
+      deep:   new THREE.MeshStandardMaterial({ color: 0x7D6855, roughness: 0.70, metalness: 0.05 }),
+      knurl:  new THREE.MeshStandardMaterial({ color: 0xB39E88, roughness: 0.58, metalness: 0.10, bumpMap: knurlTex, bumpScale: 0.05 })
     };
   }
 
@@ -276,7 +263,7 @@
     }
 
     if (shape === 'kettlebell16') {
-      // Реалистичная пудовая гиря с плоским дном, литыми рогами и чёткой отливкой «16 КГ»
+      // Пудовая гиря с плоским основанием, дужкой и СТРОГО РОВНОЙ надписью «16 КГ»
       var kbPts = [
         new THREE.Vector2(0.0, -0.88), new THREE.Vector2(0.62, -0.88), new THREE.Vector2(0.72, -0.80),
         new THREE.Vector2(0.92, -0.58), new THREE.Vector2(1.02, -0.06), new THREE.Vector2(0.88, 0.46),
@@ -284,24 +271,28 @@
       ];
       g.add(new THREE.Mesh(new THREE.LatheGeometry(kbPts, 52), m.main));
 
-      // Анатомическая дужка-рукоять
-      var horn = new THREE.Mesh(new THREE.TorusGeometry(0.58, 0.145, 22, 48, Math.PI * 1.24), m.accent);
+      var horn = new THREE.Mesh(new THREE.TorusGeometry(0.58, 0.148, 22, 48, Math.PI * 1.24), m.accent);
       horn.rotation.z = -Math.PI * 0.12;
       horn.position.y = 0.78;
       g.add(horn);
 
-      // Литой медальон «16 КГ»
+      // Основа медальона + плоский диск CircleGeometry (у него UV всегда 0° — надпись «16 КГ» стоит идеально ровно!)
+      var badgeBase = new THREE.Mesh(new THREE.CylinderGeometry(0.51, 0.51, 0.08, 40), m.deep);
+      badgeBase.rotation.x = Math.PI / 2;
+      badgeBase.position.set(0, -0.04, 0.96);
+      g.add(badgeBase);
+
       var tex16 = makeSculptTextTex(THREE, '16', 'КГ', dark, true);
-      var badgeMat = new THREE.MeshPhysicalMaterial({ map: tex16, roughness: 0.38, metalness: dark ? 0.38 : 0.10, clearcoat: 0.25 });
-      var badge = new THREE.Mesh(new THREE.CylinderGeometry(0.50, 0.50, 0.08, 40), badgeMat);
-      badge.rotation.x = Math.PI / 2;
-      badge.position.set(0, -0.04, 0.96);
-      g.add(badge);
-      var bRim = new THREE.Mesh(new THREE.TorusGeometry(0.505, 0.032, 14, 40), m.accent);
-      bRim.position.set(0, -0.04, 0.985);
+      var faceMat = new THREE.MeshStandardMaterial({ map: tex16, roughness: 0.56, metalness: dark ? 0.24 : 0.05 });
+      var badgeFace = new THREE.Mesh(new THREE.CircleGeometry(0.50, 44), faceMat);
+      badgeFace.position.set(0, -0.04, 1.005);
+      g.add(badgeFace);
+
+      var bRim = new THREE.Mesh(new THREE.TorusGeometry(0.508, 0.036, 14, 42), m.accent);
+      bRim.position.set(0, -0.04, 1.002);
       g.add(bRim);
 
-      g.rotation.set(0.14, -0.22, -0.06);
+      g.rotation.set(0.14, -0.20, -0.04);
       g.position.y = -0.18;
       return g;
     }
@@ -316,46 +307,43 @@
       ], 34);
       var pBig = makeBeveledPlate(0.74, 0.26);
       var pSm = makeBeveledPlate(0.56, 0.21);
-      var rBig = new THREE.TorusGeometry(0.54, 0.024, 14, 42);
+      var rBig = new THREE.TorusGeometry(0.54, 0.028, 14, 42);
       var capG = new THREE.SphereGeometry(0.18, 22, 18); capG.scale(0.65, 1, 1);
 
       [-1, 1].forEach(function (s) {
-        var col = new THREE.Mesh(colGeo, m.accent); col.rotation.z = Math.PI / 2; col.position.x = s * 0.56; g.add(col);
+        var col = new THREE.Mesh(colGeo, m.deep); col.rotation.z = Math.PI / 2; col.position.x = s * 0.56; g.add(col);
         var b1 = new THREE.Mesh(pBig, m.main); b1.rotation.z = Math.PI / 2; b1.position.x = s * 0.78; g.add(b1);
-        var ri = new THREE.Mesh(rBig, m.accent); ri.rotation.y = Math.PI / 2; ri.position.x = s * 0.912; g.add(ri);
-        var b2 = new THREE.Mesh(pSm, m.deep); b2.rotation.z = Math.PI / 2; b2.position.x = s * 1.04; g.add(b2);
-        var cp = new THREE.Mesh(capG, m.accent); cp.position.x = s * 1.18; g.add(cp);
+        var ri = new THREE.Mesh(rBig, m.deep); ri.rotation.y = Math.PI / 2; ri.position.x = s * 0.912; g.add(ri);
+        var b2 = new THREE.Mesh(pSm, m.accent); b2.rotation.z = Math.PI / 2; b2.position.x = s * 1.04; g.add(b2);
+        var cp = new THREE.Mesh(capG, m.deep); cp.position.x = s * 1.18; g.add(cp);
       });
-      g.rotation.set(0.22, -0.32, -0.24);
+      g.rotation.set(0.24, -0.34, -0.22);
       return g;
     }
 
     if (shape === 'barbell') {
-      var bar = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 3.25, 28), m.knurl);
+      var bar = new THREE.Mesh(new THREE.CylinderGeometry(0.078, 0.078, 3.25, 28), m.knurl);
       bar.rotation.z = Math.PI / 2; g.add(bar);
       var p1 = makeBeveledPlate(0.84, 0.16);
       var p2 = makeBeveledPlate(0.66, 0.14);
       var p3 = makeBeveledPlate(0.48, 0.12);
       [-1, 1].forEach(function (s) {
-        var slv = new THREE.Mesh(new THREE.CylinderGeometry(0.135, 0.135, 0.16, 26), m.accent);
+        var slv = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.16, 26), m.deep);
         slv.rotation.z = Math.PI / 2; slv.position.x = s * 0.92; g.add(slv);
         var d1 = new THREE.Mesh(p1, m.main); d1.rotation.z = Math.PI / 2; d1.position.x = s * 1.09; g.add(d1);
         var d2 = new THREE.Mesh(p2, m.accent); d2.rotation.z = Math.PI / 2; d2.position.x = s * 1.26; g.add(d2);
         var d3 = new THREE.Mesh(p3, m.deep); d3.rotation.z = Math.PI / 2; d3.position.x = s * 1.41; g.add(d3);
       });
       g.scale.setScalar(0.88);
-      g.rotation.set(0.20, -0.30, 0.16);
+      g.rotation.set(0.22, -0.30, 0.16);
       return g;
     }
 
     if (shape === 'weightPlate') {
-      var outer = new THREE.Mesh(new THREE.TorusGeometry(1.06, 0.19, 24, 56), m.main);
-      g.add(outer);
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(1.06, 0.19, 24, 56), m.main));
       var web = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 0.16, 48), m.deep);
       web.rotation.x = Math.PI / 2; g.add(web);
-      var hub = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.11, 20, 40), m.accent);
-      g.add(hub);
-      // 3 рельефных спицы-перемычки (имитируют олимпийский блин с 3 хватами)
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.11, 20, 40), m.accent));
       for (var sp = 0; sp < 3; sp++) {
         var ang = (sp / 3) * Math.PI * 2 + Math.PI / 6;
         var spoke = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.62, 0.24), m.main);
@@ -363,10 +351,11 @@
         spoke.rotation.z = ang - Math.PI / 2;
         g.add(spoke);
       }
+      // Строго горизонтальная надпись «10 KG» через CircleGeometry
       var tex10 = makeSculptTextTex(THREE, '10', 'KG', dark, true);
-      var lbl = new THREE.Mesh(new THREE.CylinderGeometry(0.30, 0.30, 0.19, 36), new THREE.MeshPhysicalMaterial({ map: tex10, roughness: 0.40 }));
-      lbl.rotation.x = Math.PI / 2; g.add(lbl);
-      g.rotation.set(0.28, -0.36, -0.14);
+      var lblFace = new THREE.Mesh(new THREE.CircleGeometry(0.32, 36), new THREE.MeshStandardMaterial({ map: tex10, roughness: 0.56 }));
+      lblFace.position.z = 0.115; g.add(lblFace);
+      g.rotation.set(0.26, -0.34, -0.10);
       return g;
     }
 
@@ -383,20 +372,19 @@
             new THREE.Vector2(0.0, -1.16), new THREE.Vector2(0.44, -1.16), new THREE.Vector2(0.50, -1.06),
             new THREE.Vector2(0.62, 0.66), new THREE.Vector2(0.58, 0.78), new THREE.Vector2(0.0, 0.78)
           ];
-      var scaleTex = makeScaleBumpTex(THREE, dark);
-      var bodyMat = m.main.clone();
-      bodyMat.map = scaleTex;
-      g.add(new THREE.Mesh(new THREE.LatheGeometry(pts, 48), bodyMat));
+      var scaleTex = makeScaleTex(THREE, dark);
+      var bodyMat = new THREE.MeshStandardMaterial({ map: scaleTex, roughness: 0.60, metalness: 0.06 });
+      var bodyMesh = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), bodyMat);
+      bodyMesh.rotation.y = Math.PI * 0.5;
+      g.add(bodyMesh);
 
-      // Рельефные кольца хвата на «талии» спортивной бутылки
       if (isBottle) {
         [-0.22, -0.08, 0.06, 0.20].forEach(function (yy) {
-          var grip = new THREE.Mesh(new THREE.TorusGeometry(0.495, 0.028, 12, 36), m.accent);
+          var grip = new THREE.Mesh(new THREE.TorusGeometry(0.50, 0.032, 12, 36), m.deep);
           grip.rotation.x = Math.PI / 2; grip.position.y = yy; g.add(grip);
         });
       }
 
-      // Ребристая спортивная крышка
       var capY = isBottle ? 0.98 : 0.86;
       var capR = isBottle ? 0.42 : 0.64;
       var cap = new THREE.Mesh(new THREE.CylinderGeometry(capR, capR * 1.03, 0.28, 40), m.accent);
@@ -404,21 +392,20 @@
 
       for (var r = 0; r < 18; r++) {
         var a = (r / 18) * Math.PI * 2;
-        var rib = new THREE.Mesh(new THREE.BoxGeometry(0.03, 0.22, 0.04), m.deep);
+        var rib = new THREE.Mesh(new THREE.BoxGeometry(0.034, 0.22, 0.044), m.deep);
         rib.position.set(Math.cos(a) * capR, capY, Math.sin(a) * capR);
         rib.rotation.y = -a; g.add(rib);
       }
 
-      // Откидной спортивный поильник + петля-карабин
-      var spout = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.30, 22), m.main);
+      var spout = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.30, 22), m.deep);
       spout.position.set(-0.08, capY + 0.24, 0.08);
       spout.rotation.z = 0.16; g.add(spout);
 
-      var loop = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.048, 14, 30, Math.PI * 1.25), m.accent);
+      var loop = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.052, 14, 30, Math.PI * 1.25), m.deep);
       loop.position.set(capR * 0.72, capY + 0.10, 0);
       loop.rotation.z = -0.5; g.add(loop);
 
-      g.rotation.set(0.18, -0.34, isBottle ? 0.16 : -0.18);
+      g.rotation.set(0.18, -0.28, isBottle ? 0.14 : -0.16);
       return g;
     }
 
@@ -430,20 +417,23 @@
       ];
       g.add(new THREE.Mesh(new THREE.LatheGeometry(jarPts, 48), m.main));
 
+      // Разворот rotation.y = Math.PI ставит центр этикетки «WHEY ISOLATE» СТРОГО ЛИЦОМ К ЗРИТЕЛЮ (+Z)
       var texWhey = makeSculptTextTex(THREE, 'WHEY', 'ISOLATE', dark, false);
-      var lblMat = new THREE.MeshPhysicalMaterial({ map: texWhey, roughness: 0.42, clearcoat: 0.22 });
+      var lblMat = new THREE.MeshStandardMaterial({ map: texWhey, roughness: 0.58 });
       var lbl = new THREE.Mesh(new THREE.CylinderGeometry(0.812, 0.812, 1.12, 48, 1, true), lblMat);
-      lbl.position.y = -0.16; lbl.rotation.y = -Math.PI / 2; g.add(lbl);
+      lbl.position.y = -0.16;
+      lbl.rotation.y = Math.PI;
+      g.add(lbl);
 
       var lid = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.70, 0.32, 44), m.accent);
       lid.position.y = 1.02; g.add(lid);
       for (var jr = 0; jr < 22; jr++) {
         var ja = (jr / 22) * Math.PI * 2;
-        var jrib = new THREE.Mesh(new THREE.BoxGeometry(0.032, 0.25, 0.042), m.deep);
+        var jrib = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.25, 0.044), m.deep);
         jrib.position.set(Math.cos(ja) * 0.69, 1.02, Math.sin(ja) * 0.69);
         jrib.rotation.y = -ja; g.add(jrib);
       }
-      g.rotation.set(0.18, 0.26, 0.12);
+      g.rotation.set(0.18, -0.16, 0.08);
       return g;
     }
 
@@ -454,10 +444,9 @@
         new THREE.Vector2(1.12, 0.14), new THREE.Vector2(0.72, -0.02), new THREE.Vector2(0.0, -0.04)
       ];
       g.add(new THREE.Mesh(new THREE.LatheGeometry(plPts, 52), m.main));
-      var rim = new THREE.Mesh(new THREE.TorusGeometry(1.28, 0.028, 14, 52), m.accent);
+      var rim = new THREE.Mesh(new THREE.TorusGeometry(1.28, 0.032, 14, 52), m.deep);
       rim.rotation.x = Math.PI / 2; rim.position.y = 0.20; g.add(rim);
 
-      // Скульптурный стейк, авокадо, киноа, черри и яйцо в едином гипсовом материале
       var salm = new THREE.Mesh(new THREE.SphereGeometry(0.44, 24, 18), m.accent);
       salm.scale.set(1.22, 0.38, 0.76); salm.position.set(0.32, 0.14, -0.24); salm.rotation.y = -0.35; g.add(salm);
 
@@ -465,18 +454,18 @@
       quin.scale.set(1.15, 0.62, 1.0); quin.position.set(-0.36, 0.0, 0.34); g.add(quin);
 
       for (var av = 0; av < 4; av++) {
-        var sl = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.065, 18, 1, false, 0, Math.PI * 1.15), m.main);
+        var sl = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.068, 18, 1, false, 0, Math.PI * 1.15), m.accent);
         sl.position.set(-0.44 + av * 0.11, 0.10 + av * 0.024, -0.30 + av * 0.08);
         sl.rotation.set(0.22, 0.5 + av * 0.32, -0.18); g.add(sl);
       }
 
       var eg = new THREE.Mesh(new THREE.SphereGeometry(0.22, 18, 14), m.main);
       eg.scale.set(1.1, 0.48, 0.9); eg.position.set(0.36, 0.08, 0.36); g.add(eg);
-      var yk = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 14), m.accent);
+      var yk = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 14), m.deep);
       yk.position.set(0.36, 0.15, 0.36); g.add(yk);
 
       [[0.03, 0.12, 0.52], [0.62, 0.13, 0.08], [-0.06, 0.13, -0.60]].forEach(function (c) {
-        var ch = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 16), m.accent);
+        var ch = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 16), m.deep);
         ch.position.set(c[0], c[1], c[2]); g.add(ch);
       });
 
@@ -485,37 +474,32 @@
     }
 
     if (shape === 'yogaMat') {
-      // Частично развёрнутый 3D фитнес-коврик: объёмный рулон с 3-витковой спиралью + полотно + ремень с пряжкой
       var roll = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 1.95, 42, 1, false), m.main);
       roll.rotation.z = Math.PI / 2;
       roll.position.set(-0.22, 0.28, 0);
       g.add(roll);
 
-      // Глубокая спираль на правом и левом торцах рулона
       [-1.195, 0.755].forEach(function (tx) {
         [0.37, 0.25, 0.13].forEach(function (sr) {
-          var ring = new THREE.Mesh(new THREE.TorusGeometry(sr, 0.024, 10, 32), m.deep);
+          var ring = new THREE.Mesh(new THREE.TorusGeometry(sr, 0.030, 10, 32), m.deep);
           ring.rotation.y = Math.PI / 2;
           ring.position.set(tx, 0.28, 0);
           g.add(ring);
         });
       });
 
-      // Стягивающий ремень и пряжка
-      var strap = new THREE.Mesh(new THREE.TorusGeometry(0.475, 0.055, 14, 40), m.accent);
+      var strap = new THREE.Mesh(new THREE.TorusGeometry(0.478, 0.062, 14, 40), m.deep);
       strap.rotation.y = Math.PI / 2;
       strap.position.set(-0.22, 0.28, 0);
       g.add(strap);
 
-      // Развёрнутое полотно коврика, выходящее из-под рулона
-      var sheet = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.075, 1.48), m.accent);
+      var sheet = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.085, 1.48), m.accent);
       sheet.position.set(-0.22, -0.14, 0.72);
       g.add(sheet);
 
-      // Рельефные линии разметки на развёрнутом полотне
       [-0.45, 0.0, 0.45].forEach(function (lz) {
-        var ln = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.02, 0.025), m.deep);
-        ln.position.set(-0.22, -0.095, 0.72 + lz);
+        var ln = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.025, 0.032), m.deep);
+        ln.position.set(-0.22, -0.09, 0.72 + lz);
         g.add(ln);
       });
 
@@ -524,15 +508,14 @@
     }
 
     if (shape === 'sneaker') {
-      // Объёмный 3D-кроссовок в скульптурном стиле
       var soleShape = new THREE.Shape();
       soleShape.moveTo(-1.35, -0.22);
       soleShape.lineTo(1.22, -0.22);
       soleShape.quadraticCurveTo(1.42, -0.18, 1.38, 0.02);
       soleShape.lineTo(-1.32, 0.04);
       soleShape.quadraticCurveTo(-1.42, -0.06, -1.35, -0.22);
-      var sole = new THREE.Mesh(new THREE.ExtrudeGeometry(soleShape, { depth: 0.72, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.07, bevelSegments: 6 }), m.accent);
-      sole.position.z = -0.36; g.add(sole);
+      var sole = new THREE.Mesh(new THREE.ExtrudeGeometry(soleShape, { depth: 0.74, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.07, bevelSegments: 6 }), m.deep);
+      sole.position.z = -0.37; g.add(sole);
 
       var upperShape = new THREE.Shape();
       upperShape.moveTo(-1.26, 0.02);
@@ -546,9 +529,12 @@
       var upper = new THREE.Mesh(new THREE.ExtrudeGeometry(upperShape, { depth: 0.62, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.10, bevelSegments: 8 }), m.main);
       upper.position.z = -0.31; g.add(upper);
 
-      // 4 объёмных шнурка
+      // Боковая рельефная полоса кроссовка + 4 контрастных шнурка
+      var stripe = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.14, 0.86), m.accent);
+      stripe.position.set(-0.12, 0.34, 0); stripe.rotation.z = -0.22; g.add(stripe);
+
       for (var lc = 0; lc < 4; lc++) {
-        var lace = new THREE.Mesh(new THREE.CylinderGeometry(0.042, 0.042, 0.78, 12), m.deep);
+        var lace = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.82, 12), m.deep);
         lace.rotation.x = Math.PI / 2;
         lace.position.set(0.16 + lc * 0.16, 0.84 - lc * 0.11, 0);
         g.add(lace);
@@ -566,14 +552,14 @@
         new THREE.Vector3(1.02, 0.55, -0.15),
         new THREE.Vector3(0.78, -0.30, 0.10)
       ]);
-      g.add(new THREE.Mesh(new THREE.TubeGeometry(ropeCurve, 56, 0.068, 14, false), m.accent));
+      g.add(new THREE.Mesh(new THREE.TubeGeometry(ropeCurve, 56, 0.072, 14, false), m.deep));
 
       [-1, 1].forEach(function (s) {
         var hGrp = new THREE.Group();
-        hGrp.add(new THREE.Mesh(new THREE.CylinderGeometry(0.145, 0.165, 0.96, 28), m.knurl));
-        var head = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.18, 24), m.accent);
+        hGrp.add(new THREE.Mesh(new THREE.CylinderGeometry(0.148, 0.168, 0.96, 28), m.knurl));
+        var head = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.18, 24), m.deep);
         head.position.y = 0.55; hGrp.add(head);
-        var cap = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 14), m.main);
+        var cap = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 14), m.accent);
         cap.position.y = -0.48; hGrp.add(cap);
         hGrp.position.set(s * 0.74, -0.78, 0.10);
         hGrp.rotation.z = s * -0.22;
@@ -584,12 +570,12 @@
     }
 
     if (shape === 'pilatesRing') {
-      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.96, 0.105, 22, 60), m.main));
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.96, 0.112, 22, 60), m.main));
       [-1, 1].forEach(function (s) {
-        var padOut = new THREE.Mesh(new THREE.TorusGeometry(1.09, 0.075, 16, 22, 0.62), m.accent);
+        var padOut = new THREE.Mesh(new THREE.TorusGeometry(1.09, 0.082, 16, 22, 0.62), m.deep);
         padOut.rotation.z = s > 0 ? (Math.PI / 2 - 0.31) : (-Math.PI / 2 - 0.31);
         g.add(padOut);
-        var padIn = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.068, 16, 22, 0.52), m.deep);
+        var padIn = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.075, 16, 22, 0.52), m.accent);
         padIn.rotation.z = s > 0 ? (Math.PI / 2 - 0.26) : (-Math.PI / 2 - 0.26);
         g.add(padIn);
       });
@@ -597,34 +583,34 @@
       return g;
     }
 
-    // stopwatch — 3D спортивный хронограф
+    // stopwatch — контрастный 3D-хронограф с чётким циферблатом, 12 делениями и стрелками
     var swCase = new THREE.Mesh(new THREE.CylinderGeometry(0.96, 0.96, 0.28, 52), m.main);
     swCase.rotation.x = Math.PI / 2; g.add(swCase);
-    var bezel = new THREE.Mesh(new THREE.TorusGeometry(0.94, 0.095, 18, 52), m.accent);
+    var bezel = new THREE.Mesh(new THREE.TorusGeometry(0.94, 0.10, 18, 52), m.accent);
     bezel.position.z = 0.10; g.add(bezel);
-    var dial = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.84, 0.06, 48), m.deep);
+    var dial = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.84, 0.06, 48), m.main);
     dial.rotation.x = Math.PI / 2; dial.position.z = 0.13; g.add(dial);
+    var innerRing = new THREE.Mesh(new THREE.TorusGeometry(0.82, 0.028, 12, 48), m.deep);
+    innerRing.position.z = 0.16; g.add(innerRing);
 
-    // 12 рельефных меток + стрелки
     for (var tk = 0; tk < 12; tk++) {
       var ta = (tk / 12) * Math.PI * 2;
-      var tick = new THREE.Mesh(new THREE.BoxGeometry(0.04, tk % 3 === 0 ? 0.16 : 0.09, 0.04), m.accent);
-      tick.position.set(Math.sin(ta) * 0.70, Math.cos(ta) * 0.70, 0.17);
+      var tick = new THREE.Mesh(new THREE.BoxGeometry(0.052, tk % 3 === 0 ? 0.18 : 0.10, 0.05), m.deep);
+      tick.position.set(Math.sin(ta) * 0.68, Math.cos(ta) * 0.68, 0.18);
       tick.rotation.z = -ta; g.add(tick);
     }
-    var h1 = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.54, 0.05), m.main);
-    h1.position.set(0, 0.22, 0.19); g.add(h1);
-    var h2 = new THREE.Mesh(new THREE.BoxGeometry(0.045, 0.42, 0.05), m.accent);
-    h2.position.set(0.16, -0.08, 0.21); h2.rotation.z = -1.1; g.add(h2);
-    var pin = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 14), m.accent);
-    pin.position.z = 0.22; g.add(pin);
+    var h1 = new THREE.Mesh(new THREE.BoxGeometry(0.072, 0.56, 0.06), m.deep);
+    h1.position.set(0, 0.23, 0.20); g.add(h1);
+    var h2 = new THREE.Mesh(new THREE.BoxGeometry(0.054, 0.44, 0.06), m.deep);
+    h2.position.set(0.17, -0.09, 0.22); h2.rotation.z = -1.1; g.add(h2);
+    var pin = new THREE.Mesh(new THREE.SphereGeometry(0.095, 16, 14), m.accent);
+    pin.position.z = 0.23; g.add(pin);
 
-    // Верхняя кнопка и дужка + боковая кнопка
-    var crown = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.24, 24), m.accent);
+    var crown = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.24, 24), m.deep);
     crown.position.y = 1.08; g.add(crown);
-    var bow = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.048, 14, 30), m.accent);
+    var bow = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.052, 14, 30), m.accent);
     bow.position.y = 1.24; g.add(bow);
-    var pusher = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.10, 0.20, 20), m.accent);
+    var pusher = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.10, 0.20, 20), m.deep);
     pusher.position.set(0.76, 0.76, 0); pusher.rotation.z = -0.78; g.add(pusher);
 
     g.position.y = -0.12;
@@ -632,7 +618,6 @@
     return g;
   }
 
-  // Запекаем все нужные скульптуры одним offscreen WebGLRenderer и сразу освобождаем GPU!
   function bakeAllSculptures(THREE, placements) {
     var needed = {};
     placements.forEach(function (p) {
@@ -649,7 +634,7 @@
     renderer.setSize(size, size, false);
     renderer.setPixelRatio(1);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.18;
+    renderer.toneMappingExposure = 0.96;
     renderer.outputEncoding = THREE.sRGBEncoding;
 
     var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
@@ -665,18 +650,21 @@
       var scene = new THREE.Scene();
       scene.environment = item.dark ? envDark : envLight;
 
-      // Скульптурный верхне-левый свет (как на стенах immersive-g.com)
-      scene.add(new THREE.HemisphereLight(item.dark ? 0xFFF2DC : 0xFFFFFF, item.dark ? 0x1A0E07 : 0xB8A188, item.dark ? 0.92 : 1.05));
-      var keyL = new THREE.DirectionalLight(item.dark ? 0xFFEAD0 : 0xFFFFFF, item.dark ? 1.65 : 1.35);
-      keyL.position.set(-4.5, 6.0, 5.5);
+      // Чёткое направленное скульптурное освещение (без выжигания в белый!)
+      scene.add(new THREE.HemisphereLight(
+        item.dark ? 0xE8C89E : 0xF7EFE4,
+        item.dark ? 0x160B05 : 0x6F5B48,
+        item.dark ? 0.52 : 0.48
+      ));
+      var keyL = new THREE.DirectionalLight(item.dark ? 0xFFE6C2 : 0xFFFBF5, item.dark ? 1.35 : 1.15);
+      keyL.position.set(-5.0, 5.8, 4.2);
       scene.add(keyL);
-      var rimL = new THREE.PointLight(item.dark ? 0xE6B06B : 0xFFF5E6, item.dark ? 1.5 : 0.75, 22);
-      rimL.position.set(4.5, -3.5, 4.0);
-      scene.add(rimL);
+      var fillL = new THREE.DirectionalLight(item.dark ? 0xB8824D : 0xBFA890, item.dark ? 0.45 : 0.32);
+      fillL.position.set(5.2, -3.6, 3.0);
+      scene.add(fillL);
 
       var mesh = buildSculptureMesh(THREE, item.shape, item.dark, knurlTex);
-      // Лёгкое скульптурное уплощение по Z — эффект высокого барельефа, выходящего из стены
-      mesh.scale.z *= 0.68;
+      mesh.scale.z *= 0.72;
       scene.add(mesh);
 
       renderer.clear();
@@ -684,7 +672,6 @@
       bakedCache[key] = canvas.toDataURL('image/png');
     });
 
-    // Полностью освобождаем временный WebGL-контекст
     envLight.dispose();
     envDark.dispose();
     knurlTex.dispose();
@@ -694,7 +681,6 @@
     }
   }
 
-  // Ровно 15 скульптурных точек равномерно по сайту (все позиции согласованы)
   var PLACEMENTS = [
     { sel: '.hero',         shape: 'dumbbell',     left: '1%',  top: '10%', size: 224, rot: -10 },
     { sel: '.hero',         shape: 'ppPlate',      left: '41%', top: '74%', size: 210, rot: 8 },
@@ -713,7 +699,6 @@
     { sel: '.faq-sec',      shape: 'sportBottle',  left: '76%', top: '42%', size: 248, rot: 10 }
   ];
 
-  // Деликатное отслеживание мыши для 3D-скульптур (как у гантели в Блоке 5)
   function bindInteractiveTilt() {
     if (tiltBound || window.matchMedia('(pointer: coarse)').matches) return;
     tiltBound = true;

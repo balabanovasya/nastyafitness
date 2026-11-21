@@ -61,7 +61,23 @@
       '    max-width: 205px !important;',
       '    max-height: 150px !important;',
       '  }',
-      '}'
+      '  .about-sec .wall-sculpture[data-shape="yogaMat"] {',
+      '    left: auto !important; right: -8px !important; top: 8px !important;',
+      '    max-width: 190px !important; max-height: 150px !important;',
+      '  }',
+      '  .about-sec .wall-sculpture[data-shape="kettlebell16"] {',
+      '    top: auto !important; bottom: -14px !important; left: 4px !important;',
+      '    max-width: 152px !important; max-height: 152px !important;',
+      '  }',
+      '  .faq-sec .wall-sculpture[data-shape="sportBottle"] {',
+      '    left: auto !important; right: -4px !important; top: 46% !important;',
+      '    max-width: 155px !important; max-height: 195px !important;',
+      '  }',
+      '}',
+      '/* Гарантируем, что фотографии в Блоке 7 всегда поверх фоновых барельефов */',
+      '.about-sec .about-photo-main, .about-sec .gallery-card, .about-sec .cert-scan-card { position: relative; z-index: 4; }',
+      '.about-sec { padding-bottom: 120px !important; }',
+      '@media (max-width: 720px) { .about-sec { padding-bottom: 84px !important; } }'
     ].join('\n');
     document.head.appendChild(st);
   }
@@ -435,18 +451,105 @@
     }
 
     if (shape === 'yogaMat') {
+      // Чёткий, мгновенно узнаваемый коврик для фитнеса и йоги:
+      // объёмный скрученный рулон с глубокой многослойной спиралью + развёрнутое полотно с антискользящей сеткой и ремнём
       return [
-        '<svg viewBox="0 0 270 190" aria-hidden="true">' + defs,
-        wallMound(id, 136, 98, 124, 72),
-        '<g transform="rotate(-18 135 95)" ' + emb + '>',
-        '  <rect x="28" y="48" width="212" height="88" rx="42" fill="' + lin + '" stroke="' + p.rimSoft + '" stroke-width="2.2"/>',
-        '  <line x1="102" y1="62" x2="214" y2="62" stroke="' + p.rim + '" stroke-width="2" opacity="0.72"/>',
-        '  <line x1="106" y1="118" x2="218" y2="118" stroke="' + p.groove + '" stroke-width="2" opacity="0.6"/>',
-        '  <ellipse cx="62" cy="92" rx="26" ry="42" fill="' + rev + '" stroke="' + p.rimSoft + '" stroke-width="2"/>',
-        '  <path d="M62 60 C78 60, 82 78, 79 92 C76 112, 48 114, 46 92 C44 76, 62 70, 70 84 C74 94, 58 102, 54 90" fill="none" stroke="' + p.groove + '" stroke-width="3.4" stroke-linecap="round"/>',
-        '  <rect x="136" y="46" width="20" height="92" rx="5" fill="' + rev + '" stroke="' + p.groove + '" stroke-width="1.8"/>',
-        '  <rect x="132" y="80" width="28" height="22" rx="5" fill="' + met + '" stroke="' + p.rim + '" stroke-width="1.6"/>',
-        '  <rect x="192" y="46" width="18" height="92" rx="5" fill="' + rev + '" stroke="' + p.groove + '" stroke-width="1.8"/>',
+        '<svg viewBox="0 0 300 220" aria-hidden="true">' + defs,
+        wallMound(id, 150, 114, 138, 86),
+        '<g transform="rotate(-11 150 110)" ' + emb + '>',
+        '  <!-- Развёрнутое полотно коврика, выходящее из-под рулона направо -->',
+        '  <path d="M98 118 L272 118 C280 118, 284 123, 282 131 L270 176 C268 183, 262 187, 254 187 L62 187 C56 187, 54 182, 58 175 Z" fill="' + lin + '" stroke="' + p.rimSoft + '" stroke-width="2.2"/>',
+        '  <!-- Толщина кромки (срез материала коврика) -->',
+        '  <path d="M60 187 L254 187 C262 187, 268 183, 270 176 L272 184 C269 191, 263 195, 254 195 L64 195 C58 195, 56 191, 60 187 Z" fill="' + p.deep + '" stroke="' + p.groove + '" stroke-width="1.4"/>',
+        '  <!-- Чёткая антискользящая перфорация / продольные линии разметки на полотне -->',
+        '  <g stroke="' + p.groove + '" stroke-width="1.7" opacity="0.62" stroke-linecap="round">',
+        '    <line x1="108" y1="133" x2="266" y2="133"/>',
+        '    <line x1="96"  y1="147" x2="261" y2="147"/>',
+        '    <line x1="84"  y1="161" x2="256" y2="161"/>',
+        '    <line x1="74"  y1="175" x2="251" y2="175"/>',
+        '  </g>',
+        '  <!-- Поперечная декоративная линия центровки йога-коврика -->',
+        '  <line x1="184" y1="126" x2="174" y2="180" stroke="' + p.rim + '" stroke-width="2.2" opacity="0.8"/>',
+        '  <circle cx="179" cy="153" r="6" fill="none" stroke="' + p.groove + '" stroke-width="1.8" opacity="0.72"/>',
+        '  <!-- Теневой провал под цилиндром рулона -->',
+        '  <path d="M58 122 L212 122 L206 134 L52 134 Z" fill="' + p.cast + '" opacity="0.55"/>',
+        '  <!-- Основной цилиндр скрученного рулона коврика -->',
+        '  <path d="M64 36 L206 36 C225 36, 238 56, 236 81 C234 106, 220 124, 200 124 L60 124 Z" fill="' + rad + '" stroke="' + p.rimSoft + '" stroke-width="2.2"/>',
+        '  <!-- Верхний световой блик вдоль цилиндра рулона -->',
+        '  <line x1="88" y1="49" x2="212" y2="49" stroke="' + p.rim + '" stroke-width="3" stroke-linecap="round" opacity="0.85"/>',
+        '  <!-- Ремень-стяжка вокруг рулона с пряжкой -->',
+        '  <path d="M148 35 L166 35 C176 58, 176 102, 164 125 L146 125 C158 102, 158 58, 148 35 Z" fill="' + rev + '" stroke="' + p.groove + '" stroke-width="1.8"/>',
+        '  <rect x="148" y="68" width="24" height="22" rx="5" fill="' + met + '" stroke="' + p.rim + '" stroke-width="1.6"/>',
+        '  <rect x="155" y="74" width="10" height="10" rx="2" fill="' + p.deep + '"/>',
+        '  <!-- Левый открытый торец рулона с глубокой 3-витковой спиралью слоёв -->',
+        '  <ellipse cx="62" cy="80" rx="30" ry="44" fill="' + rev + '" stroke="' + p.rimSoft + '" stroke-width="2.2"/>',
+        '  <ellipse cx="62" cy="80" rx="26" ry="39" fill="none" stroke="' + p.groove + '" stroke-width="2.4"/>',
+        '  <!-- Спираль скрученных слоёв коврика -->',
+        '  <path d="M62 44 C80 44, 86 62, 84 80 C82 102, 66 114, 52 110 C38 106, 36 86, 40 70 C44 54, 58 50, 70 58 C78 64, 78 86, 68 96 C58 104, 46 96, 48 80 C50 68, 62 64, 68 74 C72 80, 62 88, 56 82" fill="none" stroke="' + p.groove + '" stroke-width="3.6" stroke-linecap="round"/>',
+        '  <path d="M62 46 C78 46, 84 62, 82 80 C80 100, 66 112, 53 108" fill="none" stroke="' + p.rim + '" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/>',
+        '  <!-- Тонкая тиснёная надпись MAT -->',
+        '  <text x="210" y="169" text-anchor="middle" font-family="Manrope, sans-serif" font-weight="800" font-size="11" fill="' + p.text + '" letter-spacing="2.2" opacity="0.82">YOGA MAT</text>',
+        '</g>',
+        '</svg>'
+      ].join('');
+    }
+
+    if (shape === 'sportBottle') {
+      // Высокодетализированная спортивная бутылка для воды (для блока FAQ):
+      // анатомический приталенный силуэт, крышка с поильником-клапаном, петля-карабин,
+      // рельефные рёбра хвата, капля и мерная шкала 750 / 500 / 250 ML
+      return [
+        '<svg viewBox="0 0 210 290" aria-hidden="true">' + defs,
+        wallMound(id, 108, 150, 88, 126),
+        '<g transform="rotate(10 105 145)" ' + emb + '>',
+        '  <!-- Верхняя дужка-петля для переноски на крышке -->',
+        '  <path d="M118 28 C144 24, 152 52, 132 64" fill="none" stroke="' + p.groove + '" stroke-width="10" stroke-linecap="round"/>',
+        '  <path d="M118 28 C144 24, 152 52, 132 64" fill="none" stroke="' + lin + '" stroke-width="6.5" stroke-linecap="round"/>',
+        '  <path d="M122 26 C142 24, 149 44, 136 56" fill="none" stroke="' + p.rim + '" stroke-width="2" stroke-linecap="round" opacity="0.85"/>',
+        '  <!-- Откидной спортивный поильник-мундштук -->',
+        '  <path d="M88 18 C88 12, 104 12, 106 18 L108 38 L86 38 Z" fill="' + lin + '" stroke="' + p.rimSoft + '" stroke-width="1.8"/>',
+        '  <ellipse cx="97" cy="16" rx="8" ry="3.2" fill="' + p.deep + '" stroke="' + p.groove + '" stroke-width="1.2"/>',
+        '  <!-- Спортивная винтовая крышка с рельефным ободом и замком -->',
+        '  <rect x="66" y="34" width="74" height="28" rx="9" fill="' + lin + '" stroke="' + p.rimSoft + '" stroke-width="2"/>',
+        '  <g stroke="' + p.groove + '" stroke-width="2" opacity="0.72">',
+        '    <line x1="78" y1="39" x2="78" y2="57"/><line x1="88" y1="39" x2="88" y2="57"/>',
+        '    <line x1="98" y1="39" x2="98" y2="57"/><line x1="108" y1="39" x2="108" y2="57"/>',
+        '    <line x1="118" y1="39" x2="118" y2="57"/><line x1="128" y1="39" x2="128" y2="57"/>',
+        '  </g>',
+        '  <!-- Горлышко с уплотнительным кольцом -->',
+        '  <rect x="74" y="62" width="58" height="12" rx="4" fill="' + met + '" stroke="' + p.groove + '" stroke-width="1.5"/>',
+        '  <!-- Эргономичный корпус спортивной бутылки с приталенным перехватом -->',
+        '  <path d="M74 74 C56 82, 48 98, 48 118 L48 134 C48 148, 58 156, 58 172 C58 188, 48 196, 48 212 L48 244 C48 260, 62 270, 82 270 L124 270 C144 270, 158 260, 158 244 L158 212 C158 196, 148 188, 148 172 C148 156, 158 148, 158 134 L158 118 C158 98, 150 82, 132 74 Z" fill="' + rad + '" stroke="' + p.rimSoft + '" stroke-width="2.2"/>',
+        '  <!-- Световой глянцевый блик вдоль левого борта бутылки -->',
+        '  <path d="M62 98 C58 112, 58 128, 60 142 M66 164 C66 174, 64 186, 60 198 L60 242" fill="none" stroke="' + p.rim + '" stroke-width="3.6" stroke-linecap="round" opacity="0.82"/>',
+        '  <!-- Рельефная зона хвата в области «талии» (5 горизонтальных противоскользящих канавок) -->',
+        '  <g stroke="' + p.groove + '" stroke-width="2.2" stroke-linecap="round" opacity="0.65">',
+        '    <path d="M62 154 Q103 160 144 154"/>',
+        '    <path d="M62 165 Q103 171 144 165"/>',
+        '    <path d="M62 176 Q103 182 144 176"/>',
+        '    <path d="M62 187 Q103 193 144 187"/>',
+        '  </g>',
+        '  <g stroke="' + p.rim + '" stroke-width="1.2" stroke-linecap="round" opacity="0.72">',
+        '    <path d="M64 156 Q103 162 142 156"/>',
+        '    <path d="M64 167 Q103 173 142 167"/>',
+        '    <path d="M64 178 Q103 184 142 178"/>',
+        '    <path d="M64 189 Q103 195 142 189"/>',
+        '  </g>',
+        '  <!-- Рельефный логотип-капля воды на верхней части корпуса -->',
+        '  <path d="M103 98 C103 98, 118 118, 118 128 C118 136, 111.5 143, 103 143 C94.5 143, 88 136, 88 128 C88 118, 103 98, 103 98 Z" fill="' + rev + '" stroke="' + p.groove + '" stroke-width="1.8"/>',
+        '  <path d="M97 125 C97 130, 99 135, 103 136" fill="none" stroke="' + p.rim + '" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>',
+        '  <!-- Прозрачное мерное окошко со шкалой мл в нижней части -->',
+        '  <rect x="86" y="204" width="38" height="48" rx="6" fill="' + rev + '" stroke="' + p.groove + '" stroke-width="1.6"/>',
+        '  <g stroke="' + p.groove + '" stroke-width="1.8" stroke-linecap="round">',
+        '    <line x1="108" y1="214" x2="120" y2="214"/>',
+        '    <line x1="112" y1="224" x2="120" y2="224"/>',
+        '    <line x1="108" y1="234" x2="120" y2="234"/>',
+        '    <line x1="112" y1="244" x2="120" y2="244"/>',
+        '  </g>',
+        '  <text x="104" y="217" text-anchor="end" font-family="Manrope, sans-serif" font-size="8.5" font-weight="800" fill="' + p.text + '">750</text>',
+        '  <text x="104" y="237" text-anchor="end" font-family="Manrope, sans-serif" font-size="8.5" font-weight="800" fill="' + p.text + '">500</text>',
+        '  <!-- Противоскользящая нижняя окантовка дна -->',
+        '  <path d="M54 256 Q103 266 152 256" fill="none" stroke="' + p.groove + '" stroke-width="2.2" opacity="0.55"/>',
         '</g>',
         '</svg>'
       ].join('');
@@ -506,12 +609,12 @@
     { sel: '.gift-sec',     shape: 'weightPlate',  left: '82%', top: '8%',  size: 198, rot: -15 },
     { sel: '.reviews-sec',  shape: 'jumprope',     left: '4%',  top: '8%',  size: 210, rot: -10 },
     { sel: '.reviews-sec',  shape: 'proteinJar',   left: '80%', top: '62%', size: 198, rot: 12 },
-    { sel: '.about-sec',    shape: 'yogaMat',      left: '71%', top: '4%',  size: 228, rot: 12 },
-    { sel: '.about-sec',    shape: 'kettlebell16', left: '1%',  top: '70%', size: 212, rot: -10 },
+    { sel: '.about-sec',    shape: 'yogaMat',      left: '68%', top: '2%',  size: 256, rot: 8 },
+    { sel: '.about-sec',    shape: 'kettlebell16', left: '1%',  bottom: '-10px', size: 196, rot: -8 },
     { sel: '.approach-sec', shape: 'stopwatch',    left: '77%', top: '8%',  size: 204, rot: 10 },
     { sel: '.services-sec', shape: 'barbell',      left: '2%',  top: '78%', size: 258, rot: -8 },
     { sel: '.steps-sec',    shape: 'pilatesRing',  left: '76%', top: '10%', size: 210, rot: -14 },
-    { sel: '.faq-sec',      shape: 'dumbbell',     left: '78%', top: '52%', size: 222, rot: 16 }
+    { sel: '.faq-sec',      shape: 'sportBottle',  left: '77%', top: '44%', size: 236, rot: 12 }
   ];
 
   function initNastyaReliefs() {
@@ -526,8 +629,10 @@
       var wrap = document.createElement('div');
       wrap.className = 'wall-sculpture' + (p.dark ? ' on-dark' : '');
       wrap.setAttribute('data-shape', p.shape);
-      wrap.style.left = p.left;
-      wrap.style.top = p.top;
+      if (p.left != null) wrap.style.left = p.left;
+      if (p.right != null) wrap.style.right = p.right;
+      if (p.bottom != null) { wrap.style.bottom = p.bottom; wrap.style.top = 'auto'; }
+      else if (p.top != null) { wrap.style.top = p.top; }
       wrap.style.width = p.size + 'px';
       wrap.style.height = p.size + 'px';
       wrap.style.transform = 'rotate(' + (p.rot || 0) + 'deg)';

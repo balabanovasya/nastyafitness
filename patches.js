@@ -1125,7 +1125,7 @@
   st.id = 'nastya-pixel-controls-css';
   st.textContent = [
     'html { font-size: var(--font-base-px, 16px) !important; }',
-    'header { background: var(--header-bg, #3F291B) !important; }',
+    'header { background: var(--header-bg, linear-gradient(160deg, #3F291B 0%, #2A1A10 100%)) !important; }',
     '.goals-sec, .cases-sec, .reviews-sec, .about-sec, .approach-sec, .services-sec, .steps-sec, .faq-sec, .cta-sec {',
     '  padding-top: var(--sec-pad-desk, 92px) !important;',
     '  padding-bottom: var(--sec-pad-desk, 92px) !important;',
@@ -1147,45 +1147,6 @@
     if (d[k] != null && d[k] !== '') root.style.setProperty(k, d[k]);
   });
 })();
-
-/* === FIX 02: ЕДИНЫЙ ТЁМНО-КОРИЧНЕВЫЙ ЦВЕТ ШАПКИ (#3F291B) === */
-(function applyFix02Header() {
-  var old = document.getElementById('nastya-fix02-header-css');
-  if (old) old.remove();
-  var st = document.createElement('style');
-  st.id = 'nastya-fix02-header-css';
-  st.textContent = [
-    'header {',
-    '  background-color: var(--header-bg, #3F291B) !important;',
-    '  background-image: none !important;',
-    '  backdrop-filter: none !important;',
-    '  -webkit-backdrop-filter: none !important;',
-    '  border-bottom: 1px solid rgba(224, 168, 98, 0.24) !important;',
-    '  box-shadow: 0 8px 26px rgba(30, 18, 10, 0.22) !important;',
-    '}',
-    'header .logo { color: #FFFBF5 !important; }',
-    'header .logo-text span {',
-    '  background: linear-gradient(90deg, #F3CA92, #D99B58) !important;',
-    '  -webkit-background-clip: text !important;',
-    '  background-clip: text !important;',
-    '  -webkit-text-fill-color: transparent !important;',
-    '}',
-    'header .nav-links a { color: rgba(255, 251, 245, 0.88) !important; }',
-    'header .nav-links a:hover { color: #F6D9A8 !important; }',
-    'header .burger {',
-    '  border-color: rgba(246, 217, 168, 0.38) !important;',
-    '  background: rgba(255, 251, 245, 0.08) !important;',
-    '}',
-    'header .burger span { background: #FFF6E8 !important; }',
-    'body.menu-open header {',
-    '  background-color: transparent !important;',
-    '  border-bottom-color: transparent !important;',
-    '  box-shadow: none !important;',
-    '}'
-  ].join('\n');
-  document.head.appendChild(st);
-})();
-
 /* === FIX 03: БЛОК 1 (ФОТО +8-10%, РАВНЫЕ КНОПКИ, HD МИНИ-ГАНТЕЛЬКА В РАЗМЕР БУКВ) === */
 (function applyFix03Hero() {
   var old = document.getElementById('nastya-fix03-hero-css');
@@ -2010,5 +1971,77 @@
   } else {
     removeFormGiftNodes();
     setTimeout(removeFormGiftNodes, 250);
+  }
+})();
+
+/* === P01 SYNC: ШАПКА + КНОПКА БЛОКА 1 === */
+(function applyP01HeaderAndHeroSync() {
+  function syncHeaderAndHero() {
+    var d = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.design) || {};
+    var customHeader = d['--header-bg'];
+    var hdr = document.querySelector('header');
+    if (hdr && customHeader && !/^#362215$/i.test(customHeader)) {
+      hdr.style.setProperty('background', customHeader, 'important');
+    }
+    // Проверяем, чтобы на кнопке Блока 1 гарантированно стояла наша HD мини-гантелька нужного размера
+    var heroGoldBtn = document.querySelector('.hero .hero-actions .btn-gold');
+    if (heroGoldBtn) {
+      var ico = heroGoldBtn.querySelector('.bow-dumbbell-ico');
+      if (ico && ico.getAttribute('data-hd') !== '2') {
+        ico.outerHTML = '<span class="bow-dumbbell-ico" data-hd="2" aria-hidden="true"><svg viewBox="0 0 96 68" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hdbPl" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6B462D"/><stop offset="48%" stop-color="#382012"/><stop offset="100%" stop-color="#190D06"/></linearGradient><linearGradient id="hdbGd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF7E6"/><stop offset="45%" stop-color="#E6B672"/><stop offset="100%" stop-color="#8F551D"/></linearGradient><linearGradient id="hdbSk" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="55%" stop-color="#FCECD4"/><stop offset="100%" stop-color="#D7A76B"/></linearGradient></defs><g transform="rotate(-7 48 34)"><rect x="24" y="29.5" width="48" height="8" rx="3.5" fill="url(#hdbGd)" stroke="#321B0E" stroke-width="1.2"/><line x1="27" y1="31.8" x2="69" y2="31.8" stroke="#FFFDF9" stroke-width="1.2" opacity="0.85"/><rect x="4" y="18" width="9.5" height="31" rx="4.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><line x1="7" y1="21.5" x2="7" y2="45.5" stroke="#B6855E" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><rect x="14.5" y="12" width="12" height="43" rx="5.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><rect x="17.5" y="16" width="2.8" height="35" rx="1.4" fill="url(#hdbGd)"/><rect x="69.5" y="12" width="12" height="43" rx="5.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><rect x="72.5" y="16" width="2.8" height="35" rx="1.4" fill="url(#hdbGd)"/><rect x="82.5" y="18" width="9.5" height="31" rx="4.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><line x1="85.5" y1="21.5" x2="85.5" y2="45.5" stroke="#B6855E" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><path d="M45 36 L35 58 L41.5 55 L45.5 60.5 L48 38 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.2" stroke-linejoin="round"/><path d="M51 36 L61 58 L54.5 55 L50.5 60.5 L48 38 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.2" stroke-linejoin="round"/><path d="M47 32 C34 15, 21 20, 26.5 32 C30 39.5, 40 38, 47 33 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.35" stroke-linejoin="round"/><path d="M43 32 C36 26.5, 31 27.5, 30.5 31.5" stroke="#BF8644" stroke-width="1.3" stroke-linecap="round"/><path d="M49 32 C62 15, 75 20, 69.5 32 C66 39.5, 56 38, 49 33 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.35" stroke-linejoin="round"/><path d="M53 32 C60 26.5, 65 27.5, 65.5 31.5" stroke="#BF8644" stroke-width="1.3" stroke-linecap="round"/><rect x="43.5" y="27.5" width="9" height="11" rx="3.8" fill="url(#hdbGd)" stroke="#6C3E14" stroke-width="1.2"/><ellipse cx="47" cy="30.8" rx="1.9" ry="1.3" fill="#FFFFFF" opacity="0.9"/></g></svg></span>';
+      }
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      syncHeaderAndHero();
+      setTimeout(syncHeaderAndHero, 350);
+    });
+  } else {
+    syncHeaderAndHero();
+    setTimeout(syncHeaderAndHero, 350);
+  }
+})();
+
+/* === P05 SYNC: БЛОКИ 8 И 10 — SVG-СТРЕЛКИ И ЧИСТКА СИРОТСКИХ КНОПОК === */
+(function applyP05CarouselSync() {
+  var LEFT_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+  var RIGHT_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+
+  function syncNavs() {
+    document.querySelectorAll('.approach-sec .container > .c-nav, .steps-sec .container > .c-nav').forEach(function (el) {
+      el.remove();
+    });
+
+    document.querySelectorAll('.fandeck-wrap > .c-nav').forEach(function (nav) {
+      var btns = nav.querySelectorAll('.c-arr');
+      if (btns.length >= 2) {
+        if (!btns[0].querySelector('svg')) btns[0].innerHTML = LEFT_SVG;
+        if (!btns[1].querySelector('svg')) btns[1].innerHTML = RIGHT_SVG;
+      }
+      var wrap = nav.closest('.fandeck-wrap');
+      if (wrap) {
+        var cards = wrap.querySelectorAll('.fandeck-item');
+        nav.querySelectorAll('.c-dots i').forEach(function (dot, idx) {
+          if (dot.getAttribute('data-p05-dot') === '1') return;
+          dot.setAttribute('data-p05-dot', '1');
+          dot.addEventListener('click', function () {
+            if (cards[idx]) cards[idx].click();
+          });
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(syncNavs, 140);
+      setTimeout(syncNavs, 550);
+      setTimeout(syncNavs, 1300);
+    });
+  } else {
+    setTimeout(syncNavs, 140);
+    setTimeout(syncNavs, 550);
+    setTimeout(syncNavs, 1300);
   }
 })();

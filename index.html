@@ -1452,6 +1452,251 @@
     .form-status.err{background:#FBE9E4;color:#8A2F1D}
     .form-status a{font-weight:700;text-decoration:underline}
     .cta-socials,.mnav-soc,.footer-soc{flex-wrap:wrap;gap:10px 22px}
+  
+
+  /* === CRITICAL OVERRIDE P01: ШАПКА + БЛОК 1 (РАВНЫЕ КНОПКИ И МИНИ-ГАНТЕЛЬКА) === */
+  header {
+    background: linear-gradient(160deg, #3F291B 0%, #2A1A10 100%) !important;
+    background-color: #2E1C11 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: 1px solid rgba(224, 168, 98, 0.26) !important;
+    box-shadow: 0 10px 28px rgba(20, 11, 6, 0.30) !important;
+  }
+  header .logo,
+  header .logo-text {
+    color: #FFFBF5 !important;
+  }
+  header .logo-text span {
+    background: linear-gradient(90deg, #F6D9A8, #D99B58) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+  header .nav-links a {
+    color: rgba(255, 251, 245, 0.90) !important;
+  }
+  header .nav-links a:hover {
+    color: #F6D9A8 !important;
+  }
+  header .btn.btn-primary {
+    background: linear-gradient(135deg, #EDBB75 0%, #C0803A 100%) !important;
+    color: #2B1A0E !important;
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 6px 18px rgba(192, 128, 58, 0.36) !important;
+  }
+  header .burger {
+    border-color: rgba(246, 217, 168, 0.40) !important;
+    background: rgba(255, 251, 245, 0.08) !important;
+  }
+  header .burger span {
+    background: #FFF6E8 !important;
+  }
+  body.menu-open header {
+    background: transparent !important;
+    background-color: transparent !important;
+    border-bottom-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Блок 1: Строго одинаковые по ширине и высоте кнопки на ПК и телефоне */
+  .hero .hero-actions {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 590px !important;
+    align-items: stretch !important;
+  }
+  .hero .hero-actions > .btn,
+  .hero .hero-actions > button.btn,
+  .hero .hero-actions > a.btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 54px !important;
+    min-height: 54px !important;
+    max-height: 54px !important;
+    padding: 0 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    font-size: clamp(0.75rem, 1.02vw, 0.84rem) !important;
+    font-weight: 600 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.02em !important;
+    white-space: nowrap !important;
+    border-radius: 999px !important;
+    box-sizing: border-box !important;
+  }
+  .hero .hero-actions .btn-outline {
+    border-width: 1.5px !important;
+  }
+  /* Компактная детализированная мини-гантелька строго в размер букв (чуть выше строчной) */
+  .hero .hero-actions .bow-dumbbell-ico,
+  .bow-dumbbell-ico {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 19px !important;
+    height: 14px !important;
+    margin: 0 !important;
+    flex: 0 0 19px !important;
+    vertical-align: middle !important;
+    filter: drop-shadow(0 1px 1px rgba(43, 26, 14, 0.28)) !important;
+  }
+  .bow-dumbbell-ico svg {
+    width: 19px !important;
+    height: 14px !important;
+    display: block !important;
+    overflow: visible !important;
+    shape-rendering: geometricPrecision !important;
+  }
+  @media (max-width: 720px) {
+    .hero .hero-actions {
+      grid-template-columns: 1fr !important;
+      max-width: 100% !important;
+      gap: 12px !important;
+    }
+    .hero .hero-actions > .btn,
+    .hero .hero-actions > button.btn,
+    .hero .hero-actions > a.btn {
+      width: 100% !important;
+      height: 52px !important;
+      min-height: 52px !important;
+      max-height: 52px !important;
+      padding: 0 16px !important;
+      font-size: clamp(0.79rem, 3.6vw, 0.86rem) !important;
+    }
+  }
+  /* === END CRITICAL OVERRIDE P01 === */
+
+  
+
+  /* === CRITICAL OVERRIDE P05: БЛОКИ 8 И 10 — КРАСИВЫЕ КНОПКИ СТРОГО ПО ЦЕНТРУ === */
+  .approach-sec .container > .c-nav,
+  .steps-sec .container > .c-nav {
+    display: none !important;
+  }
+  .approach-sec .fandeck-wrap,
+  .steps-sec .fandeck-wrap,
+  .fandeck-wrap {
+    position: relative !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 12px 0 8px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .fandeck-wrap .fandeck-stage {
+    width: 100% !important;
+    max-width: 980px !important;
+    margin: 0 auto !important;
+  }
+  .fandeck-wrap > .c-nav {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    float: none !important;
+    align-self: center !important;
+    width: auto !important;
+    margin: 26px auto 0 auto !important;
+    padding: 7px 10px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 16px !important;
+    z-index: 20 !important;
+    background: rgba(255, 251, 245, 0.92) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(201, 144, 78, 0.36) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 12px 28px rgba(63, 41, 27, 0.12) !important;
+  }
+  .fandeck-wrap > .c-nav .c-arr {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(201, 144, 78, 0.50) !important;
+    background: linear-gradient(145deg, #FFFDF9 0%, #F3E6D3 100%) !important;
+    color: #3F291B !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 6px 14px rgba(63, 41, 27, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
+    transition: transform 0.24s ease, background 0.24s ease, color 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  .fandeck-wrap > .c-nav .c-arr svg {
+    width: 18px !important;
+    height: 18px !important;
+    stroke: currentColor !important;
+    stroke-width: 2.3 !important;
+    fill: none !important;
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    display: block !important;
+  }
+  .fandeck-wrap > .c-nav .c-arr:hover {
+    background: linear-gradient(135deg, #4A2F20 0%, #2E1C11 100%) !important;
+    color: #F6D9A8 !important;
+    border-color: #3F291B !important;
+    transform: translateY(-2px) scale(1.04) !important;
+    box-shadow: 0 10px 22px rgba(63, 41, 27, 0.24) !important;
+  }
+  .fandeck-wrap > .c-nav .c-arr:active {
+    transform: scale(0.95) !important;
+  }
+  .fandeck-wrap > .c-nav .c-dots {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    padding: 0 4px !important;
+  }
+  .fandeck-wrap > .c-nav .c-dots i {
+    display: block !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 999px !important;
+    background: rgba(63, 41, 27, 0.22) !important;
+    transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease !important;
+    cursor: pointer !important;
+  }
+  .fandeck-wrap > .c-nav .c-dots i.on {
+    width: 26px !important;
+    background: linear-gradient(90deg, #E0A862, #B8733F) !important;
+    box-shadow: 0 2px 8px rgba(201, 144, 78, 0.45) !important;
+  }
+  @media (max-width: 720px) {
+    .fandeck-wrap > .c-nav {
+      margin: 20px auto 0 auto !important;
+      padding: 6px 8px !important;
+      gap: 14px !important;
+    }
+    .fandeck-wrap > .c-nav .c-arr {
+      width: 40px !important;
+      height: 40px !important;
+      min-width: 40px !important;
+    }
+    .fandeck-wrap > .c-nav .c-arr svg {
+      width: 17px !important;
+      height: 17px !important;
+    }
+  }
+  /* === END CRITICAL OVERRIDE P05 === */
+
   </style>
 <script>
     /* Свои фото: положите файлы в папку по имени (jpg/png/webp). Пока их нет, показываются временные. */
@@ -1692,7 +1937,7 @@
           Помогаю выстроить тренировки и питание под твои цели, чтобы ты могла последовательно менять тело, видеть свой прогресс и понимать, что делаешь и зачем.
         </p>
         <div class="hero-actions">
-          <button class="btn btn-gold" onclick="openModal('🎁 Пробная тренировка в подарок')">🎁 Пробная тренировка в подарок</button>
+          <button class="btn btn-gold" onclick="openModal('🎁 Пробная тренировка в подарок')"><span class="bow-dumbbell-ico" data-hd="2" aria-hidden="true"><svg viewBox="0 0 96 68" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="hdbPl" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#6B462D"/><stop offset="48%" stop-color="#382012"/><stop offset="100%" stop-color="#190D06"/></linearGradient><linearGradient id="hdbGd" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FFF7E6"/><stop offset="45%" stop-color="#E6B672"/><stop offset="100%" stop-color="#8F551D"/></linearGradient><linearGradient id="hdbSk" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="55%" stop-color="#FCECD4"/><stop offset="100%" stop-color="#D7A76B"/></linearGradient></defs><g transform="rotate(-7 48 34)"><rect x="24" y="29.5" width="48" height="8" rx="3.5" fill="url(#hdbGd)" stroke="#321B0E" stroke-width="1.2"/><line x1="27" y1="31.8" x2="69" y2="31.8" stroke="#FFFDF9" stroke-width="1.2" opacity="0.85"/><rect x="4" y="18" width="9.5" height="31" rx="4.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><line x1="7" y1="21.5" x2="7" y2="45.5" stroke="#B6855E" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><rect x="14.5" y="12" width="12" height="43" rx="5.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><rect x="17.5" y="16" width="2.8" height="35" rx="1.4" fill="url(#hdbGd)"/><rect x="69.5" y="12" width="12" height="43" rx="5.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><rect x="72.5" y="16" width="2.8" height="35" rx="1.4" fill="url(#hdbGd)"/><rect x="82.5" y="18" width="9.5" height="31" rx="4.5" fill="url(#hdbPl)" stroke="#1A0E07" stroke-width="1.2"/><line x1="85.5" y1="21.5" x2="85.5" y2="45.5" stroke="#B6855E" stroke-width="1.4" stroke-linecap="round" opacity="0.75"/><path d="M45 36 L35 58 L41.5 55 L45.5 60.5 L48 38 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.2" stroke-linejoin="round"/><path d="M51 36 L61 58 L54.5 55 L50.5 60.5 L48 38 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.2" stroke-linejoin="round"/><path d="M47 32 C34 15, 21 20, 26.5 32 C30 39.5, 40 38, 47 33 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.35" stroke-linejoin="round"/><path d="M43 32 C36 26.5, 31 27.5, 30.5 31.5" stroke="#BF8644" stroke-width="1.3" stroke-linecap="round"/><path d="M49 32 C62 15, 75 20, 69.5 32 C66 39.5, 56 38, 49 33 Z" fill="url(#hdbSk)" stroke="#84511E" stroke-width="1.35" stroke-linejoin="round"/><path d="M53 32 C60 26.5, 65 27.5, 65.5 31.5" stroke="#BF8644" stroke-width="1.3" stroke-linecap="round"/><rect x="43.5" y="27.5" width="9" height="11" rx="3.8" fill="url(#hdbGd)" stroke="#6C3E14" stroke-width="1.2"/><ellipse cx="47" cy="30.8" rx="1.9" ry="1.3" fill="#FFFFFF" opacity="0.9"/></g></svg></span> Пробная тренировка в подарок</button>
           <a href="#services" class="btn btn-outline">Выбрать формат работы</a>
         </div>
         <a href="#cases" class="hero-link">Посмотреть результаты клиенток →</a>
@@ -2877,9 +3122,10 @@
   if (window.SITE_AFTER_OVERRIDES) window.SITE_AFTER_OVERRIDES();
 })();
 </script>
-<script src="reliefs.js"></script>
-<script src="lusion3d.js"></script>
-<script src="patches.js"></script>
+<script src="reliefs.js?v=20261121_p4"></script>
+<script src="lusion3d.js?v=20261121_p2"></script>
+<script src="gift3d.js?v=20261121_p3"></script>
+<script src="patches.js?v=20261121_p5"></script>
 </body>
 </html>
        

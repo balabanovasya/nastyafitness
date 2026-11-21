@@ -86,7 +86,7 @@
 
     '/* 2. Фирменная тёмно-шоколадная шапка с золотой кнопкой (эталон) */',
     'header {',
-    '  background: rgba(54, 34, 21, 0.96) !important;',
+    '  background: #3F291B !important;',
     '  border-bottom: 1px solid rgba(224, 168, 98, 0.22) !important;',
     '  box-shadow: 0 8px 28px rgba(30, 18, 10, 0.16);',
     '}',
@@ -355,7 +355,7 @@
     '.wall-relief-host > .container, .wall-relief-host > .faq-container { position: relative; z-index: 2; }',
     '.wall-sculpture {',
     '  position: absolute; pointer-events: none; z-index: 1;',
-    '  opacity: var(--relief-opacity, 0.28);',
+    '  opacity: var(--relief-strength, 0.92);',
     '}',
 
     '/* 13. Отзывы: скриншоты переписок без круглых аватарок и без кнопки */',
@@ -1066,7 +1066,7 @@
       { key: 'legalFio', kind: 'plain', label: 'ФИО самозанятой (в подвале и оферте)', def: 'Парфенова Анастасия' },
       { key: 'legalInn', kind: 'plain', label: 'ИНН самозанятой', def: 'уточняется при оформлении чека' },
       { key: 'floatAmp', kind: 'plain', label: 'Амплитуда парения фото Насти на ПК (например 7px)', def: '7px' },
-      { key: 'reliefOpacity', kind: 'plain', label: 'Заметность 15 фоновых барельефов (от 0.10 до 0.45)', def: '0.28' }
+      { key: 'reliefOpacity', kind: 'plain', label: 'Заметность 15 фоновых барельефов (от 0.10 до 0.45)', def: '0.92' }
     ];
     window.SITE_EDIT.settings = window.SITE_EDIT.settings || [];
     extraSettings.forEach(function (es) {
@@ -1125,7 +1125,7 @@
   st.id = 'nastya-pixel-controls-css';
   st.textContent = [
     'html { font-size: var(--font-base-px, 16px) !important; }',
-    'header { background: var(--header-bg, rgba(54, 34, 21, 0.96)) !important; }',
+    'header { background: var(--header-bg, #3F291B) !important; }',
     '.goals-sec, .cases-sec, .reviews-sec, .about-sec, .approach-sec, .services-sec, .steps-sec, .faq-sec, .cta-sec {',
     '  padding-top: var(--sec-pad-desk, 92px) !important;',
     '  padding-bottom: var(--sec-pad-desk, 92px) !important;',
@@ -1146,4 +1146,869 @@
   Object.keys(d).forEach(function (k) {
     if (d[k] != null && d[k] !== '') root.style.setProperty(k, d[k]);
   });
+})();
+
+/* === FIX 02: ЕДИНЫЙ ТЁМНО-КОРИЧНЕВЫЙ ЦВЕТ ШАПКИ (#3F291B) === */
+(function applyFix02Header() {
+  var old = document.getElementById('nastya-fix02-header-css');
+  if (old) old.remove();
+  var st = document.createElement('style');
+  st.id = 'nastya-fix02-header-css';
+  st.textContent = [
+    'header {',
+    '  background-color: var(--header-bg, #3F291B) !important;',
+    '  background-image: none !important;',
+    '  backdrop-filter: none !important;',
+    '  -webkit-backdrop-filter: none !important;',
+    '  border-bottom: 1px solid rgba(224, 168, 98, 0.24) !important;',
+    '  box-shadow: 0 8px 26px rgba(30, 18, 10, 0.22) !important;',
+    '}',
+    'header .logo { color: #FFFBF5 !important; }',
+    'header .logo-text span {',
+    '  background: linear-gradient(90deg, #F3CA92, #D99B58) !important;',
+    '  -webkit-background-clip: text !important;',
+    '  background-clip: text !important;',
+    '  -webkit-text-fill-color: transparent !important;',
+    '}',
+    'header .nav-links a { color: rgba(255, 251, 245, 0.88) !important; }',
+    'header .nav-links a:hover { color: #F6D9A8 !important; }',
+    'header .burger {',
+    '  border-color: rgba(246, 217, 168, 0.38) !important;',
+    '  background: rgba(255, 251, 245, 0.08) !important;',
+    '}',
+    'header .burger span { background: #FFF6E8 !important; }',
+    'body.menu-open header {',
+    '  background-color: transparent !important;',
+    '  border-bottom-color: transparent !important;',
+    '  box-shadow: none !important;',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
+})();
+
+/* === FIX 03: БЛОК 1 (ФОТО +8-10%, РАВНЫЕ КНОПКИ, HD МИНИ-ГАНТЕЛЬКА В РАЗМЕР БУКВ) === */
+(function applyFix03Hero() {
+  var old = document.getElementById('nastya-fix03-hero-css');
+  if (old) old.remove();
+
+  var st = document.createElement('style');
+  st.id = 'nastya-fix03-hero-css';
+  st.textContent = [
+    '/* 1. Главное фото +8–10% крупнее на ПК и мобильном */',
+    '.hero-grid {',
+    '  grid-template-columns: 0.98fr 1.04fr !important;',
+    '  gap: 44px !important;',
+    '}',
+    '.hero-visual {',
+    '  aspect-ratio: 4 / 5.05 !important;',
+    '  width: 100% !important;',
+    '  transform-origin: center center;',
+    '}',
+    '@media (max-width: 1024px) {',
+    '  .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; }',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .hero-visual {',
+    '    aspect-ratio: 3 / 4.55 !important;',
+    '    min-height: var(--hero-photo-mob-h, 485px) !important;',
+    '    height: auto !important;',
+    '    border-radius: 26px !important;',
+    '  }',
+    '  .hero-visual img {',
+    '    min-height: var(--hero-photo-mob-h, 485px) !important;',
+    '  }',
+    '}',
+
+    '/* 2. Одинаковые размеры кнопок «Пробная тренировка в подарок» и «Выбрать формат работы» */',
+    '.hero-actions {',
+    '  display: grid !important;',
+    '  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;',
+    '  gap: 14px !important;',
+    '  max-width: 560px !important;',
+    '  align-items: stretch !important;',
+    '}',
+    '.hero-actions .btn {',
+    '  width: 100% !important;',
+    '  min-height: 54px !important;',
+    '  height: 54px !important;',
+    '  padding: 0 18px !important;',
+    '  font-size: 0.83rem !important;',
+    '  line-height: 1.15 !important;',
+    '  gap: 7px !important;',
+    '  white-space: nowrap !important;',
+    '  box-sizing: border-box !important;',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .hero-actions {',
+    '    grid-template-columns: 1fr !important;',
+    '    max-width: 100% !important;',
+    '    gap: 12px !important;',
+    '  }',
+    '  .hero-actions .btn {',
+    '    width: 100% !important;',
+    '    min-height: 52px !important;',
+    '    height: 52px !important;',
+    '    padding: 0 16px !important;',
+    '    font-size: 0.84rem !important;',
+    '  }',
+    '}',
+    '@media (max-width: 360px) {',
+    '  .hero-actions .btn { font-size: 0.78rem !important; padding: 0 12px !important; }',
+    '}',
+
+    '/* 3. Компактная HD-гантелька с бантиком в размер букв (чуть выше строчной) */',
+    '.bow-dumbbell-ico {',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  justify-content: center !important;',
+    '  width: 21px !important;',
+    '  height: 15px !important;',
+    '  margin-right: 1px !important;',
+    '  vertical-align: -2px !important;',
+    '  flex-shrink: 0 !important;',
+    '  filter: drop-shadow(0 1px 1.5px rgba(43, 26, 14, 0.32));',
+    '}',
+    '.bow-dumbbell-ico svg {',
+    '  width: 100% !important;',
+    '  height: 100% !important;',
+    '  overflow: visible !important;',
+    '  shape-rendering: geometricPrecision;',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  var uid = 0;
+  function makeHdMiniDumbbellSvg() {
+    var p = 'mdb_' + (++uid);
+    return [
+      '<svg viewBox="0 0 88 58" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
+      '  <defs>',
+      '    <linearGradient id="' + p + '_plate" x1="0%" y1="0%" x2="100%" y2="100%">',
+      '      <stop offset="0%" stop-color="#6A452D"/>',
+      '      <stop offset="45%" stop-color="#3F2617"/>',
+      '      <stop offset="100%" stop-color="#1E1109"/>',
+      '    </linearGradient>',
+      '    <linearGradient id="' + p + '_gold" x1="0%" y1="0%" x2="0%" y2="100%">',
+      '      <stop offset="0%" stop-color="#FFF5E0"/>',
+      '      <stop offset="45%" stop-color="#E7B773"/>',
+      '      <stop offset="100%" stop-color="#9A6126"/>',
+      '    </linearGradient>',
+      '    <linearGradient id="' + p + '_rib" x1="0%" y1="0%" x2="100%" y2="100%">',
+      '      <stop offset="0%" stop-color="#FFFFFF"/>',
+      '      <stop offset="55%" stop-color="#FCECD3"/>',
+      '      <stop offset="100%" stop-color="#DFB884"/>',
+      '    </linearGradient>',
+      '    <linearGradient id="' + p + '_ribSh" x1="0%" y1="0%" x2="0%" y2="100%">',
+      '      <stop offset="0%" stop-color="#F6DFBC"/>',
+      '      <stop offset="100%" stop-color="#C28D50"/>',
+      '    </linearGradient>',
+      '  </defs>',
+      '  <g transform="rotate(-7 44 30)">',
+      '    <!-- Стальной гриф с золотым отблеском и насечкой -->',
+      '    <rect x="22" y="25.5" width="44" height="7" rx="3" fill="url(#' + p + '_gold)" stroke="#3F2617" stroke-width="1"/>',
+      '    <line x1="25" y1="27.3" x2="63" y2="27.3" stroke="#FFFDF8" stroke-width="1" opacity="0.8"/>',
+      '    <!-- Левые диски (внешний малый + основной с фаской и золотым кантом) -->',
+      '    <rect x="4" y="16" width="8.5" height="26" rx="4" fill="url(#' + p + '_plate)" stroke="#23130A" stroke-width="1"/>',
+      '    <line x1="6.5" y1="19" x2="6.5" y2="39" stroke="#A67652" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>',
+      '    <rect x="13" y="10.5" width="11" height="37" rx="5" fill="url(#' + p + '_plate)" stroke="#23130A" stroke-width="1.1"/>',
+      '    <rect x="15.5" y="14" width="2.4" height="30" rx="1.2" fill="url(#' + p + '_gold)" opacity="0.9"/>',
+      '    <!-- Правые диски -->',
+      '    <rect x="64" y="10.5" width="11" height="37" rx="5" fill="url(#' + p + '_plate)" stroke="#23130A" stroke-width="1.1"/>',
+      '    <rect x="66.5" y="14" width="2.4" height="30" rx="1.2" fill="url(#' + p + '_gold)" opacity="0.9"/>',
+      '    <rect x="75.5" y="16" width="8.5" height="26" rx="4" fill="url(#' + p + '_plate)" stroke="#23130A" stroke-width="1"/>',
+      '    <line x1="78" y1="19" x2="78" y2="39" stroke="#A67652" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>',
+      '    <!-- Ленты бантика (объёмные хвостики со срезом) -->',
+      '    <path d="M41.5 31 L33 49 L38.5 46.5 L42 51 L44 33 Z" fill="url(#' + p + '_ribSh)" stroke="#8F5924" stroke-width="1" stroke-linejoin="round"/>',
+      '    <path d="M46.5 31 L55 49 L49.5 46.5 L46 51 L44 33 Z" fill="url(#' + p + '_ribSh)" stroke="#8F5924" stroke-width="1" stroke-linejoin="round"/>',
+      '    <!-- Шёлковые петли бантика со складками -->',
+      '    <path d="M43 27.5 C32 13, 21 17.5, 25.5 27.5 C28.5 34, 37 32.5, 43 28.5 Z" fill="url(#' + p + '_rib)" stroke="#8F5924" stroke-width="1.15" stroke-linejoin="round"/>',
+      '    <path d="M40 27.5 C34 22.5, 29.5 23.5, 29 27" fill="none" stroke="#C68E4E" stroke-width="1.1" stroke-linecap="round"/>',
+      '    <path d="M45 27.5 C56 13, 67 17.5, 62.5 27.5 C59.5 34, 51 32.5, 45 28.5 Z" fill="url(#' + p + '_rib)" stroke="#8F5924" stroke-width="1.15" stroke-linejoin="round"/>',
+      '    <path d="M48 27.5 C54 22.5, 58.5 23.5, 59 27" fill="none" stroke="#C68E4E" stroke-width="1.1" stroke-linecap="round"/>',
+      '    <!-- Центральный узелок бантика -->',
+      '    <rect x="40" y="23.5" width="8" height="9.5" rx="3.4" fill="url(#' + p + '_gold)" stroke="#7A481B" stroke-width="1.1"/>',
+      '    <ellipse cx="43.2" cy="26.3" rx="1.6" ry="1.1" fill="#FFFFFF" opacity="0.85"/>',
+      '  </g>',
+      '</svg>'
+    ].join('');
+  }
+
+  function upgradeMiniDumbbells() {
+    // Обновляем все существующие мини-гантельки на сайте (кроме скрытых)
+    document.querySelectorAll('.bow-dumbbell-ico').forEach(function (span) {
+      if (span.getAttribute('data-hd') === '1') return;
+      span.setAttribute('data-hd', '1');
+      span.innerHTML = makeHdMiniDumbbellSvg();
+    });
+    // Если вдруг на кнопке Блока 1 осталась эмодзи 🎁 — заменяем на HD-гантельку
+    document.querySelectorAll('.hero .btn-gold, .step-card h3').forEach(function (el) {
+      if (el.innerHTML.indexOf('🎁') >= 0) {
+        el.innerHTML = el.innerHTML.replace(/🎁/g, '<span class="bow-dumbbell-ico" data-hd="1" aria-hidden="true">' + makeHdMiniDumbbellSvg() + '</span>');
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(upgradeMiniDumbbells, 120);
+      setTimeout(upgradeMiniDumbbells, 600);
+    });
+  } else {
+    setTimeout(upgradeMiniDumbbells, 120);
+    setTimeout(upgradeMiniDumbbells, 600);
+  }
+})();
+
+/* === FIX 05: БЛОК 5 — КОМПАКТНЕЕ НА ~18%, «БЕСПЛАТНО», ПРЕМИАЛЬНАЯ 3D-ГАНТЕЛЬКА С ШЁЛКОВЫМ БАНТОМ === */
+(function applyFix05Gift() {
+  var old = document.getElementById('nastya-fix05-gift-css');
+  if (old) old.remove();
+
+  var st = document.createElement('style');
+  st.id = 'nastya-fix05-gift-css';
+  st.textContent = [
+    '/* 1. Компактные пропорции блока подарка (-18% от прежних размеров) */',
+    '.gift-sec { padding: 14px 0 64px !important; }',
+    '.gift-card {',
+    '  max-width: 1020px !important;',
+    '  margin: 0 auto !important;',
+    '  grid-template-columns: 0.68fr 1.32fr !important;',
+    '  gap: 28px !important;',
+    '  padding: 32px 40px !important;',
+    '  border-radius: 26px !important;',
+    '}',
+    '.gift-card .eyebrow { margin-bottom: 6px !important; font-size: 0.7rem !important; }',
+    '.gift-card h2 { font-size: clamp(1.65rem, 2.9vw, 2.35rem) !important; margin: 4px 0 10px !important; line-height: 1.12 !important; }',
+    '.gift-card p { font-size: 0.88rem !important; line-height: 1.5 !important; margin-bottom: 12px !important; }',
+    '.gift-list { gap: 6px !important; margin-bottom: 20px !important; }',
+    '.gift-list li { font-size: 0.85rem !important; padding-left: 22px !important; }',
+    '.gift-art { position: relative; display: flex; justify-content: center; align-items: center; }',
+    '.gift-art::before {',
+    '  content: "";',
+    '  position: absolute;',
+    '  width: 210px; height: 210px;',
+    '  border-radius: 50%;',
+    '  background: radial-gradient(circle, rgba(246, 217, 168, 0.24) 0%, rgba(201, 144, 78, 0.08) 52%, transparent 72%);',
+    '  filter: blur(12px);',
+    '  pointer-events: none;',
+    '}',
+    '.gift-svg {',
+    '  width: min(230px, 84%) !important;',
+    '  height: auto !important;',
+    '  position: relative;',
+    '  z-index: 1;',
+    '  filter: drop-shadow(0 18px 26px rgba(14, 7, 3, 0.45));',
+    '  shape-rendering: geometricPrecision;',
+    '}',
+    '@media (max-width: 720px) {',
+    '  .gift-sec { padding: 8px 0 42px !important; }',
+    '  .gift-card {',
+    '    grid-template-columns: 1fr !important;',
+    '    padding: 22px 18px 24px !important;',
+    '    gap: 12px !important;',
+    '    border-radius: 22px !important;',
+    '  }',
+    '  .gift-art::before { width: 150px; height: 150px; }',
+    '  .gift-svg { width: 162px !important; }',
+    '  .gift-card h2 { font-size: 1.62rem !important; margin: 2px 0 8px !important; }',
+    '  .gift-card p { font-size: 0.82rem !important; margin-bottom: 10px !important; }',
+    '  .gift-list { gap: 5px !important; margin-bottom: 16px !important; }',
+    '  .gift-list li { font-size: 0.8rem !important; }',
+    '  .gift-card .gift-claim-btn { padding: 13px 22px !important; font-size: 0.82rem !important; }',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  // Высокодетализированная 3D-иллюстрация гантели с атласным шёлковым бантом
+  var LUXURY_GIFT_DUMBBELL_SVG = [
+    '<svg class="gift-svg" viewBox="0 0 320 230" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
+    '  <defs>',
+    '    <!-- Мягкая контактная тень на полу -->',
+    '    <radialGradient id="gdFloorSh" cx="50%" cy="50%" r="50%">',
+    '      <stop offset="0%" stop-color="#0E0703" stop-opacity="0.62"/>',
+    '      <stop offset="58%" stop-color="#140A04" stop-opacity="0.28"/>',
+    '      <stop offset="100%" stop-color="#140A04" stop-opacity="0"/>',
+    '    </radialGradient>',
+    '    <!-- Полированное шампань-золото для блинов -->',
+    '    <linearGradient id="gdGoldBody" x1="12%" y1="4%" x2="88%" y2="96%">',
+    '      <stop offset="0%" stop-color="#FFF5DE"/>',
+    '      <stop offset="22%" stop-color="#F2C887"/>',
+    '      <stop offset="50%" stop-color="#C98A42"/>',
+    '      <stop offset="78%" stop-color="#8C531D"/>',
+    '      <stop offset="100%" stop-color="#5B3310"/>',
+    '    </linearGradient>',
+    '    <!-- Тёмно-бронзовая фаска дисков -->',
+    '    <linearGradient id="gdBronzeFace" x1="0%" y1="0%" x2="100%" y2="100%">',
+    '      <stop offset="0%" stop-color="#764C30"/>',
+    '      <stop offset="48%" stop-color="#452918"/>',
+    '      <stop offset="100%" stop-color="#211209"/>',
+    '    </linearGradient>',
+    '    <!-- Гриф с цилиндрическим металлическим бликом -->',
+    '    <linearGradient id="gdShaft" x1="0%" y1="0%" x2="0%" y2="100%">',
+    '      <stop offset="0%" stop-color="#8D5A2A"/>',
+    '      <stop offset="22%" stop-color="#FFF4DD"/>',
+    '      <stop offset="46%" stop-color="#E6B672"/>',
+    '      <stop offset="76%" stop-color="#9A5F24"/>',
+    '      <stop offset="100%" stop-color="#4E2D10"/>',
+    '    </linearGradient>',
+    '    <!-- Атласная шёлковая лента — светлая сторона -->',
+    '    <linearGradient id="gdSilkHi" x1="10%" y1="0%" x2="90%" y2="100%">',
+    '      <stop offset="0%" stop-color="#FFFFFF"/>',
+    '      <stop offset="35%" stop-color="#FFF5E6"/>',
+    '      <stop offset="72%" stop-color="#EAD2B0"/>',
+    '      <stop offset="100%" stop-color="#C59763"/>',
+    '    </linearGradient>',
+    '    <!-- Атласная шёлковая лента — внутренняя глубина петли -->',
+    '    <linearGradient id="gdSilkDeep" x1="0%" y1="0%" x2="100%" y2="100%">',
+    '      <stop offset="0%" stop-color="#DFC097"/>',
+    '      <stop offset="55%" stop-color="#B07E49"/>',
+    '      <stop offset="100%" stop-color="#744922"/>',
+    '    </linearGradient>',
+    '    <!-- Хвостики ленты с мягким переливом -->',
+    '    <linearGradient id="gdTail" x1="0%" y1="0%" x2="100%" y2="100%">',
+    '      <stop offset="0%" stop-color="#F7E4C8"/>',
+    '      <stop offset="45%" stop-color="#FFF9F0"/>',
+    '      <stop offset="82%" stop-color="#D7B284"/>',
+    '      <stop offset="100%" stop-color="#A67440"/>',
+    '    </linearGradient>',
+    '    <!-- Объёмный фильтр тени для узла и петель -->',
+    '    <filter id="gdSoftSh" x="-20%" y="-20%" width="140%" height="140%">',
+    '      <feDropShadow dx="0" dy="5" stdDeviation="4" flood-color="#1E1007" flood-opacity="0.52"/>',
+    '    </filter>',
+    '  </defs>',
+    '  <!-- Тень под парящей гантелью -->',
+    '  <ellipse cx="160" cy="206" rx="108" ry="13" fill="url(#gdFloorSh)"/>',
+    '  <!-- Сдержанные золотые блики-искры -->',
+    '  <g opacity="0.88">',
+    '    <path d="M54 52 L56.5 44 L59 52 L67 54.5 L59 57 L56.5 65 L54 57 L46 54.5 Z" fill="#FBE4B9"/>',
+    '    <path d="M264 42 L265.8 36 L267.6 42 L273.6 43.8 L267.6 45.6 L265.8 51.6 L264 45.6 L258 43.8 Z" fill="#F6D59B"/>',
+    '    <circle cx="278" cy="144" r="2.6" fill="#E8B978" opacity="0.8"/>',
+    '    <circle cx="42" cy="152" r="2.2" fill="#F6D9A8" opacity="0.7"/>',
+    '  </g>',
+    '  <!-- ГАНТЕЛЬ В ЛЁГКОМ ДИНАМИЧНОМ НАКЛОНЕ -->',
+    '  <g transform="rotate(-7 160 116)">',
+    '    <!-- Гриф с ромбовидной насечкой и боковыми замками-кольцами -->',
+    '    <rect x="86" y="102" width="148" height="24" rx="7" fill="url(#gdShaft)" stroke="#5A3413" stroke-width="1.2"/>',
+    '    <!-- Мелкая ювелирная насечка на рукояти -->',
+    '    <g stroke="#6B3F18" stroke-width="1.2" opacity="0.45">',
+    '      <line x1="106" y1="105" x2="112" y2="123"/><line x1="114" y1="105" x2="120" y2="123"/>',
+    '      <line x1="122" y1="105" x2="128" y2="123"/><line x1="192" y1="105" x2="198" y2="123"/>',
+    '      <line x1="200" y1="105" x2="206" y2="123"/><line x1="208" y1="105" x2="214" y2="123"/>',
+    '      <line x1="112" y1="105" x2="106" y2="123"/><line x1="120" y1="105" x2="114" y2="123"/>',
+    '      <line x1="198" y1="105" x2="192" y2="123"/><line x1="206" y1="105" x2="200" y2="123"/>',
+    '    </g>',
+    '    <!-- Замки-втулки у блинов -->',
+    '    <rect x="87" y="96" width="11" height="36" rx="4" fill="url(#gdGoldBody)" stroke="#5A3413" stroke-width="1.1"/>',
+    '    <rect x="222" y="96" width="11" height="36" rx="4" fill="url(#gdGoldBody)" stroke="#5A3413" stroke-width="1.1"/>',
+    '    <!-- ЛЕВЫЕ БЛИНЫ (3 ступени + металлический колпачок + фаски и блики) -->',
+    '    <!-- Колпачок торца -->',
+    '    <rect x="14" y="102" width="14" height="24" rx="6" fill="url(#gdShaft)" stroke="#4E2B10" stroke-width="1.1"/>',
+    '    <!-- Внешний малый блин -->',
+    '    <rect x="24" y="75" width="24" height="78" rx="11" fill="url(#gdBronzeFace)" stroke="#321B0D" stroke-width="1.3"/>',
+    '    <rect x="28" y="79" width="7" height="70" rx="3.5" fill="url(#gdGoldBody)" opacity="0.92"/>',
+    '    <line x1="30.5" y1="84" x2="30.5" y2="144" stroke="#FFF9EE" stroke-width="1.5" stroke-linecap="round" opacity="0.78"/>',
+    '    <!-- Главный массивный блин (левый) -->',
+    '    <rect x="51" y="54" width="34" height="120" rx="14" fill="url(#gdGoldBody)" stroke="#522E10" stroke-width="1.4"/>',
+    '    <rect x="58" y="61" width="12" height="106" rx="6" fill="url(#gdBronzeFace)" opacity="0.92"/>',
+    '    <line x1="55.5" y1="64" x2="55.5" y2="164" stroke="#FFFDF8" stroke-width="2.2" stroke-linecap="round" opacity="0.82"/>',
+    '    <line x1="78" y1="64" x2="78" y2="164" stroke="#4D2B0E" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>',
+    '    <!-- ПРАВЫЕ БЛИНЫ (симметрия с учётом верхне-левого света) -->',
+    '    <!-- Главный массивный блин (правый) -->',
+    '    <rect x="235" y="54" width="34" height="120" rx="14" fill="url(#gdGoldBody)" stroke="#522E10" stroke-width="1.4"/>',
+    '    <rect x="250" y="61" width="12" height="106" rx="6" fill="url(#gdBronzeFace)" opacity="0.92"/>',
+    '    <line x1="241" y1="64" x2="241" y2="164" stroke="#FFFDF8" stroke-width="2.2" stroke-linecap="round" opacity="0.82"/>',
+    '    <line x1="264" y1="64" x2="264" y2="164" stroke="#4D2B0E" stroke-width="1.6" stroke-linecap="round" opacity="0.45"/>',
+    '    <!-- Внешний малый блин -->',
+    '    <rect x="272" y="75" width="24" height="78" rx="11" fill="url(#gdBronzeFace)" stroke="#321B0D" stroke-width="1.3"/>',
+    '    <rect x="276" y="79" width="7" height="70" rx="3.5" fill="url(#gdGoldBody)" opacity="0.92"/>',
+    '    <line x1="278.5" y1="84" x2="278.5" y2="144" stroke="#FFF9EE" stroke-width="1.5" stroke-linecap="round" opacity="0.78"/>',
+    '    <!-- Колпачок торца -->',
+    '    <rect x="292" y="102" width="14" height="24" rx="6" fill="url(#gdShaft)" stroke="#4E2B10" stroke-width="1.1"/>',
+    '    <!-- АТЛАСНЫЙ ШЁЛКОВЫЙ БАНТ НА ГРИФЕ (с лёгким живым покачиванием .gift-lid) -->',
+    '    <g class="gift-lid" style="transform-origin: 160px 112px;" filter="url(#gdSoftSh)">',
+    '      <!-- Свободные атласные ленты-хвостики с ласточкиным вырезом -->',
+    '      <path d="M153 118 C144 136, 134 156, 121 174 L137 167 L144 181 C152 162, 158 142, 161 122 Z" fill="url(#gdTail)" stroke="#9A6935" stroke-width="1.2" stroke-linejoin="round"/>',
+    '      <path d="M151 124 C144 140, 138 154, 130 166" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.72"/>',
+    '      <path d="M167 118 C176 136, 186 156, 199 174 L183 167 L176 181 C168 162, 162 142, 159 122 Z" fill="url(#gdTail)" stroke="#9A6935" stroke-width="1.2" stroke-linejoin="round"/>',
+    '      <path d="M169 124 C176 140, 182 154, 190 166" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round" opacity="0.72"/>',
+    '      <!-- Задняя глубина петель банта (создаёт объём настоящей ткани) -->',
+    '      <path d="M158 108 C132 76, 98 84, 106 112 C112 128, 138 126, 158 115 Z" fill="url(#gdSilkDeep)" stroke="#855526" stroke-width="1.2"/>',
+    '      <path d="M162 108 C188 76, 222 84, 214 112 C208 128, 182 126, 162 115 Z" fill="url(#gdSilkDeep)" stroke="#855526" stroke-width="1.2"/>',
+    '      <!-- Передние мягкие шёлковые лепестки банта со складками -->',
+    '      <path d="M158 106 C134 62, 92 70, 99 102 C104 122, 134 120, 158 112 Z" fill="url(#gdSilkHi)" stroke="#9E6C36" stroke-width="1.35" stroke-linejoin="round"/>',
+    '      <path d="M152 106 C134 86, 113 88, 112 102" fill="none" stroke="#C69359" stroke-width="1.6" stroke-linecap="round"/>',
+    '      <path d="M148 110 C130 100, 114 102, 112 111" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>',
+    '      <path d="M162 106 C186 62, 228 70, 221 102 C216 122, 186 120, 162 112 Z" fill="url(#gdSilkHi)" stroke="#9E6C36" stroke-width="1.35" stroke-linejoin="round"/>',
+    '      <path d="M168 106 C186 86, 207 88, 208 102" fill="none" stroke="#C69359" stroke-width="1.6" stroke-linecap="round"/>',
+    '      <path d="M172 110 C190 100, 206 102, 208 111" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity="0.8"/>',
+    '      <!-- Центральная перетяжка / атласный узел -->',
+    '      <rect x="148" y="96" width="24" height="30" rx="9" fill="url(#gdGoldBody)" stroke="#75461B" stroke-width="1.35"/>',
+    '      <path d="M153 102 C156 100, 164 100, 167 102" stroke="#FFFDF9" stroke-width="2" stroke-linecap="round" opacity="0.85"/>',
+    '      <line x1="152" y1="112" x2="168" y2="112" stroke="#8C5621" stroke-width="1.1" opacity="0.45"/>',
+    '    </g>',
+    '  </g>',
+    '</svg>'
+  ].join('');
+
+  function upgradeGiftBlock() {
+    var giftSec = document.querySelector('.gift-sec');
+    if (!giftSec) return;
+
+    // 1. Меняем текст «за мой счёт» -> «бесплатно» (даже если splitWords уже разбил заголовок на спаны)
+    var h2 = giftSec.querySelector('h2');
+    if (h2 && /за\s*мой\s*сч[её]т/i.test(h2.textContent || '')) {
+      var ital = h2.querySelector('i');
+      if (ital) {
+        ital.innerHTML = 'бесплатно';
+      } else {
+        h2.innerHTML = 'Первая пробная тренировка — <i>бесплатно</i>';
+      }
+    }
+
+    // 2. Ставим ювелирную 3D-гантельку с атласным бантом
+    var art = giftSec.querySelector('.gift-art');
+    if (art) {
+      var oldSvg = art.querySelector('.gift-svg');
+      if (oldSvg && oldSvg.getAttribute('data-lux') !== '1') {
+        var holder = document.createElement('div');
+        holder.innerHTML = LUXURY_GIFT_DUMBBELL_SVG;
+        var fresh = holder.firstChild;
+        fresh.setAttribute('data-lux', '1');
+        oldSvg.replaceWith(fresh);
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(upgradeGiftBlock, 140);
+      setTimeout(upgradeGiftBlock, 650);
+    });
+  } else {
+    setTimeout(upgradeGiftBlock, 140);
+    setTimeout(upgradeGiftBlock, 650);
+  }
+})();
+
+/* === FIX 06: БЛОКИ 8 И 10 — КРАСИВЫЕ КНОПКИ ПРОЛИСТЫВАНИЯ СТРОГО ПО ЦЕНТРУ === */
+(function applyFix06Carousels() {
+  var old = document.getElementById('nastya-fix06-carousels-css');
+  if (old) old.remove();
+
+  var st = document.createElement('style');
+  st.id = 'nastya-fix06-carousels-css';
+  st.textContent = [
+    '/* Убираем любые посторонние старые .c-nav вне .fandeck-wrap в Блоке 8 и Блоке 10 */',
+    '.approach-sec .container > .c-nav,',
+    '.steps-sec .container > .c-nav {',
+    '  display: none !important;',
+    '}',
+
+    '/* Гарантируем симметричное центрирование веерной карусели */',
+    '.fandeck-wrap {',
+    '  position: relative !important;',
+    '  width: 100% !important;',
+    '  margin: 0 auto !important;',
+    '  padding: 14px 0 8px !important;',
+    '  display: flex !important;',
+    '  flex-direction: column !important;',
+    '  align-items: center !important;',
+    '}',
+    '.fandeck-stage {',
+    '  width: 100% !important;',
+    '  max-width: 980px !important;',
+    '  margin: 0 auto !important;',
+    '}',
+
+    '/* Панель навигации строго по центру под карточками */',
+    '.fandeck-wrap > .c-nav {',
+    '  position: relative !important;',
+    '  left: auto !important;',
+    '  right: auto !important;',
+    '  bottom: auto !important;',
+    '  transform: none !important;',
+    '  width: auto !important;',
+    '  margin: 26px auto 0 auto !important;',
+    '  padding: 7px 10px !important;',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  justify-content: center !important;',
+    '  gap: 16px !important;',
+    '  z-index: 15 !important;',
+    '  background: rgba(255, 251, 245, 0.86) !important;',
+    '  backdrop-filter: blur(10px) !important;',
+    '  -webkit-backdrop-filter: blur(10px) !important;',
+    '  border: 1px solid rgba(201, 144, 78, 0.32) !important;',
+    '  border-radius: 999px !important;',
+    '  box-shadow: 0 12px 28px rgba(63, 41, 27, 0.11) !important;',
+    '}',
+
+    '/* Премиальные круглые кнопки со стрелками */',
+    '.fandeck-wrap > .c-nav .c-arr {',
+    '  position: static !important;',
+    '  transform: none !important;',
+    '  width: 44px !important;',
+    '  height: 44px !important;',
+    '  min-width: 44px !important;',
+    '  padding: 0 !important;',
+    '  margin: 0 !important;',
+    '  border-radius: 50% !important;',
+    '  border: 1px solid rgba(201, 144, 78, 0.45) !important;',
+    '  background: linear-gradient(145deg, #FFFDF9 0%, #F4E9D8 100%) !important;',
+    '  color: #3F291B !important;',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  justify-content: center !important;',
+    '  cursor: pointer !important;',
+    '  box-shadow: 0 6px 14px rgba(63, 41, 27, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;',
+    '  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;',
+    '  -webkit-tap-highlight-color: transparent;',
+    '}',
+    '.fandeck-wrap > .c-nav .c-arr svg {',
+    '  width: 18px !important;',
+    '  height: 18px !important;',
+    '  stroke: currentColor !important;',
+    '  stroke-width: 2.2 !important;',
+    '  fill: none !important;',
+    '  stroke-linecap: round !important;',
+    '  stroke-linejoin: round !important;',
+    '  display: block !important;',
+    '}',
+    '.fandeck-wrap > .c-nav .c-arr:hover {',
+    '  background: linear-gradient(135deg, #4A2F20 0%, #3F291B 100%) !important;',
+    '  color: #F6D9A8 !important;',
+    '  border-color: #3F291B !important;',
+    '  transform: translateY(-2px) scale(1.04) !important;',
+    '  box-shadow: 0 10px 22px rgba(63, 41, 27, 0.24) !important;',
+    '}',
+    '.fandeck-wrap > .c-nav .c-arr:active {',
+    '  transform: scale(0.95) !important;',
+    '}',
+
+    '/* Точки-индикаторы между кнопками (работают и на ПК, и на телефоне) */',
+    '.fandeck-wrap > .c-nav .c-dots {',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  justify-content: center !important;',
+    '  gap: 8px !important;',
+    '  padding: 0 4px !important;',
+    '}',
+    '.fandeck-wrap > .c-nav .c-dots i {',
+    '  display: block !important;',
+    '  width: 7px !important;',
+    '  height: 7px !important;',
+    '  border-radius: 999px !important;',
+    '  background: rgba(63, 41, 27, 0.22) !important;',
+    '  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1), background 0.35s ease !important;',
+    '  cursor: pointer;',
+    '}',
+    '.fandeck-wrap > .c-nav .c-dots i.on {',
+    '  width: 26px !important;',
+    '  background: linear-gradient(90deg, #E0A862, #B8733F) !important;',
+    '  box-shadow: 0 2px 8px rgba(201, 144, 78, 0.45) !important;',
+    '}',
+
+    '/* Мобильная адаптация (чёткий центр, удобное нажатие пальцем) */',
+    '@media (max-width: 720px) {',
+    '  .fandeck-wrap > .c-nav {',
+    '    margin-top: 20px !important;',
+    '    padding: 6px 8px !important;',
+    '    gap: 14px !important;',
+    '  }',
+    '  .fandeck-wrap > .c-nav .c-arr {',
+    '    width: 40px !important;',
+    '    height: 40px !important;',
+    '    min-width: 40px !important;',
+    '  }',
+    '  .fandeck-wrap > .c-nav .c-arr svg {',
+    '    width: 17px !important;',
+    '    height: 17px !important;',
+    '  }',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  var LEFT_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>';
+  var RIGHT_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+
+  function polishFanDeckNavs() {
+    // 1. Удаляем «сиротские» старые .c-nav, оставшиеся от initCarousel в Блоке 8 и Блоке 10
+    document.querySelectorAll('.approach-sec .container > .c-nav, .steps-sec .container > .c-nav').forEach(function (orphan) {
+      orphan.remove();
+    });
+
+    // 2. Ставим чёткие SVG-стрелки в кнопки обеих веерных каруселей и делаем точки кликабельными
+    document.querySelectorAll('.fandeck-wrap > .c-nav').forEach(function (nav) {
+      var btns = nav.querySelectorAll('.c-arr');
+      if (btns.length >= 2) {
+        if (!btns[0].querySelector('svg')) btns[0].innerHTML = LEFT_SVG;
+        if (!btns[1].querySelector('svg')) btns[1].innerHTML = RIGHT_SVG;
+      }
+      var wrap = nav.closest('.fandeck-wrap');
+      if (wrap) {
+        var cards = wrap.querySelectorAll('.fandeck-item');
+        nav.querySelectorAll('.c-dots i').forEach(function (dot, idx) {
+          if (dot.getAttribute('data-dot-bound') === '1') return;
+          dot.setAttribute('data-dot-bound', '1');
+          dot.addEventListener('click', function () {
+            if (cards[idx]) cards[idx].click();
+          });
+        });
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(polishFanDeckNavs, 150);
+      setTimeout(polishFanDeckNavs, 650);
+    });
+  } else {
+    setTimeout(polishFanDeckNavs, 150);
+    setTimeout(polishFanDeckNavs, 650);
+  }
+})();
+
+/* === FIX 07: БЛОК 9 — ЗАМЕТНЫЙ УКАЗАТЕЛЬ «ЛИСТАЙТЕ ВБОК» НА САМОМ ВЕРХУ === */
+(function applyFix07ServicesSwipe() {
+  var old = document.getElementById('nastya-fix07-swipe-css');
+  if (old) old.remove();
+
+  var st = document.createElement('style');
+  st.id = 'nastya-fix07-swipe-css';
+  st.textContent = [
+    '/* Выравнивание верхней шапки секции Услуги */',
+    '#services .section-head {',
+    '  margin-bottom: 20px !important;',
+    '  align-items: flex-end !important;',
+    '}',
+
+    '/* Контрастная, мгновенно заметная плашка на самом верху секции услуг */',
+    '.services-top-swipe-wrap {',
+    '  position: relative;',
+    '  z-index: 6;',
+    '  display: flex;',
+    '  align-items: center;',
+    '  justify-content: flex-start;',
+    '  margin: 0 0 22px 0 !important;',
+    '}',
+    '.services-swipe-bar.top-hero-pill {',
+    '  position: relative !important;',
+    '  z-index: 6 !important;',
+    '  margin: 0 !important;',
+    '  padding: 9px 12px 9px 18px !important;',
+    '  max-width: 100% !important;',
+    '  width: auto !important;',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  justify-content: space-between !important;',
+    '  gap: 16px !important;',
+    '  background: linear-gradient(135deg, #3F291B 0%, #523523 100%) !important;',
+    '  color: #FFFBF5 !important;',
+    '  border: 1px solid rgba(246, 217, 168, 0.45) !important;',
+    '  border-radius: 999px !important;',
+    '  box-shadow: 0 12px 28px rgba(63, 41, 27, 0.24), inset 0 1px 0 rgba(255, 246, 232, 0.16) !important;',
+    '  font-family: "Manrope", sans-serif !important;',
+    '  font-size: 0.84rem !important;',
+    '  font-weight: 600 !important;',
+    '  letter-spacing: 0.01em !important;',
+    '}',
+    '.services-swipe-bar.top-hero-pill .swipe-text {',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  gap: 9px !important;',
+    '  color: #FFF6E8 !important;',
+    '}',
+    '.services-swipe-bar.top-hero-pill .swipe-dot {',
+    '  width: 7px;',
+    '  height: 7px;',
+    '  border-radius: 50%;',
+    '  background: #F0BE78;',
+    '  box-shadow: 0 0 10px rgba(240, 190, 120, 0.85);',
+    '  flex-shrink: 0;',
+    '}',
+    '.services-swipe-bar.top-hero-pill svg.anim-arrow {',
+    '  width: 19px !important;',
+    '  height: 19px !important;',
+    '  stroke: #F6D9A8 !important;',
+    '  stroke-width: 2.3 !important;',
+    '  fill: none !important;',
+    '  flex-shrink: 0;',
+    '  animation: nastyaTopSwipeSlide 1.25s ease-in-out infinite !important;',
+    '}',
+    '@keyframes nastyaTopSwipeSlide {',
+    '  0%, 100% { transform: translateX(0); opacity: 0.65; }',
+    '  50% { transform: translateX(5px); opacity: 1; }',
+    '}',
+    '.services-swipe-bar.top-hero-pill .swipe-arrows {',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  gap: 7px !important;',
+    '  flex-shrink: 0 !important;',
+    '}',
+    '.services-swipe-bar.top-hero-pill button {',
+    '  width: 32px !important;',
+    '  height: 32px !important;',
+    '  border-radius: 50% !important;',
+    '  border: 1px solid rgba(246, 217, 168, 0.48) !important;',
+    '  background: linear-gradient(135deg, #F0C382 0%, #C98A42 100%) !important;',
+    '  color: #2B1A0E !important;',
+    '  display: inline-flex !important;',
+    '  align-items: center !important;',
+    '  justify-content: center !important;',
+    '  cursor: pointer !important;',
+    '  padding: 0 !important;',
+    '  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.22) !important;',
+    '  transition: transform 0.2s ease, filter 0.2s ease !important;',
+    '}',
+    '.services-swipe-bar.top-hero-pill button:hover {',
+    '  transform: scale(1.07);',
+    '  filter: brightness(1.06);',
+    '}',
+    '.services-swipe-bar.top-hero-pill button:active {',
+    '  transform: scale(0.94);',
+    '}',
+    '.services-swipe-bar.top-hero-pill button svg {',
+    '  width: 15px;',
+    '  height: 15px;',
+    '  stroke: #2B1A0E;',
+    '  stroke-width: 2.5;',
+    '  fill: none;',
+    '  stroke-linecap: round;',
+    '  stroke-linejoin: round;',
+    '}',
+
+    '/* На мобильных: растягивается ровно по ширине контейнера прямо под заголовком «Услуги и форматы работы» */',
+    '@media (max-width: 720px) {',
+    '  #services .section-head { margin-bottom: 14px !important; }',
+    '  .services-top-swipe-wrap { margin: 0 0 16px 0 !important; width: 100% !important; }',
+    '  .services-swipe-bar.top-hero-pill {',
+    '    width: 100% !important;',
+    '    padding: 8px 10px 8px 14px !important;',
+    '    font-size: 0.78rem !important;',
+    '    gap: 10px !important;',
+    '  }',
+    '  .services-swipe-bar.top-hero-pill button {',
+    '    width: 30px !important;',
+    '    height: 30px !important;',
+    '  }',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  function mountTopSwipeIndicator() {
+    var sec = document.getElementById('services') || document.querySelector('.services-sec');
+    if (!sec) return;
+
+    // Убираем любые старые или продублированные указатели внутри/вокруг секции услуг
+    document.querySelectorAll('.services-swipe-bar, .services-top-swipe-wrap').forEach(function (el) {
+      el.remove();
+    });
+
+    var head = sec.querySelector('.section-head');
+    var tabs = document.getElementById('serviceTabs');
+    var anchor = head || tabs;
+    if (!anchor) return;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'services-top-swipe-wrap';
+    wrap.innerHTML = [
+      '<div class="services-swipe-bar top-hero-pill">',
+      '  <span class="swipe-text">',
+      '    <span class="swipe-dot" aria-hidden="true"></span>',
+      '    <span>Листайте категории и тарифы вбок</span>',
+      '    <svg class="anim-arrow" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">',
+      '      <path d="M5 12h14M13 6l6 6-6 6"/>',
+      '    </svg>',
+      '  </span>',
+      '  <span class="swipe-arrows">',
+      '    <button type="button" data-dir="-1" aria-label="Листать назад">',
+      '      <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>',
+      '    </button>',
+      '    <button type="button" data-dir="1" aria-label="Листать вперёд">',
+      '      <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>',
+      '    </button>',
+      '  </span>',
+      '</div>'
+    ].join('');
+
+    wrap.querySelectorAll('button[data-dir]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var dir = Number(btn.getAttribute('data-dir')) || 1;
+        var tabsRow = document.getElementById('serviceTabs');
+        var tariffsRow = document.getElementById('tariffsContainer');
+
+        // 1. На узких экранах плавно пролистываем вкладки категорий и карточки тарифов
+        if (tabsRow && tabsRow.scrollWidth > tabsRow.clientWidth + 8) {
+          tabsRow.scrollBy({ left: dir * 190, behavior: 'smooth' });
+        }
+        if (tariffsRow && tariffsRow.scrollWidth > tariffsRow.clientWidth + 8) {
+          tariffsRow.scrollBy({ left: dir * 290, behavior: 'smooth' });
+        } else if (tabsRow) {
+          // 2. На широком ПК, где карточки уже видны целиком — переключаем соседнюю категорию услуг
+          var tabBtns = Array.prototype.slice.call(tabsRow.querySelectorAll('.service-tab-btn'));
+          if (tabBtns.length > 1) {
+            var activeIdx = tabBtns.findIndex(function (b) { return b.classList.contains('active'); });
+            if (activeIdx < 0) activeIdx = 0;
+            var nextIdx = (activeIdx + dir + tabBtns.length) % tabBtns.length;
+            tabBtns[nextIdx].click();
+          }
+        }
+      });
+    });
+
+    if (head) {
+      // Ставим СТРОГО под заголовком «Услуги и форматы работы» (вверху блока, над вкладками А/Б/В/Г)
+      head.insertAdjacentElement('afterend', wrap);
+    } else {
+      anchor.insertAdjacentElement('beforebegin', wrap);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(mountTopSwipeIndicator, 160);
+      setTimeout(mountTopSwipeIndicator, 700);
+    });
+  } else {
+    setTimeout(mountTopSwipeIndicator, 160);
+    setTimeout(mountTopSwipeIndicator, 700);
+  }
+})();
+
+/* === FIX 08: БЛОК 12 — УДАЛЕНИЕ ВСТАВКИ ПРО ПРОБНУЮ ТРЕНИРОВКУ В ФОРМЕ === */
+(function applyFix08ContactsClean() {
+  var old = document.getElementById('nastya-fix08-contacts-css');
+  if (old) old.remove();
+
+  var st = document.createElement('style');
+  st.id = 'nastya-fix08-contacts-css';
+  st.textContent = [
+    '/* Полностью убираем плашку-вставку про пробную тренировку в форме контактов */',
+    '#contacts .form-gift, .cta-form-card .form-gift, .form-gift {',
+    '  display: none !important;',
+    '}',
+    '/* Аккуратный отступ под подзаголовком формы на ПК и телефоне */',
+    '.cta-form-card p { margin-bottom: 20px !important; }',
+    '@media (max-width: 720px) {',
+    '  .cta-form-card p { margin-bottom: 16px !important; }',
+    '}'
+  ].join('\n');
+  document.head.appendChild(st);
+
+  function removeFormGiftNodes() {
+    document.querySelectorAll('#contacts .form-gift, .cta-form-card .form-gift, .form-gift').forEach(function (el) {
+      el.remove();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      removeFormGiftNodes();
+      setTimeout(removeFormGiftNodes, 250);
+    });
+  } else {
+    removeFormGiftNodes();
+    setTimeout(removeFormGiftNodes, 250);
+  }
 })();

@@ -10,7 +10,25 @@ window.SITE_OVERRIDES = {
     "rev-screen-3": "photos/rev-screen-3-mwqfijg4.jpg",
     "rev-screen-4": "photos/rev-screen-4-mwqfim60.jpg"
   },
-  "lists": {},
+  "lists": {
+    "approach": [
+      {
+        "title": "01. Персональная таблица",
+        "text": "Вся программа, рабочие веса, повторения и видео с техникой собраны в удобной личной Google Таблице.",
+        "img": "photos/approach-1.jpg"
+      },
+      {
+        "title": "02. Внимание к технике",
+        "text": "Детальный контроль каждого движения на онлайн-тренировках по видеосвязи и подробный разбор твоих видеоотчётов.",
+        "img": "photos/approach-2.jpg"
+      },
+      {
+        "title": "03. Рацион без голодовок",
+        "text": "Индивидуальный расчёт КБЖУ и рекомендации по питанию из привычных продуктов без жёстких запретов.",
+        "img": "photos/approach-3-img-mwqj1j2w.jpg"
+      }
+    ]
+  },
   "meta": {},
   "design": {},
   "reviewsCustom": [

@@ -1,9 +1,9 @@
 /**
- * reliefs.js — 15 матовых скульптурных 3D-барельефов (без свечения и сливания с фоном)
- * - Реальный Three.js PBR-рендер в матовом травертине/глине (светлые блоки) и шоколадной бронзе (тёмные блоки)
- * - Чёткое направленное боковое освещение — видны каждая грань, фаска, шнуровка, стрелки и насечка
- * - Исправлена ориентация всех надписей: «16 КГ», «10 KG» и «WHEY ISOLATE» стоят строго ровно и лицом к зрителю
- * - Один временный offscreen WebGLRenderer (512px) — мгновенная работа и 100% стабильность на iPhone
+ * reliefs.js — 15 скульптурных 3D-барельефов в кофейно-шоколадно-золотой палитре
+ * - Не сливаются с фоном и не перетягивают внимание от текста (аккуратный премиальный баланс)
+ * - Материалы: тёплый капучино, жареный кофе, матовый шоколад и деликатное сатиновое золото
+ * - Реальный Three.js PBR-рендер (один временный offscreen WebGLRenderer 512px -> 100% стабильно на iPhone)
+ * - Ровная ориентация всех надписей («16 КГ», «10 KG», «WHEY ISOLATE») и мягкий 3D-наклон за мышкой
  */
 (function () {
   'use strict';
@@ -24,16 +24,15 @@
       '  pointer-events: none;',
       '  user-select: none;',
       '  z-index: 1;',
-      '  opacity: var(--relief-strength, 0.88);',
+      '  opacity: var(--relief-strength, 0.78);',
       '  transform-origin: center center;',
       '  perspective: 900px;',
       '  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);',
       '  will-change: transform;',
       '}',
-      '/* Никакого белого свечения вокруг фигур — только естественный объёмный рельеф и мягкая падающая тень */',
       '.wall-sculpture::before { display: none !important; content: none !important; }',
       '.wall-sculpture.on-dark {',
-      '  opacity: var(--relief-strength-dark, 0.92);',
+      '  opacity: var(--relief-strength-dark, 0.86);',
       '}',
       '.wall-sculpture-img {',
       '  position: relative;',
@@ -43,45 +42,45 @@
       '  object-fit: contain;',
       '  display: block;',
       '  filter:',
-      '    drop-shadow(10px 15px 18px rgba(63, 41, 27, 0.22))',
-      '    drop-shadow(3px 5px 5px rgba(63, 41, 27, 0.14));',
+      '    drop-shadow(10px 15px 18px rgba(63, 41, 27, 0.20))',
+      '    drop-shadow(3px 5px 5px rgba(63, 41, 27, 0.12));',
       '}',
       '.wall-sculpture.on-dark .wall-sculpture-img {',
       '  filter:',
-      '    drop-shadow(12px 18px 22px rgba(6, 3, 1, 0.78))',
-      '    drop-shadow(3px 5px 6px rgba(0, 0, 0, 0.58));',
+      '    drop-shadow(12px 18px 22px rgba(6, 3, 1, 0.76))',
+      '    drop-shadow(3px 5px 6px rgba(0, 0, 0, 0.56));',
       '}',
       '@media (max-width: 1024px) {',
-      '  .wall-sculpture { opacity: calc(var(--relief-strength, 0.88) * 0.90); }',
+      '  .wall-sculpture { opacity: calc(var(--relief-strength, 0.78) * 0.90); }',
       '}',
       '@media (max-width: 720px) {',
       '  .wall-sculpture {',
-      '    opacity: calc(var(--relief-strength, 0.88) * 0.78);',
-      '    max-width: 174px !important;',
-      '    max-height: 174px !important;',
+      '    opacity: calc(var(--relief-strength, 0.78) * 0.80);',
+      '    max-width: 170px !important;',
+      '    max-height: 170px !important;',
       '  }',
       '  .wall-sculpture.on-dark {',
-      '    opacity: calc(var(--relief-strength-dark, 0.92) * 0.88);',
+      '    opacity: calc(var(--relief-strength-dark, 0.86) * 0.86);',
       '  }',
       '  .wall-sculpture[data-shape="kettlebell16"].on-dark {',
-      '    max-width: 198px !important;',
-      '    max-height: 198px !important;',
+      '    max-width: 196px !important;',
+      '    max-height: 196px !important;',
       '  }',
       '  .wall-sculpture[data-shape="barbell"] {',
-      '    max-width: 210px !important;',
-      '    max-height: 160px !important;',
+      '    max-width: 208px !important;',
+      '    max-height: 158px !important;',
       '  }',
       '  .about-sec .wall-sculpture[data-shape="yogaMat"] {',
       '    left: auto !important; right: -8px !important; top: 6px !important;',
-      '    max-width: 192px !important; max-height: 162px !important;',
+      '    max-width: 190px !important; max-height: 160px !important;',
       '  }',
       '  .about-sec .wall-sculpture[data-shape="kettlebell16"] {',
       '    top: auto !important; bottom: -14px !important; left: 4px !important;',
-      '    max-width: 154px !important; max-height: 154px !important;',
+      '    max-width: 152px !important; max-height: 152px !important;',
       '  }',
       '  .faq-sec .wall-sculpture[data-shape="sportBottle"] {',
       '    left: auto !important; right: -4px !important; top: 44% !important;',
-      '    max-width: 158px !important; max-height: 198px !important;',
+      '    max-width: 156px !important; max-height: 196px !important;',
       '  }',
       '}',
       '.about-sec .about-photo-main, .about-sec .gallery-card, .about-sec .cert-scan-card { position: relative; z-index: 4; }',
@@ -91,22 +90,22 @@
     document.head.appendChild(st);
   }
 
-  // Спокойная матовая студийная карта без выжженных белых пятен
+  // Тёплая студийная карта для деликатных золотых и кофейных бликов без пересвета
   function createSculptureEnv(THREE, renderer, dark) {
     var cv = document.createElement('canvas');
     cv.width = 512; cv.height = 256;
     var cx = cv.getContext('2d');
     var bg = cx.createLinearGradient(0, 0, 0, 256);
     if (dark) {
-      bg.addColorStop(0.0, '#4E3322');
-      bg.addColorStop(0.45, '#2A190F');
-      bg.addColorStop(0.70, '#160C06');
+      bg.addColorStop(0.0, '#5A3B26');
+      bg.addColorStop(0.45, '#2E1B10');
+      bg.addColorStop(0.70, '#180D07');
       bg.addColorStop(1.0, '#0B0502');
     } else {
-      bg.addColorStop(0.0, '#DFD2C2');
-      bg.addColorStop(0.45, '#BFA992');
-      bg.addColorStop(0.72, '#8F7964');
-      bg.addColorStop(1.0, '#624F3F');
+      bg.addColorStop(0.0, '#E8DAC8');
+      bg.addColorStop(0.45, '#BBA48D');
+      bg.addColorStop(0.72, '#826C57');
+      bg.addColorStop(1.0, '#4F3E30');
     }
     cx.fillStyle = bg; cx.fillRect(0, 0, 512, 256);
 
@@ -118,11 +117,11 @@
       cx.restore();
     }
     if (dark) {
-      box(120, 48, 105, 48, 'rgba(235, 198, 152, 0.72)', 'rgba(168, 118, 72, 0.28)');
-      box(400, 90, 95, 44, 'rgba(176, 126, 78, 0.36)', 'rgba(92, 58, 34, 0.12)');
+      box(122, 46, 112, 50, 'rgba(255, 232, 194, 0.88)', 'rgba(212, 158, 94, 0.36)');
+      box(400, 86, 98, 46, 'rgba(214, 158, 92, 0.48)', 'rgba(110, 70, 38, 0.16)');
     } else {
-      box(115, 46, 110, 48, 'rgba(255, 249, 240, 0.78)', 'rgba(222, 204, 182, 0.36)');
-      box(405, 100, 95, 44, 'rgba(232, 214, 192, 0.42)', 'rgba(155, 134, 112, 0.14)');
+      box(118, 44, 118, 52, 'rgba(255, 250, 240, 0.90)', 'rgba(232, 206, 174, 0.42)');
+      box(402, 92, 102, 46, 'rgba(246, 217, 168, 0.56)', 'rgba(155, 126, 98, 0.18)');
     }
 
     var tex = new THREE.CanvasTexture(cv);
@@ -141,38 +140,46 @@
     var cx = cv.getContext('2d');
     var w = cv.width, h = cv.height;
 
-    cx.fillStyle = dark ? '#3C2518' : '#B8A28B';
+    // Тёмно-шоколадный фон медальона/этикетки с тёплым золотым тиснением
+    cx.fillStyle = dark ? '#2A180E' : '#4B3222';
     cx.fillRect(0, 0, w, h);
 
     if (isCircle) {
-      cx.strokeStyle = dark ? '#C79662' : '#6A5542';
-      cx.lineWidth = 16;
+      cx.strokeStyle = '#D9A767';
+      cx.lineWidth = 18;
       cx.beginPath(); cx.arc(w / 2, h / 2, 224, 0, Math.PI * 2); cx.stroke();
-      cx.strokeStyle = dark ? 'rgba(246,217,168,0.42)' : 'rgba(255,248,238,0.55)';
-      cx.lineWidth = 6;
-      cx.beginPath(); cx.arc(w / 2, h / 2, 200, 0, Math.PI * 2); cx.stroke();
+      cx.strokeStyle = 'rgba(246, 217, 168, 0.48)';
+      cx.lineWidth = 5;
+      cx.beginPath(); cx.arc(w / 2, h / 2, 198, 0, Math.PI * 2); cx.stroke();
     } else {
-      cx.fillStyle = dark ? '#2E1B11' : '#A68F78';
+      cx.fillStyle = dark ? '#2D1A10' : '#EFE3D3';
       cx.fillRect(0, 0, w, h);
-      cx.strokeStyle = dark ? '#C79662' : '#5D4938';
-      cx.lineWidth = 10;
-      cx.strokeRect(20, 20, w - 40, h - 40);
+      cx.strokeStyle = '#C9904E';
+      cx.lineWidth = 12;
+      cx.strokeRect(18, 18, w - 36, h - 36);
+      cx.strokeStyle = dark ? 'rgba(246, 217, 168, 0.35)' : 'rgba(63, 41, 27, 0.25)';
+      cx.lineWidth = 3;
+      cx.strokeRect(34, 34, w - 68, h - 68);
     }
+
+    var textMain = (!isCircle && !dark) ? '#3F291B' : '#F2CB94';
+    var textSub  = (!isCircle && !dark) ? '#8A603B' : '#E0A862';
+    var textSh   = (!isCircle && !dark) ? '#FFFFFF' : '#120803';
 
     cx.textAlign = 'center';
     var y1 = line2 ? (h * 0.48) : (h * 0.56);
-    var sz1 = isCircle ? 140 : 88;
+    var sz1 = isCircle ? 142 : 88;
     cx.font = '800 ' + sz1 + 'px Manrope, sans-serif';
-    cx.fillStyle = dark ? '#140A05' : '#EFE4D6';
-    cx.fillText(line1, w / 2 + 3, y1 + 4);
-    cx.fillStyle = dark ? '#E2B682' : '#4C3929';
+    cx.fillStyle = textSh;
+    cx.fillText(line1, w / 2 + 2, y1 + 3);
+    cx.fillStyle = textMain;
     cx.fillText(line1, w / 2, y1);
 
     if (line2) {
-      cx.font = '800 ' + (isCircle ? 72 : 42) + 'px Manrope, sans-serif';
-      cx.fillStyle = dark ? '#140A05' : '#EFE4D6';
-      cx.fillText(line2, w / 2 + 2, h * 0.74 + 3);
-      cx.fillStyle = dark ? '#E2B682' : '#4C3929';
+      cx.font = '800 ' + (isCircle ? 74 : 40) + 'px Manrope, sans-serif';
+      cx.fillStyle = textSh;
+      cx.fillText(line2, w / 2 + 2, h * 0.74 + 2);
+      cx.fillStyle = textSub;
       cx.fillText(line2, w / 2, h * 0.74);
     }
 
@@ -201,10 +208,10 @@
     var cv = document.createElement('canvas');
     cv.width = 512; cv.height = 512;
     var cx = cv.getContext('2d');
-    cx.fillStyle = dark ? '#4E3323' : '#C8B6A1';
+    cx.fillStyle = dark ? '#563928' : '#CBB398';
     cx.fillRect(0, 0, 512, 512);
-    cx.strokeStyle = dark ? '#D4A570' : '#5E4B3A';
-    cx.fillStyle = dark ? '#E2B682' : '#4C3A2B';
+    cx.strokeStyle = dark ? '#E2B478' : '#4C3323';
+    cx.fillStyle = dark ? '#F2CB94' : '#3F291B';
     cx.lineWidth = 7;
     cx.font = '800 34px Manrope, sans-serif';
     cx.textAlign = 'right';
@@ -226,22 +233,23 @@
     return tex;
   }
 
-  // Матовая скульптурная палитра: читается на любом фоне, НИКОГДА не выгорает в белый!
+  // Благородная кофейно-шоколадно-золотая палитра (сдержанно, дорого, не сливается с фоном)
   function makeSculptMaterials(THREE, dark, knurlTex) {
     if (dark) {
       return {
-        main:   new THREE.MeshStandardMaterial({ color: 0x5A3C29, roughness: 0.56, metalness: 0.24 }),
-        accent: new THREE.MeshStandardMaterial({ color: 0x865E40, roughness: 0.46, metalness: 0.36 }),
-        deep:   new THREE.MeshStandardMaterial({ color: 0x2F1D12, roughness: 0.68, metalness: 0.16 }),
-        knurl:  new THREE.MeshStandardMaterial({ color: 0x7A553A, roughness: 0.48, metalness: 0.38, bumpMap: knurlTex, bumpScale: 0.045 })
+        sand:   new THREE.MeshStandardMaterial({ color: 0x9E7D60, roughness: 0.56, metalness: 0.14 }),
+        coffee: new THREE.MeshStandardMaterial({ color: 0x6A4630, roughness: 0.52, metalness: 0.24 }),
+        choco:  new THREE.MeshStandardMaterial({ color: 0x352014, roughness: 0.58, metalness: 0.20 }),
+        gold:   new THREE.MeshPhysicalMaterial({ color: 0xDCA864, roughness: 0.28, metalness: 0.78, clearcoat: 0.35 }),
+        knurl:  new THREE.MeshStandardMaterial({ color: 0xD4A15E, roughness: 0.34, metalness: 0.74, bumpMap: knurlTex, bumpScale: 0.04 })
       };
     }
-    // Благородный тёплый травертин / глина (в палитре сайта #CDC7BF / #A49E95 / #6A6257)
     return {
-      main:   new THREE.MeshStandardMaterial({ color: 0xCAB9A5, roughness: 0.64, metalness: 0.05 }),
-      accent: new THREE.MeshStandardMaterial({ color: 0xA6917B, roughness: 0.56, metalness: 0.08 }),
-      deep:   new THREE.MeshStandardMaterial({ color: 0x7D6855, roughness: 0.70, metalness: 0.05 }),
-      knurl:  new THREE.MeshStandardMaterial({ color: 0xB39E88, roughness: 0.58, metalness: 0.10, bumpMap: knurlTex, bumpScale: 0.05 })
+      sand:   new THREE.MeshStandardMaterial({ color: 0xCCB79F, roughness: 0.58, metalness: 0.05 }),
+      coffee: new THREE.MeshStandardMaterial({ color: 0x8F6B4E, roughness: 0.52, metalness: 0.10 }),
+      choco:  new THREE.MeshStandardMaterial({ color: 0x4A3020, roughness: 0.50, metalness: 0.16 }),
+      gold:   new THREE.MeshPhysicalMaterial({ color: 0xD6A25E, roughness: 0.28, metalness: 0.76, clearcoat: 0.38 }),
+      knurl:  new THREE.MeshStandardMaterial({ color: 0xCFA062, roughness: 0.34, metalness: 0.72, bumpMap: knurlTex, bumpScale: 0.042 })
     };
   }
 
@@ -263,32 +271,31 @@
     }
 
     if (shape === 'kettlebell16') {
-      // Пудовая гиря с плоским основанием, дужкой и СТРОГО РОВНОЙ надписью «16 КГ»
+      // Кофейно-шоколадное тело гири + сатиновая золотая дужка + тёмно-шоколадный медальон «16 КГ» с золотым ободком
       var kbPts = [
         new THREE.Vector2(0.0, -0.88), new THREE.Vector2(0.62, -0.88), new THREE.Vector2(0.72, -0.80),
         new THREE.Vector2(0.92, -0.58), new THREE.Vector2(1.02, -0.06), new THREE.Vector2(0.88, 0.46),
         new THREE.Vector2(0.56, 0.74), new THREE.Vector2(0.0, 0.78)
       ];
-      g.add(new THREE.Mesh(new THREE.LatheGeometry(kbPts, 52), m.main));
+      g.add(new THREE.Mesh(new THREE.LatheGeometry(kbPts, 52), m.coffee));
 
-      var horn = new THREE.Mesh(new THREE.TorusGeometry(0.58, 0.148, 22, 48, Math.PI * 1.24), m.accent);
+      var horn = new THREE.Mesh(new THREE.TorusGeometry(0.58, 0.148, 22, 48, Math.PI * 1.24), m.gold);
       horn.rotation.z = -Math.PI * 0.12;
       horn.position.y = 0.78;
       g.add(horn);
 
-      // Основа медальона + плоский диск CircleGeometry (у него UV всегда 0° — надпись «16 КГ» стоит идеально ровно!)
-      var badgeBase = new THREE.Mesh(new THREE.CylinderGeometry(0.51, 0.51, 0.08, 40), m.deep);
+      var badgeBase = new THREE.Mesh(new THREE.CylinderGeometry(0.51, 0.51, 0.08, 40), m.choco);
       badgeBase.rotation.x = Math.PI / 2;
       badgeBase.position.set(0, -0.04, 0.96);
       g.add(badgeBase);
 
       var tex16 = makeSculptTextTex(THREE, '16', 'КГ', dark, true);
-      var faceMat = new THREE.MeshStandardMaterial({ map: tex16, roughness: 0.56, metalness: dark ? 0.24 : 0.05 });
+      var faceMat = new THREE.MeshStandardMaterial({ map: tex16, roughness: 0.48, metalness: 0.18 });
       var badgeFace = new THREE.Mesh(new THREE.CircleGeometry(0.50, 44), faceMat);
       badgeFace.position.set(0, -0.04, 1.005);
       g.add(badgeFace);
 
-      var bRim = new THREE.Mesh(new THREE.TorusGeometry(0.508, 0.036, 14, 42), m.accent);
+      var bRim = new THREE.Mesh(new THREE.TorusGeometry(0.508, 0.036, 14, 42), m.gold);
       bRim.position.set(0, -0.04, 1.002);
       g.add(bRim);
 
@@ -298,6 +305,7 @@
     }
 
     if (shape === 'dumbbell') {
+      // В духе любимой гантели Блока 5: золотой рифлёный гриф, золотые замки и кольца, шоколадные и кофейные блины
       var shaft = new THREE.Mesh(new THREE.CylinderGeometry(0.135, 0.135, 2.35, 34), m.knurl);
       shaft.rotation.z = Math.PI / 2; g.add(shaft);
       var colGeo = new THREE.LatheGeometry([
@@ -311,11 +319,11 @@
       var capG = new THREE.SphereGeometry(0.18, 22, 18); capG.scale(0.65, 1, 1);
 
       [-1, 1].forEach(function (s) {
-        var col = new THREE.Mesh(colGeo, m.deep); col.rotation.z = Math.PI / 2; col.position.x = s * 0.56; g.add(col);
-        var b1 = new THREE.Mesh(pBig, m.main); b1.rotation.z = Math.PI / 2; b1.position.x = s * 0.78; g.add(b1);
-        var ri = new THREE.Mesh(rBig, m.deep); ri.rotation.y = Math.PI / 2; ri.position.x = s * 0.912; g.add(ri);
-        var b2 = new THREE.Mesh(pSm, m.accent); b2.rotation.z = Math.PI / 2; b2.position.x = s * 1.04; g.add(b2);
-        var cp = new THREE.Mesh(capG, m.deep); cp.position.x = s * 1.18; g.add(cp);
+        var col = new THREE.Mesh(colGeo, m.gold); col.rotation.z = Math.PI / 2; col.position.x = s * 0.56; g.add(col);
+        var b1 = new THREE.Mesh(pBig, m.choco); b1.rotation.z = Math.PI / 2; b1.position.x = s * 0.78; g.add(b1);
+        var ri = new THREE.Mesh(rBig, m.gold); ri.rotation.y = Math.PI / 2; ri.position.x = s * 0.912; g.add(ri);
+        var b2 = new THREE.Mesh(pSm, m.coffee); b2.rotation.z = Math.PI / 2; b2.position.x = s * 1.04; g.add(b2);
+        var cp = new THREE.Mesh(capG, m.gold); cp.position.x = s * 1.18; g.add(cp);
       });
       g.rotation.set(0.24, -0.34, -0.22);
       return g;
@@ -328,11 +336,11 @@
       var p2 = makeBeveledPlate(0.66, 0.14);
       var p3 = makeBeveledPlate(0.48, 0.12);
       [-1, 1].forEach(function (s) {
-        var slv = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.16, 26), m.deep);
+        var slv = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.16, 26), m.gold);
         slv.rotation.z = Math.PI / 2; slv.position.x = s * 0.92; g.add(slv);
-        var d1 = new THREE.Mesh(p1, m.main); d1.rotation.z = Math.PI / 2; d1.position.x = s * 1.09; g.add(d1);
-        var d2 = new THREE.Mesh(p2, m.accent); d2.rotation.z = Math.PI / 2; d2.position.x = s * 1.26; g.add(d2);
-        var d3 = new THREE.Mesh(p3, m.deep); d3.rotation.z = Math.PI / 2; d3.position.x = s * 1.41; g.add(d3);
+        var d1 = new THREE.Mesh(p1, dark ? m.coffee : m.choco); d1.rotation.z = Math.PI / 2; d1.position.x = s * 1.09; g.add(d1);
+        var d2 = new THREE.Mesh(p2, dark ? m.sand : m.coffee); d2.rotation.z = Math.PI / 2; d2.position.x = s * 1.26; g.add(d2);
+        var d3 = new THREE.Mesh(p3, m.gold); d3.rotation.z = Math.PI / 2; d3.position.x = s * 1.41; g.add(d3);
       });
       g.scale.setScalar(0.88);
       g.rotation.set(0.22, -0.30, 0.16);
@@ -340,20 +348,19 @@
     }
 
     if (shape === 'weightPlate') {
-      g.add(new THREE.Mesh(new THREE.TorusGeometry(1.06, 0.19, 24, 56), m.main));
-      var web = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 0.16, 48), m.deep);
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(1.06, 0.19, 24, 56), m.coffee));
+      var web = new THREE.Mesh(new THREE.CylinderGeometry(0.95, 0.95, 0.16, 48), m.choco);
       web.rotation.x = Math.PI / 2; g.add(web);
-      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.11, 20, 40), m.accent));
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.11, 20, 40), m.gold));
       for (var sp = 0; sp < 3; sp++) {
         var ang = (sp / 3) * Math.PI * 2 + Math.PI / 6;
-        var spoke = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.62, 0.24), m.main);
+        var spoke = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.62, 0.24), m.coffee);
         spoke.position.set(Math.cos(ang) * 0.66, Math.sin(ang) * 0.66, 0);
         spoke.rotation.z = ang - Math.PI / 2;
         g.add(spoke);
       }
-      // Строго горизонтальная надпись «10 KG» через CircleGeometry
       var tex10 = makeSculptTextTex(THREE, '10', 'KG', dark, true);
-      var lblFace = new THREE.Mesh(new THREE.CircleGeometry(0.32, 36), new THREE.MeshStandardMaterial({ map: tex10, roughness: 0.56 }));
+      var lblFace = new THREE.Mesh(new THREE.CircleGeometry(0.32, 36), new THREE.MeshStandardMaterial({ map: tex10, roughness: 0.48 }));
       lblFace.position.z = 0.115; g.add(lblFace);
       g.rotation.set(0.26, -0.34, -0.10);
       return g;
@@ -373,35 +380,39 @@
             new THREE.Vector2(0.62, 0.66), new THREE.Vector2(0.58, 0.78), new THREE.Vector2(0.0, 0.78)
           ];
       var scaleTex = makeScaleTex(THREE, dark);
-      var bodyMat = new THREE.MeshStandardMaterial({ map: scaleTex, roughness: 0.60, metalness: 0.06 });
+      var bodyMat = new THREE.MeshStandardMaterial({ map: scaleTex, roughness: 0.56, metalness: 0.08 });
       var bodyMesh = new THREE.Mesh(new THREE.LatheGeometry(pts, 48), bodyMat);
       bodyMesh.rotation.y = Math.PI * 0.5;
       g.add(bodyMesh);
 
+      // Шоколадные кольца хвата на талии спортивной бутылки + тонкое золотое кольцо у горлышка
       if (isBottle) {
         [-0.22, -0.08, 0.06, 0.20].forEach(function (yy) {
-          var grip = new THREE.Mesh(new THREE.TorusGeometry(0.50, 0.032, 12, 36), m.deep);
+          var grip = new THREE.Mesh(new THREE.TorusGeometry(0.50, 0.032, 12, 36), m.choco);
           grip.rotation.x = Math.PI / 2; grip.position.y = yy; g.add(grip);
         });
       }
 
       var capY = isBottle ? 0.98 : 0.86;
       var capR = isBottle ? 0.42 : 0.64;
-      var cap = new THREE.Mesh(new THREE.CylinderGeometry(capR, capR * 1.03, 0.28, 40), m.accent);
+      var cap = new THREE.Mesh(new THREE.CylinderGeometry(capR, capR * 1.03, 0.28, 40), m.choco);
       cap.position.y = capY; g.add(cap);
+
+      var neckAccent = new THREE.Mesh(new THREE.TorusGeometry(capR * 0.98, 0.025, 12, 36), m.gold);
+      neckAccent.rotation.x = Math.PI / 2; neckAccent.position.y = capY - 0.14; g.add(neckAccent);
 
       for (var r = 0; r < 18; r++) {
         var a = (r / 18) * Math.PI * 2;
-        var rib = new THREE.Mesh(new THREE.BoxGeometry(0.034, 0.22, 0.044), m.deep);
+        var rib = new THREE.Mesh(new THREE.BoxGeometry(0.034, 0.22, 0.044), m.coffee);
         rib.position.set(Math.cos(a) * capR, capY, Math.sin(a) * capR);
         rib.rotation.y = -a; g.add(rib);
       }
 
-      var spout = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.30, 22), m.deep);
+      var spout = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.30, 22), m.coffee);
       spout.position.set(-0.08, capY + 0.24, 0.08);
       spout.rotation.z = 0.16; g.add(spout);
 
-      var loop = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.052, 14, 30, Math.PI * 1.25), m.deep);
+      var loop = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.052, 14, 30, Math.PI * 1.25), m.gold);
       loop.position.set(capR * 0.72, capY + 0.10, 0);
       loop.rotation.z = -0.5; g.add(loop);
 
@@ -410,26 +421,26 @@
     }
 
     if (shape === 'proteinJar') {
+      // Тёмно-шоколадная банка, кремово-золотая этикетка «WHEY ISOLATE», сатиновая золотая крышка
       var jarPts = [
         new THREE.Vector2(0.0, -1.06), new THREE.Vector2(0.66, -1.06), new THREE.Vector2(0.78, -0.94),
         new THREE.Vector2(0.80, 0.56), new THREE.Vector2(0.72, 0.72), new THREE.Vector2(0.58, 0.82),
         new THREE.Vector2(0.58, 0.92), new THREE.Vector2(0.0, 0.92)
       ];
-      g.add(new THREE.Mesh(new THREE.LatheGeometry(jarPts, 48), m.main));
+      g.add(new THREE.Mesh(new THREE.LatheGeometry(jarPts, 48), m.choco));
 
-      // Разворот rotation.y = Math.PI ставит центр этикетки «WHEY ISOLATE» СТРОГО ЛИЦОМ К ЗРИТЕЛЮ (+Z)
       var texWhey = makeSculptTextTex(THREE, 'WHEY', 'ISOLATE', dark, false);
-      var lblMat = new THREE.MeshStandardMaterial({ map: texWhey, roughness: 0.58 });
+      var lblMat = new THREE.MeshStandardMaterial({ map: texWhey, roughness: 0.50 });
       var lbl = new THREE.Mesh(new THREE.CylinderGeometry(0.812, 0.812, 1.12, 48, 1, true), lblMat);
       lbl.position.y = -0.16;
       lbl.rotation.y = Math.PI;
       g.add(lbl);
 
-      var lid = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.70, 0.32, 44), m.accent);
+      var lid = new THREE.Mesh(new THREE.CylinderGeometry(0.68, 0.70, 0.32, 44), m.gold);
       lid.position.y = 1.02; g.add(lid);
       for (var jr = 0; jr < 22; jr++) {
         var ja = (jr / 22) * Math.PI * 2;
-        var jrib = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.25, 0.044), m.deep);
+        var jrib = new THREE.Mesh(new THREE.BoxGeometry(0.036, 0.25, 0.044), m.coffee);
         jrib.position.set(Math.cos(ja) * 0.69, 1.02, Math.sin(ja) * 0.69);
         jrib.rotation.y = -ja; g.add(jrib);
       }
@@ -438,34 +449,35 @@
     }
 
     if (shape === 'ppPlate') {
+      // Керамическая тарелка капучино с золотой каймой и шоколадно-кофейным рельефом ПП-композиции
       var plPts = [
         new THREE.Vector2(0.0, -0.15), new THREE.Vector2(0.68, -0.15), new THREE.Vector2(0.78, -0.08),
         new THREE.Vector2(1.18, 0.08), new THREE.Vector2(1.30, 0.18), new THREE.Vector2(1.27, 0.23),
         new THREE.Vector2(1.12, 0.14), new THREE.Vector2(0.72, -0.02), new THREE.Vector2(0.0, -0.04)
       ];
-      g.add(new THREE.Mesh(new THREE.LatheGeometry(plPts, 52), m.main));
-      var rim = new THREE.Mesh(new THREE.TorusGeometry(1.28, 0.032, 14, 52), m.deep);
+      g.add(new THREE.Mesh(new THREE.LatheGeometry(plPts, 52), m.sand));
+      var rim = new THREE.Mesh(new THREE.TorusGeometry(1.28, 0.034, 14, 52), m.gold);
       rim.rotation.x = Math.PI / 2; rim.position.y = 0.20; g.add(rim);
 
-      var salm = new THREE.Mesh(new THREE.SphereGeometry(0.44, 24, 18), m.accent);
+      var salm = new THREE.Mesh(new THREE.SphereGeometry(0.44, 24, 18), m.coffee);
       salm.scale.set(1.22, 0.38, 0.76); salm.position.set(0.32, 0.14, -0.24); salm.rotation.y = -0.35; g.add(salm);
 
-      var quin = new THREE.Mesh(new THREE.SphereGeometry(0.38, 22, 16, 0, Math.PI * 2, 0, Math.PI * 0.6), m.deep);
+      var quin = new THREE.Mesh(new THREE.SphereGeometry(0.38, 22, 16, 0, Math.PI * 2, 0, Math.PI * 0.6), m.gold);
       quin.scale.set(1.15, 0.62, 1.0); quin.position.set(-0.36, 0.0, 0.34); g.add(quin);
 
       for (var av = 0; av < 4; av++) {
-        var sl = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.068, 18, 1, false, 0, Math.PI * 1.15), m.accent);
+        var sl = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.068, 18, 1, false, 0, Math.PI * 1.15), m.coffee);
         sl.position.set(-0.44 + av * 0.11, 0.10 + av * 0.024, -0.30 + av * 0.08);
         sl.rotation.set(0.22, 0.5 + av * 0.32, -0.18); g.add(sl);
       }
 
-      var eg = new THREE.Mesh(new THREE.SphereGeometry(0.22, 18, 14), m.main);
+      var eg = new THREE.Mesh(new THREE.SphereGeometry(0.22, 18, 14), m.sand);
       eg.scale.set(1.1, 0.48, 0.9); eg.position.set(0.36, 0.08, 0.36); g.add(eg);
-      var yk = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 14), m.deep);
+      var yk = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 14), m.gold);
       yk.position.set(0.36, 0.15, 0.36); g.add(yk);
 
       [[0.03, 0.12, 0.52], [0.62, 0.13, 0.08], [-0.06, 0.13, -0.60]].forEach(function (c) {
-        var ch = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 16), m.deep);
+        var ch = new THREE.Mesh(new THREE.SphereGeometry(0.115, 16, 16), m.choco);
         ch.position.set(c[0], c[1], c[2]); g.add(ch);
       });
 
@@ -474,31 +486,36 @@
     }
 
     if (shape === 'yogaMat') {
-      var roll = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 1.95, 42, 1, false), m.main);
+      // Кофейный фитнес-коврик с тёмно-шоколадным ремнём, золотой пряжкой и контрастной спиралью
+      var roll = new THREE.Mesh(new THREE.CylinderGeometry(0.46, 0.46, 1.95, 42, 1, false), m.coffee);
       roll.rotation.z = Math.PI / 2;
       roll.position.set(-0.22, 0.28, 0);
       g.add(roll);
 
       [-1.195, 0.755].forEach(function (tx) {
         [0.37, 0.25, 0.13].forEach(function (sr) {
-          var ring = new THREE.Mesh(new THREE.TorusGeometry(sr, 0.030, 10, 32), m.deep);
+          var ring = new THREE.Mesh(new THREE.TorusGeometry(sr, 0.030, 10, 32), m.choco);
           ring.rotation.y = Math.PI / 2;
           ring.position.set(tx, 0.28, 0);
           g.add(ring);
         });
       });
 
-      var strap = new THREE.Mesh(new THREE.TorusGeometry(0.478, 0.062, 14, 40), m.deep);
+      var strap = new THREE.Mesh(new THREE.TorusGeometry(0.478, 0.062, 14, 40), m.choco);
       strap.rotation.y = Math.PI / 2;
       strap.position.set(-0.22, 0.28, 0);
       g.add(strap);
 
-      var sheet = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.085, 1.48), m.accent);
+      var buckle = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.22, 0.22), m.gold);
+      buckle.position.set(-0.22, 0.52, 0.44);
+      g.add(buckle);
+
+      var sheet = new THREE.Mesh(new THREE.BoxGeometry(1.92, 0.085, 1.48), m.sand);
       sheet.position.set(-0.22, -0.14, 0.72);
       g.add(sheet);
 
       [-0.45, 0.0, 0.45].forEach(function (lz) {
-        var ln = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.025, 0.032), m.deep);
+        var ln = new THREE.Mesh(new THREE.BoxGeometry(1.78, 0.025, 0.032), m.coffee);
         ln.position.set(-0.22, -0.09, 0.72 + lz);
         g.add(ln);
       });
@@ -508,13 +525,14 @@
     }
 
     if (shape === 'sneaker') {
+      // Кроссовок капучино с шоколадной подошвой и шнурками и деликатной золотой полосой
       var soleShape = new THREE.Shape();
       soleShape.moveTo(-1.35, -0.22);
       soleShape.lineTo(1.22, -0.22);
       soleShape.quadraticCurveTo(1.42, -0.18, 1.38, 0.02);
       soleShape.lineTo(-1.32, 0.04);
       soleShape.quadraticCurveTo(-1.42, -0.06, -1.35, -0.22);
-      var sole = new THREE.Mesh(new THREE.ExtrudeGeometry(soleShape, { depth: 0.74, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.07, bevelSegments: 6 }), m.deep);
+      var sole = new THREE.Mesh(new THREE.ExtrudeGeometry(soleShape, { depth: 0.74, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.07, bevelSegments: 6 }), m.choco);
       sole.position.z = -0.37; g.add(sole);
 
       var upperShape = new THREE.Shape();
@@ -526,15 +544,14 @@
       upperShape.lineTo(0.84, 0.44);
       upperShape.quadraticCurveTo(1.30, 0.34, 1.32, 0.02);
       upperShape.closePath();
-      var upper = new THREE.Mesh(new THREE.ExtrudeGeometry(upperShape, { depth: 0.62, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.10, bevelSegments: 8 }), m.main);
+      var upper = new THREE.Mesh(new THREE.ExtrudeGeometry(upperShape, { depth: 0.62, bevelEnabled: true, bevelThickness: 0.12, bevelSize: 0.10, bevelSegments: 8 }), m.coffee);
       upper.position.z = -0.31; g.add(upper);
 
-      // Боковая рельефная полоса кроссовка + 4 контрастных шнурка
-      var stripe = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.14, 0.86), m.accent);
+      var stripe = new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.14, 0.86), m.gold);
       stripe.position.set(-0.12, 0.34, 0); stripe.rotation.z = -0.22; g.add(stripe);
 
       for (var lc = 0; lc < 4; lc++) {
-        var lace = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.82, 12), m.deep);
+        var lace = new THREE.Mesh(new THREE.CylinderGeometry(0.048, 0.048, 0.82, 12), m.sand);
         lace.rotation.x = Math.PI / 2;
         lace.position.set(0.16 + lc * 0.16, 0.84 - lc * 0.11, 0);
         g.add(lace);
@@ -545,6 +562,7 @@
     }
 
     if (shape === 'jumprope') {
+      // Шоколадный трос + золотые рифлёные рукоятки с кофейными накладками
       var ropeCurve = new THREE.CatmullRomCurve3([
         new THREE.Vector3(-0.78, -0.30, 0.10),
         new THREE.Vector3(-1.02, 0.55, -0.15),
@@ -552,14 +570,14 @@
         new THREE.Vector3(1.02, 0.55, -0.15),
         new THREE.Vector3(0.78, -0.30, 0.10)
       ]);
-      g.add(new THREE.Mesh(new THREE.TubeGeometry(ropeCurve, 56, 0.072, 14, false), m.deep));
+      g.add(new THREE.Mesh(new THREE.TubeGeometry(ropeCurve, 56, 0.072, 14, false), m.choco));
 
       [-1, 1].forEach(function (s) {
         var hGrp = new THREE.Group();
         hGrp.add(new THREE.Mesh(new THREE.CylinderGeometry(0.148, 0.168, 0.96, 28), m.knurl));
-        var head = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.18, 24), m.deep);
+        var head = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 0.18, 24), m.choco);
         head.position.y = 0.55; hGrp.add(head);
-        var cap = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 14), m.accent);
+        var cap = new THREE.Mesh(new THREE.SphereGeometry(0.16, 18, 14), m.coffee);
         cap.position.y = -0.48; hGrp.add(cap);
         hGrp.position.set(s * 0.74, -0.78, 0.10);
         hGrp.rotation.z = s * -0.22;
@@ -570,12 +588,14 @@
     }
 
     if (shape === 'pilatesRing') {
-      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.96, 0.112, 22, 60), m.main));
+      // Кофейное кольцо с шоколадными мягкими упорами и золотой внутренней окантовкой
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.96, 0.112, 22, 60), m.coffee));
+      g.add(new THREE.Mesh(new THREE.TorusGeometry(0.96, 0.032, 12, 60), m.gold));
       [-1, 1].forEach(function (s) {
-        var padOut = new THREE.Mesh(new THREE.TorusGeometry(1.09, 0.082, 16, 22, 0.62), m.deep);
+        var padOut = new THREE.Mesh(new THREE.TorusGeometry(1.09, 0.082, 16, 22, 0.62), m.choco);
         padOut.rotation.z = s > 0 ? (Math.PI / 2 - 0.31) : (-Math.PI / 2 - 0.31);
         g.add(padOut);
-        var padIn = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.075, 16, 22, 0.52), m.accent);
+        var padIn = new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.075, 16, 22, 0.52), m.choco);
         padIn.rotation.z = s > 0 ? (Math.PI / 2 - 0.26) : (-Math.PI / 2 - 0.26);
         g.add(padIn);
       });
@@ -583,34 +603,34 @@
       return g;
     }
 
-    // stopwatch — контрастный 3D-хронограф с чётким циферблатом, 12 делениями и стрелками
-    var swCase = new THREE.Mesh(new THREE.CylinderGeometry(0.96, 0.96, 0.28, 52), m.main);
+    // stopwatch — кофейный корпус, золотой безель и дужка, кремовый циферблат и шоколадные стрелки
+    var swCase = new THREE.Mesh(new THREE.CylinderGeometry(0.96, 0.96, 0.28, 52), m.coffee);
     swCase.rotation.x = Math.PI / 2; g.add(swCase);
-    var bezel = new THREE.Mesh(new THREE.TorusGeometry(0.94, 0.10, 18, 52), m.accent);
+    var bezel = new THREE.Mesh(new THREE.TorusGeometry(0.94, 0.10, 18, 52), m.gold);
     bezel.position.z = 0.10; g.add(bezel);
-    var dial = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.84, 0.06, 48), m.main);
+    var dial = new THREE.Mesh(new THREE.CylinderGeometry(0.84, 0.84, 0.06, 48), m.sand);
     dial.rotation.x = Math.PI / 2; dial.position.z = 0.13; g.add(dial);
-    var innerRing = new THREE.Mesh(new THREE.TorusGeometry(0.82, 0.028, 12, 48), m.deep);
+    var innerRing = new THREE.Mesh(new THREE.TorusGeometry(0.82, 0.026, 12, 48), m.choco);
     innerRing.position.z = 0.16; g.add(innerRing);
 
     for (var tk = 0; tk < 12; tk++) {
       var ta = (tk / 12) * Math.PI * 2;
-      var tick = new THREE.Mesh(new THREE.BoxGeometry(0.052, tk % 3 === 0 ? 0.18 : 0.10, 0.05), m.deep);
+      var tick = new THREE.Mesh(new THREE.BoxGeometry(0.052, tk % 3 === 0 ? 0.18 : 0.10, 0.05), m.choco);
       tick.position.set(Math.sin(ta) * 0.68, Math.cos(ta) * 0.68, 0.18);
       tick.rotation.z = -ta; g.add(tick);
     }
-    var h1 = new THREE.Mesh(new THREE.BoxGeometry(0.072, 0.56, 0.06), m.deep);
+    var h1 = new THREE.Mesh(new THREE.BoxGeometry(0.072, 0.56, 0.06), m.choco);
     h1.position.set(0, 0.23, 0.20); g.add(h1);
-    var h2 = new THREE.Mesh(new THREE.BoxGeometry(0.054, 0.44, 0.06), m.deep);
+    var h2 = new THREE.Mesh(new THREE.BoxGeometry(0.054, 0.44, 0.06), m.coffee);
     h2.position.set(0.17, -0.09, 0.22); h2.rotation.z = -1.1; g.add(h2);
-    var pin = new THREE.Mesh(new THREE.SphereGeometry(0.095, 16, 14), m.accent);
+    var pin = new THREE.Mesh(new THREE.SphereGeometry(0.095, 16, 14), m.gold);
     pin.position.z = 0.23; g.add(pin);
 
-    var crown = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.24, 24), m.deep);
+    var crown = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.24, 24), m.choco);
     crown.position.y = 1.08; g.add(crown);
-    var bow = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.052, 14, 30), m.accent);
+    var bow = new THREE.Mesh(new THREE.TorusGeometry(0.22, 0.052, 14, 30), m.gold);
     bow.position.y = 1.24; g.add(bow);
-    var pusher = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.10, 0.20, 20), m.deep);
+    var pusher = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.10, 0.20, 20), m.gold);
     pusher.position.set(0.76, 0.76, 0); pusher.rotation.z = -0.78; g.add(pusher);
 
     g.position.y = -0.12;
@@ -634,7 +654,7 @@
     renderer.setSize(size, size, false);
     renderer.setPixelRatio(1);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 0.96;
+    renderer.toneMappingExposure = 1.04;
     renderer.outputEncoding = THREE.sRGBEncoding;
 
     var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
@@ -650,21 +670,20 @@
       var scene = new THREE.Scene();
       scene.environment = item.dark ? envDark : envLight;
 
-      // Чёткое направленное скульптурное освещение (без выжигания в белый!)
       scene.add(new THREE.HemisphereLight(
-        item.dark ? 0xE8C89E : 0xF7EFE4,
-        item.dark ? 0x160B05 : 0x6F5B48,
-        item.dark ? 0.52 : 0.48
+        item.dark ? 0xF0D2A8 : 0xFFF7EB,
+        item.dark ? 0x160B05 : 0x5A4636,
+        item.dark ? 0.58 : 0.56
       ));
-      var keyL = new THREE.DirectionalLight(item.dark ? 0xFFE6C2 : 0xFFFBF5, item.dark ? 1.35 : 1.15);
-      keyL.position.set(-5.0, 5.8, 4.2);
+      var keyL = new THREE.DirectionalLight(item.dark ? 0xFFE8C8 : 0xFFFBF2, item.dark ? 1.45 : 1.25);
+      keyL.position.set(-5.0, 5.8, 4.5);
       scene.add(keyL);
-      var fillL = new THREE.DirectionalLight(item.dark ? 0xB8824D : 0xBFA890, item.dark ? 0.45 : 0.32);
-      fillL.position.set(5.2, -3.6, 3.0);
+      var fillL = new THREE.DirectionalLight(item.dark ? 0xC68C52 : 0xCFA87C, item.dark ? 0.52 : 0.38);
+      fillL.position.set(5.2, -3.6, 3.2);
       scene.add(fillL);
 
       var mesh = buildSculptureMesh(THREE, item.shape, item.dark, knurlTex);
-      mesh.scale.z *= 0.72;
+      mesh.scale.z *= 0.74;
       scene.add(mesh);
 
       renderer.clear();

@@ -1697,6 +1697,106 @@
   }
   /* === END CRITICAL OVERRIDE P05 === */
 
+  
+
+  /* === CRITICAL OVERRIDE F01: ЦЕНТРИРОВАНИЕ ФОТО НАСТИ + ОТЗЫВЫ ЦЕЛИКОМ === */
+  /* 1. Блок 1 — Настя ровно по центру кадра (без сдвига вниз) */
+  .hero-visual {
+    aspect-ratio: 4 / 5.05 !important;
+    overflow: hidden !important;
+  }
+  .hero-visual img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: 50% var(--hero-photo-pos-y, 58%) !important;
+  }
+
+  /* 2. Блок «Опыт и философия» — убираем лишнее место сверху и обрезку снизу */
+  .about-photo-main {
+    aspect-ratio: 4 / 4.9 !important;
+    max-height: none !important;
+    overflow: hidden !important;
+  }
+  .about-photo-main img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: 50% var(--about-photo-pos-y, 72%) !important;
+  }
+
+  @media (max-width: 720px) {
+    .hero-visual {
+      aspect-ratio: 3 / 4.45 !important;
+      min-height: var(--hero-photo-mob-h, 470px) !important;
+    }
+    .hero-visual img {
+      object-position: 50% var(--hero-photo-pos-y, 60%) !important;
+    }
+    .about-photo-main {
+      aspect-ratio: 3 / 4.15 !important;
+      max-height: none !important;
+    }
+    .about-photo-main img {
+      object-position: 50% var(--about-photo-pos-y, 74%) !important;
+    }
+  }
+
+  /* 3. Отзывы: весь скриншот переписки виден целиком изначально, без обрезки по краям */
+  .review-card {
+    padding: 20px 18px !important;
+  }
+  .review-photo-shot {
+    width: 100% !important;
+    aspect-ratio: auto !important;
+    height: 370px !important;
+    margin: 12px 0 0 !important;
+    padding: 8px !important;
+    border-radius: 16px !important;
+    background: #FFFDF9 !important;
+    border: 1px solid rgba(201, 144, 78, 0.30) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    position: relative !important;
+    cursor: zoom-in !important;
+  }
+  .review-photo-shot img {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    border-radius: 10px !important;
+    transform: none !important;
+    transition: transform 0.35s ease !important;
+  }
+  .review-photo-shot:hover img {
+    transform: scale(1.02) !important;
+  }
+  .review-zoom-tag {
+    position: absolute !important;
+    right: 10px !important;
+    bottom: 10px !important;
+    z-index: 3 !important;
+    background: rgba(63, 41, 27, 0.86) !important;
+    color: #FFFBF5 !important;
+    backdrop-filter: blur(6px) !important;
+    box-shadow: 0 4px 12px rgba(30, 18, 10, 0.28) !important;
+  }
+  @media (max-width: 720px) {
+    .review-card {
+      padding: 16px 14px !important;
+    }
+    .review-photo-shot {
+      height: 325px !important;
+      padding: 6px !important;
+    }
+  }
+  /* === END CRITICAL OVERRIDE F01 === */
+
   </style>
 <script>
     /* Свои фото: положите файлы в папку по имени (jpg/png/webp). Пока их нет, показываются временные. */
@@ -3123,9 +3223,9 @@
 })();
 </script>
 <script src="reliefs.js?v=20261121_p4"></script>
-<script src="lusion3d.js?v=20261121_p2"></script>
+<script src="lusion3d.js?v=20261121_f2"></script>
 <script src="gift3d.js?v=20261121_p3"></script>
-<script src="patches.js?v=20261121_p5"></script>
+<script src="patches.js?v=20261121_f1"></script>
 </body>
 </html>
        

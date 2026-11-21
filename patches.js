@@ -129,7 +129,7 @@
     '  width: 100% !important;',
     '  height: 100% !important;',
     '  object-fit: cover !important;',
-    '  object-position: center top !important;',
+    '  object-position: 50% 60%;',
     '  -webkit-mask-image: none !important;',
     '  mask-image: none !important;',
     '}',
@@ -2043,5 +2043,30 @@
     setTimeout(syncNavs, 140);
     setTimeout(syncNavs, 550);
     setTimeout(syncNavs, 1300);
+  }
+})();
+
+/* === F01 SYNC: ПЕРЕСЧЁТ 3D-ПРИЗМЫ ОТЗЫВОВ ПОСЛЕ ЗАГРУЗКИ СКРИНШОТОВ === */
+(function applyF01PhotosAndReviewsSync() {
+  function refreshReviewsPrism() {
+    var imgs = document.querySelectorAll('#reviewsPrism .review-photo-shot img');
+    imgs.forEach(function (img) {
+      if (img.getAttribute('data-f01-bound') === '1') return;
+      img.setAttribute('data-f01-bound', '1');
+      img.addEventListener('load', function () {
+        window.dispatchEvent(new Event('resize'));
+      });
+    });
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(refreshReviewsPrism, 260);
+      setTimeout(refreshReviewsPrism, 900);
+    });
+  } else {
+    setTimeout(refreshReviewsPrism, 260);
+    setTimeout(refreshReviewsPrism, 900);
   }
 })();

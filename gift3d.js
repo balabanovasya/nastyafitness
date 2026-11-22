@@ -541,7 +541,7 @@
       } else {
         var s = document.createElement('script');
         s.id = 'threejs-cdn-script';
-        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+        s.src = 'vendor/three.min.js';
         s.onload = mountGift3D;
         document.head.appendChild(s);
       }

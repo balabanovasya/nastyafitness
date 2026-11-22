@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /_backup*
+Disallow: /vendor/
+
+Host: https://anastasia-fitness.ru
+Sitemap: https://anastasia-fitness.ru/sitemap.xml

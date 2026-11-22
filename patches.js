@@ -641,8 +641,8 @@
   function setupCertificateScans() {
     window.STOCK = window.STOCK || {};
     var defStock = [
-      'https://images.unsplash.com/photo-1589330694653-ded6df03f754?auto=format&fit=crop&w=900&q=80',
-      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80'
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNzUwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9Ijc1MCIgZmlsbD0iI0Y3RUZFNCIvPjxyZWN0IHg9IjI0IiB5PSIyNCIgd2lkdGg9IjU1MiIgaGVpZ2h0PSI3MDIiIHJ4PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzk5MDRFIiBzdHJva2Utb3BhY2l0eT0iMC4zNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+',
+      'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNzUwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9Ijc1MCIgZmlsbD0iI0Y3RUZFNCIvPjxyZWN0IHg9IjI0IiB5PSIyNCIgd2lkdGg9IjU1MiIgaGVpZ2h0PSI3MDIiIHJ4PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzk5MDRFIiBzdHJva2Utb3BhY2l0eT0iMC4zNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+'
     ];
     for (var i = 1; i <= 2; i++) {
       if (!window.STOCK['photos/cert-' + i]) window.STOCK['photos/cert-' + i] = defStock[i - 1];
@@ -935,26 +935,268 @@
   }
 
   // ==========================================================================
-  // 11. ЮРИДИЧЕСКАЯ УПАКОВКА И ЯНДЕКС ФОРМЫ
+  // 11. ЮРИДИЧЕСКАЯ УПАКОВКА РФ (152-ФЗ С 01.09.2025, 422-ФЗ, ЗоЗПП, META)
   // ==========================================================================
-  var DEFAULT_PRIVACY = [
-    '1. ОБЩИЕ ПОЛОЖЕНИЯ',
-    'Настоящая Политика обработки персональных данных составлена в соответствии с Федеральным законом РФ от 27.07.2006 № 152-ФЗ «О персональных данных».',
-    'Оператором персональных данных является плательщик налога на профессиональный доход (самозанятая) Парфенова Анастасия.',
-    '',
-    '2. ДАННЫЕ И ЦЕЛИ ОБРАБОТКИ',
-    '• Имя, телефон или ник в мессенджере Telegram / WhatsApp — для обратной связи и записи на занятия;',
-    '• Технические файлы cookie — для корректной работы сайта.'
-  ].join('\n');
+  var LEGAL_DEFAULTS = {
+    fio: 'Парфенова Анастасия Сергеевна',
+    inn: '632512011220',
+    email: 'fitness.nastya@mail.ru',
+    phone: '8 (937) 791-32-53',
+    site: 'https://anastasia-fitness.ru'
+  };
 
-  var DEFAULT_OFFER = [
-    'ПУБЛИЧНАЯ ОФЕРТА НА ОКАЗАНИЕ ОНЛАЙН-УСЛУГ ПО ФИТНЕС-СОПРОВОЖДЕНИЮ',
-    '',
-    'Исполнитель: плательщик НПД (самозанятая, ФЗ № 422-ФЗ) Парфенова Анастасия.',
-    'После оплаты выбранного на сайте тарифа Исполнитель формирует официальный чек в приложении ФНС «Мой налог».'
-  ].join('\n');
+  function injectStep2LegalCSS() {
+    if (document.getElementById('nastya-step2-legal-css')) return;
+    var st = document.createElement('style');
+    st.id = 'nastya-step2-legal-css';
+    st.textContent = [
+      '/* Две отдельные аккуратные галочки согласия (ПК + Телефон) */',
+      '.legal-check-row {',
+      '  display: flex !important;',
+      '  align-items: flex-start !important;',
+      '  gap: 10px !important;',
+      '  margin: 8px 0 6px 0 !important;',
+      '  font-size: 0.78rem !important;',
+      '  line-height: 1.45 !important;',
+      '  color: rgba(63, 41, 27, 0.86) !important;',
+      '  text-align: left !important;',
+      '  cursor: pointer !important;',
+      '  user-select: none;',
+      '}',
+      '.legal-check-row + .legal-check-row { margin-top: 4px !important; margin-bottom: 14px !important; }',
+      '.legal-check-row input[type="checkbox"] {',
+      '  flex: 0 0 18px !important;',
+      '  width: 18px !important;',
+      '  height: 18px !important;',
+      '  margin: 2px 0 0 0 !important;',
+      '  accent-color: #3F291B !important;',
+      '  cursor: pointer !important;',
+      '}',
+      '.legal-check-row a {',
+      '  color: #7A471E !important;',
+      '  text-decoration: underline !important;',
+      '  text-underline-offset: 2px !important;',
+      '  font-weight: 600 !important;',
+      '  cursor: pointer !important;',
+      '}',
+      '.legal-check-row a:hover { color: #3F291B !important; }',
+      '',
+      '/* Статус заявки и кнопки перехода в Telegram / копирования */',
+      '.form-status {',
+      '  margin-top: 14px !important;',
+      '  padding: 14px 16px !important;',
+      '  border-radius: 16px !important;',
+      '  font-size: 0.84rem !important;',
+      '  line-height: 1.48 !important;',
+      '  text-align: left !important;',
+      '}',
+      '.form-status.ok {',
+      '  background: rgba(246, 236, 222, 0.92) !important;',
+      '  border: 1px solid rgba(201, 144, 78, 0.55) !important;',
+      '  color: #3F291B !important;',
+      '}',
+      '.form-status.err {',
+      '  background: rgba(196, 72, 54, 0.10) !important;',
+      '  border: 1px solid rgba(196, 72, 54, 0.36) !important;',
+      '  color: #8C2318 !important;',
+      '}',
+      '.tg-status-actions {',
+      '  display: flex !important;',
+      '  flex-wrap: wrap !important;',
+      '  gap: 8px !important;',
+      '  margin-top: 10px !important;',
+      '}',
+      '.tg-action-primary {',
+      '  display: inline-flex !important;',
+      '  align-items: center !important;',
+      '  justify-content: center !important;',
+      '  padding: 9px 16px !important;',
+      '  border-radius: 999px !important;',
+      '  background: linear-gradient(135deg, #4A2F20 0%, #3F291B 100%) !important;',
+      '  color: #FFFBF5 !important;',
+      '  font-weight: 600 !important;',
+      '  font-size: 0.80rem !important;',
+      '  text-decoration: none !important;',
+      '  box-shadow: 0 6px 14px rgba(63, 41, 27, 0.18) !important;',
+      '}',
+      '.tg-action-secondary {',
+      '  display: inline-flex !important;',
+      '  align-items: center !important;',
+      '  justify-content: center !important;',
+      '  padding: 9px 14px !important;',
+      '  border-radius: 999px !important;',
+      '  background: #FFFDF9 !important;',
+      '  border: 1px solid rgba(63, 41, 27, 0.28) !important;',
+      '  color: #3F291B !important;',
+      '  font-family: inherit !important;',
+      '  font-weight: 600 !important;',
+      '  font-size: 0.80rem !important;',
+      '  cursor: pointer !important;',
+      '}',
+      '',
+      '/* Подвал: 3 ссылки документов и реквизиты самозанятой */',
+      '.footer-legal {',
+      '  display: flex !important;',
+      '  flex-wrap: wrap !important;',
+      '  justify-content: center !important;',
+      '  gap: 10px 22px !important;',
+      '}',
+      '.footer-selfemployed {',
+      '  margin-top: 16px !important;',
+      '  padding-top: 14px !important;',
+      '  border-top: 1px solid rgba(246, 217, 168, 0.16) !important;',
+      '  font-size: 0.74rem !important;',
+      '  line-height: 1.55 !important;',
+      '  opacity: 0.82;',
+      '  text-align: center;',
+      '}',
+      '',
+      '/* Модалка юридических документов (удобный скролл на телефоне и ПК) */',
+      '.legal-modal-box {',
+      '  width: min(700px, 94vw) !important;',
+      '  max-height: 88vh !important;',
+      '  display: flex !important;',
+      '  flex-direction: column !important;',
+      '  overflow: hidden !important;',
+      '}',
+      '.legal-modal-body {',
+      '  overflow-y: auto !important;',
+      '  -webkit-overflow-scrolling: touch;',
+      '  white-space: pre-wrap !important;',
+      '  font-size: 0.86rem !important;',
+      '  line-height: 1.58 !important;',
+      '  padding-right: 6px !important;',
+      '  margin-top: 12px !important;',
+      '  color: #3F291B;',
+      '}',
+      '@media (max-width: 720px) {',
+      '  .legal-check-row { font-size: 0.75rem !important; gap: 9px !important; }',
+      '  .tg-status-actions { flex-direction: column !important; }',
+      '  .tg-action-primary, .tg-action-secondary { width: 100% !important; min-height: 42px !important; }',
+      '  .footer-legal { gap: 8px 16px !important; font-size: 0.78rem !important; }',
+      '  .footer-selfemployed { font-size: 0.71rem !important; }',
+      '  .legal-modal-box { padding: 22px 18px !important; max-height: 86vh !important; }',
+      '  .legal-modal-body { font-size: 0.81rem !important; }',
+      '}'
+    ].join('\n');
+    document.head.appendChild(st);
+  }
+
+  function getLegalRequisites() {
+    var st = window.SITE_SETTINGS || {};
+    var fio = (st.legalFio && st.legalFio.trim() && st.legalFio.trim() !== 'Парфенова Анастасия')
+      ? st.legalFio.trim()
+      : LEGAL_DEFAULTS.fio;
+    var inn = (st.legalInn && st.legalInn.trim() && st.legalInn.indexOf('уточн') < 0)
+      ? st.legalInn.trim()
+      : LEGAL_DEFAULTS.inn;
+    var email = (st.leadEmail && st.leadEmail.trim() && st.leadEmail.indexOf('gmail.com') < 0)
+      ? st.leadEmail.trim()
+      : LEGAL_DEFAULTS.email;
+    return {
+      fio: fio,
+      inn: inn,
+      email: email,
+      phone: (st.phone && st.phone.trim()) || LEGAL_DEFAULTS.phone,
+      site: LEGAL_DEFAULTS.site
+    };
+  }
+
+  function buildDefaultPrivacy(r) {
+    return [
+      'ПОЛИТИКА ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ',
+      'Редакция от 22.11.2026 | Сайт: ' + r.site,
+      '',
+      '1. ОБЩИЕ ПОЛОЖЕНИЯ И ОПЕРАТОР ПДН',
+      'Настоящая Политика разработана в соответствии с Федеральным законом РФ от 27.07.2006 № 152-ФЗ «О персональных данных» (ст. 18.1) и определяет порядок обработки и меры по защите персональных данных посетителей сайта ' + r.site + '.',
+      'Оператор персональных данных: физическое лицо, плательщик налога на профессиональный доход (самозанятая, 422-ФЗ) ' + r.fio + ', ИНН ' + r.inn + ', контактный e-mail: ' + r.email + '.',
+      '',
+      '2. СОСТАВ ОБРАБАТЫВАЕМЫХ ДАННЫХ',
+      'Оператор обрабатывает исключительно общие персональные данные, добровольно предоставленные Пользователем: имя, контактные данные (номер телефона, никнейм в Telegram, e-mail при указании), выбранный формат работы.',
+      'ЗАПРЕТ НА СПЕЦИАЛЬНЫЕ КАТЕГОРИИ ПДН: сайт НЕ собирает сведения о состоянии здоровья, диагнозах, травмах и биометрические данные. Пользователям прямо запрещается вносить сведения о состоянии здоровья в формы на сайте.',
+      'На сайте используются только технические файлы cookie (и локальное хранилище браузера) для корректной работы интерфейса — без сторонних рекламных трекеров и зарубежной аналитики.',
+      '',
+      '3. ЦЕЛИ И ПРАВОВЫЕ ОСНОВАНИЯ',
+      '• Цель: обработка обращений и заявок, обратная связь, консультирование, заключение и исполнение договора (Публичной оферты) на оказание дистанционных физкультурно-оздоровительных и консультационных услуг.',
+      '• Правовые основания: ст. 6 152-ФЗ — отдельное Согласие субъекта персональных данных, а также заключение и исполнение договора по инициативе субъекта ПДн.',
+      '',
+      '4. ЛОКАЛИЗАЦИЯ В РФ И ПЕРЕЧЕНЬ ДЕЙСТВИЙ',
+      '• Сайт и все его ресурсы (шрифты, скрипты, изображения) размещены на территории Российской Федерации (ЦОД ООО «Яндекс.Облако», РФ). При заполнении формы сайт не передаёт данные через зарубежные почтовые или формулярные шлюзы — браузер формирует сообщение для прямой отправки самим Пользователем в мессенджер Telegram.',
+      '• Перечень действий с ПДн: сбор, запись, систематизация, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, блокирование, удаление, уничтожение.',
+      '• Персональные данные не передаются третьим лицам, за исключением случаев, прямо предусмотренных законом РФ.',
+      '',
+      '5. СРОКИ ХРАНЕНИЯ И ОТЗЫВ СОГЛАСИЯ',
+      'Персональные данные хранятся до достижения целей обработки либо до отзыва согласия Пользователем, но не более 3 (трёх) лет с момента последнего взаимодействия.',
+      'Пользователь вправе в любой момент запросить уточнение, блокирование, уничтожение своих данных или отозвать согласие, направив обращение на e-mail: ' + r.email + ' с темой «Отзыв согласия на обработку ПДн». Обработка прекращается в срок не более 10 (десяти) рабочих дней.'
+    ].join('\n');
+  }
+
+  function buildDefaultConsent(r) {
+    return [
+      'СОГЛАСИЕ НА ОБРАБОТКУ ПЕРСОНАЛЬНЫХ ДАННЫХ',
+      '(самостоятельный документ в соответствии со ст. 9 Федерального закона № 152-ФЗ в редакции от 01.09.2025)',
+      '',
+      'Я, действуя свободно, своей волей и в своём интересе, подтверждая свою дееспособность, даю конкретное, предметное, информированное, сознательное и однозначное согласие Оператору персональных данных:',
+      '• Оператор: физическое лицо, плательщик НПД (самозанятая, 422-ФЗ) ' + r.fio + ', ИНН ' + r.inn + ', e-mail: ' + r.email + ', сайт: ' + r.site + '.',
+      '',
+      '1. ПЕРЕЧЕНЬ ПЕРСОНАЛЬНЫХ ДАННЫХ',
+      'Имя, номер телефона, имя пользователя (никнейм) в Telegram, адрес электронной почты (при предоставлении), сведения о выбранном формате фитнес-услуг. Настоящее согласие не распространяется на специальные категории ПДн (сведения о состоянии здоровья).',
+      '',
+      '2. ЦЕЛЬ ОБРАБОТКИ',
+      'Обработка входящего обращения/заявки с сайта ' + r.site + ', связь со мной, консультирование по форматам и стоимости услуг, запись на пробную тренировку, а также подготовка к заключению и исполнению Публичной оферты.',
+      '',
+      '3. ПЕРЕЧЕНЬ ДЕЙСТВИЙ И СПОСОБЫ ОБРАБОТКИ',
+      'Сбор, запись, систематизация, накопление, хранение, уточнение (обновление, изменение), извлечение, использование, блокирование, удаление и уничтожение персональных данных с использованием средств автоматизации и без их использования.',
+      '',
+      '4. СРОК ДЕЙСТВИЯ И ПОРЯДОК ОТЗЫВА',
+      'Согласие действует до достижения целей обработки или до момента его отзыва, но не более 3 (трёх) лет. Согласие может быть отозвано в любой момент путём направления уведомления на e-mail ' + r.email + ' (обработка прекращается в срок до 10 рабочих дней).',
+      'Проставление отметки (галочки) в соответствующем поле формы на сайте ' + r.site + ' подтверждает предоставление настоящего Согласия.'
+    ].join('\n');
+  }
+
+  function buildDefaultOffer(r) {
+    return [
+      'ПУБЛИЧНАЯ ОФЕРТА НА ОКАЗАНИЕ ДИСТАНЦИОННЫХ ФИЗКУЛЬТУРНО-ОЗДОРОВИТЕЛЬНЫХ И КОНСУЛЬТАЦИОННЫХ УСЛУГ ОНЛАЙН',
+      'Редакция от 22.11.2026 | Сайт: ' + r.site,
+      '',
+      '1. ОБЩИЕ ПОЛОЖЕНИЯ И РЕКВИЗИТЫ ИСПОЛНИТЕЛЯ',
+      'Настоящий документ является официальным предложением (публичной офертой в соответствии со ст. 437 ГК РФ) физического лица, применяющего специальный налоговый режим «Налог на профессиональный доход» (самозанятая, Федеральный закон от 27.11.2018 № 422-ФЗ):',
+      '• Исполнитель: ' + r.fio,
+      '• ИНН: ' + r.inn,
+      '• Контактный e-mail: ' + r.email + ' | Телефон: ' + r.phone,
+      'Акцептом (полным и безоговорочным принятием) настоящей Оферты является оплата Заказчиком выбранного тарифа на реквизиты, согласованные с Исполнителем.',
+      '',
+      '2. ПРЕДМЕТ ДОГОВОРА И СПЕЦИАЛИЗАЦИЯ',
+      'Исполнитель оказывает Заказчику дистанционные физкультурно-оздоровительные и консультационные услуги онлайн (индивидуальное сопровождение, занятия в мини-группе, онлайн-тренировки по видеосвязи, составление плана тренировок и рекомендаций по сбалансированному питанию, разбор техники) в объёме оплаченного тарифа, указанного на сайте ' + r.site + '.',
+      'Программы Исполнителя разработаны с учётом женской физиологии и биомеханики. Исполнитель вправе отказать в заключении договора при наличии медицинских противопоказаний или несоответствии запроса Заказчика профилю программы.',
+      '',
+      '3. ВАЖНЫЙ МЕДИЦИНСКИЙ ДИСКЛЕЙМЕР (НЕ МЕДИЦИНСКИЕ УСЛУГИ)',
+      '• Услуги Исполнителя НЕ являются медицинскими услугами, лечением, медицинской диагностикой или реабилитацией.',
+      '• Заказчик самостоятельно несёт полную ответственность за состояние своего здоровья, обязан убедиться в отсутствии медицинских противопоказаний к физическим нагрузкам до старта (при необходимости — проконсультироваться с врачом) и незамедлительно сообщать Исполнителю о любом ухудшении самочувствия.',
+      '• Результаты тренировок индивидуальны и зависят от физиологических особенностей, регулярности занятий, режима сна и соблюдения рекомендаций самим Заказчиком. Исполнитель не гарантирует достижение конкретных числовых показателей веса или объёмов (кг/см).',
+      '',
+      '4. СТОИМОСТЬ, ОПЛАТА И ЧЕКИ «МОЙ НАЛОГ»',
+      'Стоимость услуг указана на сайте ' + r.site + ' в рублях РФ (НДС не облагается в связи с применением НПД по 422-ФЗ).',
+      'После получения оплаты Исполнитель формирует официальный фискальный чек в приложении ФНС России «Мой налог» и направляет его Заказчику в мессенджер или на e-mail.',
+      '',
+      '5. ПОРЯДОК ПЕРЕНОСА ТРЕНИРОВОК',
+      'Перенос согласованной онлайн-тренировки возможен по предварительному уведомлению Исполнителя не позднее чем за 12 (двенадцать) часов до назначенного времени. При отмене менее чем за 12 часов или неявке время тренера считается зарезервированным, а занятие — проведённым.',
+      '',
+      '6. ОТКАЗ ОТ УСЛУГ И ВОЗВРАТ ДЕНЕЖНЫХ СРЕДСТВ (СТ. 32 ЗоЗПП И СТ. 782 ГК РФ)',
+      'В соответствии со ст. 32 Закона РФ «О защите прав потребителей» и ст. 782 ГК РФ Заказчик вправе в любой момент отказаться от исполнения договора, направив уведомление в мессенджер или на e-mail ' + r.email + ':',
+      '• До старта оказания услуг возвращается 100% оплаченной суммы.',
+      '• После старта сопровождения возврат рассчитывается пропорционально неоказанным занятиям/дням — за вычетом стоимости фактически оказанных услуг и уже составленной и переданной персональной программы.',
+      '• Для разовых программ тренировок и/или питания услуга считается оказанной в полном объёме в момент передачи Заказчику готового файла/таблицы программы.',
+      '• Возврат денежных средств осуществляется на реквизиты Заказчика в течение 10 (десяти) календарных дней с даты получения заявления.',
+      '',
+      '7. АВТОРСКИЕ ПРАВА И РАЗРЕШЕНИЕ СПОРОВ',
+      'Передаваемые материалы предназначены строго для личного использования Заказчиком и не подлежат копированию, перепродаже или публикации.',
+      'Споры решаются путём переговоров (срок ответа на претензию на ' + r.email + ' — 10 календарных дней), а при недостижении согласия — в порядке, установленном законодательством РФ.'
+    ].join('\n');
+  }
 
   window.openLegalModal = function (kind) {
+    injectStep2LegalCSS();
     var modal = document.getElementById('nastyaLegalModal');
     if (!modal) {
       modal = document.createElement('div');
@@ -964,87 +1206,106 @@
         '<div class="modal-box legal-modal-box">',
         '  <button class="modal-close" type="button" onclick="document.getElementById(\'nastyaLegalModal\').classList.remove(\'open\')">✕</button>',
         '  <span class="eyebrow">Юридическая информация</span>',
-        '  <h3 id="legalModalHeading" style="font-size:1.75rem;"></h3>',
+        '  <h3 id="legalModalHeading" style="font-size:1.55rem; margin-bottom:4px;"></h3>',
         '  <div class="legal-modal-body" id="legalModalText"></div>',
         '</div>'
       ].join('');
-      modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('open'); });
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) modal.classList.remove('open');
+      });
       document.body.appendChild(modal);
     }
+
     var st = window.SITE_SETTINGS || {};
-    document.getElementById('legalModalHeading').textContent = kind === 'offer'
-      ? 'Пользовательское соглашение (Публичная оферта)'
-      : 'Политика конфиденциальности и обработки ПДн';
-    document.getElementById('legalModalText').textContent = kind === 'offer'
-      ? (st.legalOffer || DEFAULT_OFFER)
-      : (st.legalPrivacy || DEFAULT_PRIVACY);
+    var req = getLegalRequisites();
+    var heading = 'Политика обработки персональных данных';
+    var body = (st.legalPrivacy && st.legalPrivacy.trim()) ? st.legalPrivacy : buildDefaultPrivacy(req);
+
+    if (kind === 'consent') {
+      heading = 'Согласие на обработку персональных данных';
+      body = (st.legalConsent && st.legalConsent.trim()) ? st.legalConsent : buildDefaultConsent(req);
+    } else if (kind === 'offer') {
+      heading = 'Публичная оферта на оказание онлайн-услуг';
+      body = (st.legalOffer && st.legalOffer.trim()) ? st.legalOffer : buildDefaultOffer(req);
+    }
+
+    document.getElementById('legalModalHeading').textContent = heading;
+    document.getElementById('legalModalText').textContent = body;
     modal.classList.add('open');
   };
 
   function setupLegalAndCookies() {
-    var st = window.SITE_SETTINGS || {};
-    var fio = st.legalFio || 'Парфенова Анастасия';
-    var inn = st.legalInn || 'уточняется при оформлении чека в «Мой налог»';
+    injectStep2LegalCSS();
+    var req = getLegalRequisites();
 
-    var legalLinks = document.querySelectorAll('.footer-legal a');
-    if (legalLinks.length >= 2) {
-      legalLinks[0].href = 'javascript:void(0)';
-      legalLinks[0].onclick = function (e) { e.preventDefault(); window.openLegalModal('privacy'); };
-      legalLinks[1].href = 'javascript:void(0)';
-      legalLinks[1].onclick = function (e) { e.preventDefault(); window.openLegalModal('offer'); };
+    // 1. Три отдельные ссылки документов в подвале (.footer-legal)
+    var legalWrap = document.querySelector('.footer-legal');
+    if (legalWrap) {
+      legalWrap.innerHTML = [
+        '<a href="javascript:void(0)" onclick="openLegalModal(\'privacy\'); return false;">Политика обработки ПДн</a>',
+        '<a href="javascript:void(0)" onclick="openLegalModal(\'consent\'); return false;">Согласие на обработку ПДн</a>',
+        '<a href="javascript:void(0)" onclick="openLegalModal(\'offer\'); return false;">Публичная оферта</a>'
+      ].join('');
     }
 
+    // 2. Реквизиты самозанятой и обязательная сноска Meta/Instagram* в подвале
     var footerContainer = document.querySelector('footer .container');
-    if (footerContainer && !footerContainer.querySelector('.footer-selfemployed')) {
+    if (footerContainer) {
+      footerContainer.querySelectorAll('.footer-selfemployed').forEach(function (el) { el.remove(); });
       var info = document.createElement('div');
       info.className = 'footer-selfemployed';
-      info.innerHTML = 'Услуги оказывает плательщик налога на профессиональный доход (самозанятая): ' + fio + ' (ИНН: ' + inn + ').<br>* Социальная сеть Instagram принадлежит компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.';
+      info.innerHTML =
+        'Услуги оказывает плательщик налога на профессиональный доход (самозанятая, 422-ФЗ): ' +
+        req.fio + ' (ИНН: ' + req.inn + ', e-mail: <a href="mailto:' + req.email + '" style="text-decoration:underline;color:inherit;">' + req.email + '</a>). ' +
+        'Услуги не являются медицинскими.<br>' +
+        '* Instagram — продукт компании Meta Platforms Inc., деятельность которой признана экстремистской и запрещена на территории РФ.';
       footerContainer.appendChild(info);
     }
 
+    // 3. Два отдельных НЕпроставленных чекбокса в обеих формах (без checked!)
     document.querySelectorAll('#contacts form, #bookingModal form').forEach(function (f) {
-      if (f.querySelector('.legal-check-row')) return;
+      f.querySelectorAll('.legal-check-row').forEach(function (old) { old.remove(); });
       var note = f.querySelector('.form-note');
       if (note) note.style.display = 'none';
       var btn = f.querySelector('button[type="submit"]');
-      var row = document.createElement('label');
-      row.className = 'legal-check-row';
-      row.innerHTML = '<input type="checkbox" required checked><span>Я соглашаюсь с <a onclick="openLegalModal(\'privacy\'); return false;">Политикой обработки персональных данных</a> и условиями <a onclick="openLegalModal(\'offer\'); return false;">Публичной оферты</a>.</span>';
-      if (btn) btn.insertAdjacentElement('beforebegin', row);
-      else f.appendChild(row);
+
+      var row1 = document.createElement('label');
+      row1.className = 'legal-check-row';
+      row1.innerHTML =
+        '<input type="checkbox" name="consent_pdn" required>' +
+        '<span>Даю отдельное <a href="javascript:void(0)" onclick="openLegalModal(\'consent\'); return false;">Согласие на обработку персональных данных</a> в соответствии с <a href="javascript:void(0)" onclick="openLegalModal(\'privacy\'); return false;">Политикой обработки ПДн</a>.</span>';
+
+      var row2 = document.createElement('label');
+      row2.className = 'legal-check-row';
+      row2.innerHTML =
+        '<input type="checkbox" name="consent_offer" required>' +
+        '<span>Ознакомлена и согласна с условиями <a href="javascript:void(0)" onclick="openLegalModal(\'offer\'); return false;">Публичной оферты</a> (включая отсутствие медицинских противопоказаний).</span>';
+
+      if (btn) {
+        btn.insertAdjacentElement('beforebegin', row1);
+        btn.insertAdjacentElement('beforebegin', row2);
+      } else {
+        f.appendChild(row1);
+        f.appendChild(row2);
+      }
     });
 
+    // 4. Уточнённый Cookie-баннер (только технические cookie)
     try {
       if (!localStorage.getItem('nastya_cookie_ok') && !document.getElementById('nastyaCookieBar')) {
         var bar = document.createElement('div');
         bar.className = 'cookie-float';
         bar.id = 'nastyaCookieBar';
-        bar.innerHTML = '<div>Сайт использует файлы cookie в соответствии с <a onclick="openLegalModal(\'privacy\')">Политикой конфиденциальности</a>.</div><button type="button" class="cookie-btn" onclick="localStorage.setItem(\'nastya_cookie_ok\',\'1\'); this.parentElement.remove();">Принять</button>';
+        bar.innerHTML =
+          '<div>Сайт использует только технические файлы cookie для корректной работы интерфейса (<a href="javascript:void(0)" onclick="openLegalModal(\'privacy\'); return false;">Политика обработки ПДн</a>).</div>' +
+          '<button type="button" class="cookie-btn" onclick="localStorage.setItem(\'nastya_cookie_ok\',\'1\'); this.parentElement.remove();">Понятно</button>';
         document.body.appendChild(bar);
       }
     } catch (e) {}
   }
 
   function hookYandexForms() {
-    var origSubmit = window.handleFormSubmit;
-    if (!origSubmit || origSubmit._hooked) return;
-    window.handleFormSubmit = async function (e) {
-      var form = e.target;
-      var st = window.SITE_SETTINGS || {};
-      var yaUrl = (st.yandexFormUrl || '').trim();
-      if (yaUrl) {
-        try {
-          var fd = new FormData();
-          form.querySelectorAll('.form-group').forEach(function (g) {
-            var l = g.querySelector('.form-label'), c = g.querySelector('input,select,textarea');
-            if (l && c) fd.append(l.textContent.trim(), c.value.trim());
-          });
-          fetch(yaUrl, { method: 'POST', body: fd, mode: 'no-cors' }).catch(function () {});
-        } catch (err) {}
-      }
-      return origSubmit.apply(this, arguments);
-    };
-    window.handleFormSubmit._hooked = true;
+    // Заявки работают напрямую в Telegram по инициативе клиента (без formsubmit.co и Яндекс Форм).
   }
 
   // ==========================================================================
@@ -1062,9 +1323,9 @@
     window.SITE_EDIT.photoSlots['cert-2'] = { label: 'Фото сертификата (Образование №2)', hint: 'текст над фото редактируется в разделе Образование' };
 
     var extraSettings = [
-      { key: 'yandexFormUrl', kind: 'plain', label: 'Ссылка на Яндекс Форму (необязательно)', def: '' },
-      { key: 'legalFio', kind: 'plain', label: 'ФИО самозанятой (в подвале и оферте)', def: 'Парфенова Анастасия' },
-      { key: 'legalInn', kind: 'plain', label: 'ИНН самозанятой', def: 'уточняется при оформлении чека' },
+      { key: 'yandexFormUrl', kind: 'plain', label: 'Ссылка на Яндекс Форму (отключено — заявки идут в Telegram)', def: '' },
+      { key: 'legalFio', kind: 'plain', label: 'ФИО самозанятой (в подвале и оферте)', def: 'Парфенова Анастасия Сергеевна' },
+      { key: 'legalInn', kind: 'plain', label: 'ИНН самозанятой', def: '632512011220' },
       { key: 'floatAmp', kind: 'plain', label: 'Амплитуда парения фото Насти на ПК (например 7px)', def: '7px' },
       { key: 'reliefOpacity', kind: 'plain', label: 'Заметность 15 фоновых барельефов (от 0.10 до 0.45)', def: '0.92' }
     ];

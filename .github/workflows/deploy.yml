@@ -23,4 +23,7 @@ jobs:
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --exclude "*.md"
+            --exclude "*.md" \
+            --exclude "*.py" \
+            --exclude "_backup*/*" \
+            --exclude ".DS_Store"

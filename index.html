@@ -10,11 +10,9 @@
   <meta property="og:locale" content="ru_RU">
   <meta property="og:title" content="Анастасия — онлайн-фитнес-тренер">
   <meta property="og:description" content="Система тренировок и питания онлайн. Первая пробная тренировка — в подарок.">
-  <link rel="canonical" href="https://anastasia-fitness.ru/">
-  <meta property="og:url" content="https://anastasia-fitness.ru/">
-  <meta property="og:site_name" content="Анастасия Парфенова — онлайн-фитнес-тренер">
-  <meta property="og:image" content="https://anastasia-fitness.ru/photos/hero.jpg">
-  <link rel="stylesheet" href="fonts/fonts.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg-soft: #FAF7F2;
@@ -1804,26 +1802,26 @@
     /* Свои фото: положите файлы в папку по имени (jpg/png/webp). Пока их нет, показываются временные. */
     var PHOTO_EXT = ['jpg', 'jpeg', 'png', 'webp'];
     var STOCK = {
-      "photos/hero": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/about-main": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/gallery-1": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/gallery-2": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/gallery-3": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-1-before": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-1-after": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-2-before": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-2-after": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-3-before": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-3-after": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-4-before": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/case-4-after": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/review-1": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/review-2": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/review-3": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/review-4": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/approach-1": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/approach-2": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E",
-      "photos/approach-3": "data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 750'%3E%3Crect width='600' height='750' fill='%23F7EFE4'/%3E%3Crect x='24' y='24' width='552' height='702' rx='24' fill='none' stroke='%23C9904E' stroke-opacity='0.35' stroke-width='2'/%3E%3C/svg%3E"
+      "photos/hero": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1000&q=85",
+      "photos/about-main": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=900&q=85",
+      "photos/gallery-1": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=700&q=80",
+      "photos/gallery-2": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=700&q=80",
+      "photos/gallery-3": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=700&q=80",
+      "photos/case-1-before": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+      "photos/case-1-after": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80",
+      "photos/case-2-before": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80",
+      "photos/case-2-after": "https://images.unsplash.com/photo-1518310383802-640c2de311b2?auto=format&fit=crop&w=600&q=80",
+      "photos/case-3-before": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80",
+      "photos/case-3-after": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+      "photos/case-4-before": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
+      "photos/case-4-after": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80",
+      "photos/review-1": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+      "photos/review-2": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300&q=80",
+      "photos/review-3": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=300&q=80",
+      "photos/review-4": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80",
+      "photos/approach-1": "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80",
+      "photos/approach-2": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80",
+      "photos/approach-3": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=600&q=80"
 };
     function photoFallback(img) {
       var m = (img.getAttribute('src') || '').match(/^((?:photos|images)\/[^.]+)\.(\w+)$/);
@@ -1969,9 +1967,9 @@
   {
    "key": "leadEmail",
    "kind": "plain",
-   "label": "Контактная почта (для связи и обращений по ПДн)",
-   "def": "fitness.nastya@mail.ru",
-   "hint": "Указывается в подвале сайта, Политике обработки ПДн и Публичной оферте."
+   "label": "Почта, на которую приходят заявки",
+   "def": "parfenovanastya86@gmail.com",
+   "hint": "Если поменяете, новую почту нужно один раз активировать: отправьте с сайта тестовую заявку и нажмите Activate в письме от FormSubmit."
   }
  ]
 };</script>
@@ -2333,7 +2331,7 @@
         <div class="cta-socials">
           <a href="https://t.me/parfenova_nastya" target="_blank" rel="noopener">TELEGRAM →</a>
           <a href="https://t.me/anast_eish_a" target="_blank" rel="noopener">TELEGRAM-КАНАЛ →</a>
-          <a href="https://www.instagram.com/a_nasteisha.a._?exln=MWt2NTNpZjdoaG4zOQ==" target="_blank" rel="noopener">INSTAGRAM* →</a>
+          <a href="https://www.instagram.com/a_nasteisha.a._?exln=MWt2NTNpZjdoaG4zOQ==" target="_blank" rel="noopener">INSTAGRAM →</a>
           <a href="https://www.avito.ru/samara/predlozheniya_uslug/fitnes_trener_onlayn_8482983402" target="_blank" rel="noopener">АВИТО →</a>
           <a href="tel:+79377913253">8 (937) 791-32-53</a>
         </div>
@@ -2413,7 +2411,7 @@
           <input type="text" class="form-control" placeholder="Твоё имя" required>
         </div>
         <div class="form-group">
-          <label class="form-label">Контакт (Telegram / Телефон)</label>
+          <label class="form-label">Контакт (Telegram / WhatsApp / Телефон)</label>
           <input type="text" class="form-control" placeholder="@username или +7 (___) ___-__-__" required>
         </div>
         <button type="submit" class="form-submit">Отправить заявку</button>
@@ -2878,42 +2876,27 @@
       document.getElementById('bookingModal').classList.remove('open');
     }
 
-    const CONTACT_EMAIL = (window.SITE_SETTINGS && SITE_SETTINGS.leadEmail) || 'fitness.nastya@mail.ru';
-    const LEAD_TG = ((window.SITE_SETTINGS && SITE_SETTINGS.telegram) || 'https://t.me/parfenova_nastya').replace(/^.*t\.me\//, '').replace(/^@/, '').replace(/[\/?#].*$/, '');
-    const LEAD_PHONE_TEXT = (window.SITE_SETTINGS && SITE_SETTINGS.phone) || '8 (937) 791-32-53';
+    const LEAD_EMAIL = (window.SITE_SETTINGS && SITE_SETTINGS.leadEmail) || 'parfenovanastya86@gmail.com';  // заявки приходят на эту почту
+    const LEAD_TG = ((window.SITE_SETTINGS && SITE_SETTINGS.telegram) || 'https://t.me/parfenova_nastya').replace(/^.*t\.me\//, '').replace(/^@/, '').replace(/[\/?#].*$/, '');           // запасной канал: Telegram Насти
+    const LEAD_PHONE_TEXT = '8 (937) 791-32-53';
 
-    function leadStatus(form, kind, text, links) {
+    function leadStatus(form, kind, text, link) {
       let el = form.querySelector('.form-status');
       if (!el) { el = document.createElement('p'); el.setAttribute('role', 'status'); form.appendChild(el); }
       el.className = 'form-status ' + kind;
       el.textContent = text;
-      if (Array.isArray(links)) {
-        links.forEach(node => { el.appendChild(document.createTextNode(' ')); el.appendChild(node); });
-      } else if (links) {
-        el.appendChild(document.createTextNode(' ')); el.appendChild(links);
-      }
+      if (link) { el.appendChild(document.createTextNode(' ')); el.appendChild(link); }
     }
     function tgLink(text, label) {
       const a = document.createElement('a');
       a.href = 'https://t.me/' + LEAD_TG + '?text=' + encodeURIComponent(text);
-      a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = label;
+      a.target = '_blank'; a.rel = 'noopener'; a.textContent = label;
       return a;
     }
 
     async function handleFormSubmit(e, sourceName) {
       e.preventDefault();
       const form = e.target;
-
-      // Обязательная проверка двух раздельных галочек (152-ФЗ + Оферта)
-      const checks = form.querySelectorAll('.legal-check-row input[type="checkbox"]');
-      for (let i = 0; i < checks.length; i++) {
-        if (!checks[i].checked) {
-          leadStatus(form, 'err', 'Пожалуйста, отметьте оба согласия под формой перед отправкой заявки.');
-          checks[i].focus();
-          return;
-        }
-      }
-
       const fields = {};
       form.querySelectorAll('.form-group').forEach(g => {
         const l = g.querySelector('.form-label'), c = g.querySelector('input,select,textarea');
@@ -2921,30 +2904,41 @@
       });
       const inModal = !!form.closest('.modal-box');
       const picked = inModal ? document.getElementById('modalSelectedService').textContent.trim() : '';
-
-      const lines = ['Здравствуйте, Анастасия! Заявка с сайта anastasia-fitness.ru:'];
-      Object.keys(fields).forEach(k => lines.push('• ' + k + ': ' + (fields[k] || '—')));
-      if (picked) lines.push('• ' + picked);
+      const lines = ['Заявка с сайта (' + sourceName + ')'].concat(Object.keys(fields).map(k => k + ': ' + (fields[k] || '—')));
+      if (picked) lines.push(picked);
       const text = lines.join('\n');
-      const url = tgLink(text, '').href;
+      const btn = form.querySelector('button[type=submit]');
+      const label = btn.textContent;
 
-      // Открываем диалог в Telegram с уже подставленным текстом заявки (без передачи данных через зарубежные прокси-сервисы)
-      const opened = window.open(url, '_blank', 'noopener,noreferrer');
+      // e-mail ещё не подключён: открываем Telegram Насти с уже готовой заявкой
+      if (!LEAD_EMAIL) {
+        window.open(tgLink(text, '').href, '_blank', 'noopener');
+        leadStatus(form, 'ok', 'Открыли Telegram с готовой заявкой — осталось нажать «Отправить».');
+        return;
+      }
 
-      const copyBtn = document.createElement('a');
-      copyBtn.href = 'javascript:void(0)';
-      copyBtn.textContent = 'Скопировать текст';
-      copyBtn.onclick = function (ev) {
-        ev.preventDefault();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(() => { copyBtn.textContent = 'Скопировано ✓'; });
-        }
-      };
-
-      if (opened) {
-        leadStatus(form, 'ok', 'Открыли Telegram с готовой заявкой — осталось нажать «Отправить» в чате. Если окно не открылось:', [tgLink(text, 'Открыть Telegram →'), copyBtn]);
-      } else {
-        leadStatus(form, 'ok', 'Заявка готова! Нажмите, чтобы отправить её Анастасии в Telegram:', [tgLink(text, 'Перейти в Telegram →'), copyBtn]);
+      btn.disabled = true; btn.textContent = 'Отправляем…';
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 20000);
+      try {
+        const payload = Object.assign({}, fields, { 'Источник': sourceName, _subject: 'Заявка с сайта Анастасии', _template: 'table', _captcha: 'false' });
+        if (picked) payload['Направление'] = picked;
+        const res = await fetch('https://formsubmit.co/ajax/' + LEAD_EMAIL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload),
+          signal: ctrl.signal
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && (data.success === true || data.success === 'true')) {
+          leadStatus(form, 'ok', 'Спасибо! Заявка отправлена — Анастасия свяжется с тобой в ближайшее время 💛');
+          form.reset();
+          if (inModal) setTimeout(closeModal, 2800);} else { throw new Error(data.message || ('HTTP ' + res.status)); }
+      } catch (err) {
+        console.warn('Заявка не ушла автоматически:', err);
+        leadStatus(form, 'err', 'Не получилось отправить автоматически. Напиши Насте в Telegram — заявка уже подготовлена:', tgLink(text, 'открыть Telegram'));
+      } finally {
+        clearTimeout(timer); btn.disabled = false; btn.textContent = label;
       }
     }
 
@@ -3228,10 +3222,10 @@
   if (window.SITE_AFTER_OVERRIDES) window.SITE_AFTER_OVERRIDES();
 })();
 </script>
-<script src="reliefs.js?v=20261122_legal"></script>
-<script src="lusion3d.js?v=20261122_legal"></script>
-<script src="gift3d.js?v=20261122_legal"></script>
-<script src="patches.js?v=20261122_legal"></script>
+<script src="reliefs.js?v=20261121_gold"></script>
+<script src="lusion3d.js?v=20261121_studio"></script>
+<script src="gift3d.js?v=20261121_p3"></script>
+<script src="patches.js?v=20261121_f1"></script>
 </body>
 </html>
        

@@ -374,7 +374,7 @@
     });
 
     n.appendChild(el('div', { class: 'sep' }, ['Настройки и публикация']));
-    add('settings', '📞  Контакты и Закон');
+    add('settings', '📞  Контакты, Яндекс Форма, Закон');
     add('meta', '🔗  SEO и предпросмотр ссылок');
     add('publish', '🚀  Публикация в GitHub');
   }
@@ -683,7 +683,7 @@
   // --------------------------------------------------------------------------
   function viewMeta(m) {
     m.appendChild(el('h2', null, ['Заголовок и описание ссылок (SEO / Мессенджеры)']));
-    m.appendChild(el('p', { class: 'lead' }, ['Отображается во вкладке браузера и в карточке предпросмотра при отправке ссылки в Telegram и соцсетях.']));
+    m.appendChild(el('p', { class: 'lead' }, ['Отображается во вкладке браузера и в карточке предпросмотра при отправке ссылки в Telegram, WhatsApp или Instagram.']));
     [['title', 'Заголовок страницы (Title)'], ['description', 'Краткое описание (Description)']].forEach(function (p) {
       var c = el('div', { class: 'card' }, [el('b', null, [p[1]])]);
       var inp = p[0] === 'title' ? el('input', { type: 'text' }) : el('textarea');
@@ -1027,7 +1027,7 @@
           return ready(w);
         }
       } catch (e) {
-        return fatal('<b>Откройте панель по ссылке вашего сайта на GitHub Pages</b> (например, <code>https://anastasia-fitness.ru/admin.html</code>), а не как локальный файл с компьютера.');
+        return fatal('<b>Откройте панель по ссылке вашего сайта на GitHub Pages</b> (например, <code>https://balabanovasya.github.io/nastyafitness/admin.html</code>), а не как локальный файл с компьютера.');
       }
       if (++tries > 90) {
         try { if (f.contentWindow && f.contentWindow.SITE_EDIT_INDEX) return ready(f.contentWindow); } catch (e) {}

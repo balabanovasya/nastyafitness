@@ -794,7 +794,7 @@
       } else {
         var s = document.createElement('script');
         s.id = 'threejs-cdn-script';
-        s.src = 'vendor/three.min.js';
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
         s.onload = mountBakedReliefs;
         document.head.appendChild(s);
       }

@@ -752,7 +752,7 @@
     } else if (!document.getElementById('threejs-cdn-script')) {
       var s = document.createElement('script');
       s.id = 'threejs-cdn-script';
-      s.src = 'vendor/three.min.js';
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
       s.onload = startLusionScene;
       document.head.appendChild(s);
     }

@@ -2331,3 +2331,27 @@
     setTimeout(refreshReviewsPrism, 900);
   }
 })();
+
+/* === PART2 APPROACH PHOTO SYNC === */
+(function applyPart2ApproachPhotoSync() {
+  function syncApproachPhotos() {
+    var ovPhotos = (window.SITE_OVERRIDES && window.SITE_OVERRIDES.photos) || {};
+    var cards = document.querySelectorAll('#approach .approach-card img, .approach-sec .fandeck-item img');
+    cards.forEach(function (img, idx) {
+      var slot = 'approach-' + (idx + 1);
+      if (ovPhotos[slot] && img.getAttribute('src') !== ovPhotos[slot]) {
+        img.src = ovPhotos[slot];
+      }
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(syncApproachPhotos, 140);
+      setTimeout(syncApproachPhotos, 600);
+    });
+  } else {
+    setTimeout(syncApproachPhotos, 140);
+    setTimeout(syncApproachPhotos, 600);
+  }
+})();
+/* === END PART2 APPROACH PHOTO SYNC === */

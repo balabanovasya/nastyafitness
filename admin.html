@@ -781,11 +781,9 @@
   // 9. ПУБЛИКАЦИЯ В GITHUB + РЕЗЕРВНОЕ СКАЧИВАНИЕ CONTENT.JS
   // --------------------------------------------------------------------------
   function guessRepo() {
-    var h = location.hostname, p = location.pathname.split('/').filter(Boolean);
+    var h = location.hostname;
     if (/anastasia-fitness\.ru$/i.test(h)) {
-      var owner = h.split('.')[0];
-      var repo = (p.length && !/\.html?$/.test(p[0])) ? p[0] : 'nastyafitness';
-      return owner + '/' + repo;
+      return 'balabanovasya/nastyafitness';
     }
     return 'balabanovasya/nastyafitness';
   }
@@ -800,7 +798,8 @@
 
     var c = el('div', { class: 'card' });
     var repo = el('input', { type: 'text', placeholder: 'balabanovasya/nastyafitness' });
-    repo.value = LS('repo') || guessRepo();
+    var savedRepo = LS('repo'); if (savedRepo === 'anastasia-fitness/nastyafitness') { savedRepo = ''; LS('repo', null); }
+    repo.value = savedRepo || guessRepo();
     var tok = el('input', { type: 'password', placeholder: 'github_pat_… или ghp_…' });
     tok.value = LS('token') || '';
     var rem = el('input', { type: 'checkbox' }); rem.checked = !!LS('token');
@@ -1018,25 +1017,45 @@
   }
 
   var f = $('#probe');
-  f.onload = function () {
-    var tries = 0;
-    (function wait() {
-      try {
-        var w = f.contentWindow;
-        if (w && w.SITE_EDIT_INDEX && w.SITE_EDIT && w.SITE_EDIT.lists && w.SITE_EDIT.lists.certs) {
-          return ready(w);
-        }
-      } catch (e) {
-        return fatal('<b>Откройте панель по ссылке вашего сайта на GitHub Pages</b> (например, <code>https://anastasia-fitness.ru/admin.html</code>), а не как локальный файл с компьютера.');
+  var panelOpened = false;
+  var tries = 0;
+
+  function tryOpenPanel() {
+    if (panelOpened) return true;
+    try {
+      var w = f.contentWindow;
+      if (w && w.SITE_EDIT_INDEX && w.SITE_EDIT && w.SITE_EDIT.lists && w.SITE_EDIT.lists.certs) {
+        panelOpened = true;
+        try { if (w.stop) w.stop(); } catch (e) {}
+        ready(w);
+        return true;
       }
-      if (++tries > 90) {
-        try { if (f.contentWindow && f.contentWindow.SITE_EDIT_INDEX) return ready(f.contentWindow); } catch (e) {}
-        return fatal('Сайт не загрузился. Проверьте, что рядом лежат <code>index.html</code> и <code>patches.js</code>, и обновите страницу.');
-      }
-      setTimeout(wait, 150);
-    })();
-  };
+    } catch (e) {
+      panelOpened = true;
+      fatal('<b>Откройте панель по адресу вашего сайта</b> (<code>https://anastasia-fitness.ru/admin.html</code>), а не как локальный файл с компьютера.');
+      return true;
+    }
+    return false;
+  }
+
+  f.onload = function () { tryOpenPanel(); };
   f.src = 'index.html?panel=' + Date.now();
+
+  (function pollProbe() {
+    if (tryOpenPanel()) return;
+    if (++tries > 120) {
+      try {
+        var w2 = f.contentWindow;
+        if (w2 && w2.SITE_EDIT_INDEX && w2.SITE_EDIT) {
+          panelOpened = true;
+          try { if (w2.stop) w2.stop(); } catch (e) {}
+          return ready(w2);
+        }
+      } catch (e) {}
+      return fatal('Сайт не успел инициализироваться. Проверьте, что рядом лежат <code>index.html</code> и <code>patches.js</code>, и нажмите Обновить (Cmd+R).');
+    }
+    setTimeout(pollProbe, 120);
+  })();
 })();
 </script>
 </body>

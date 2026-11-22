@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTYiIGZpbGw9IiMzRjI5MUIiLz48cmVjdCB4PSI0IiB5PSI0IiB3aWR0aD0iNTYiIGhlaWdodD0iNTYiIHJ4PSIxMiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRTZCNjcyIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1vcGFjaXR5PSIwLjY1Ii8+PHRleHQgeD0iMzIiIHk9IjQzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIzNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Y2RDlBOCI+QTwvdGV4dD48L3N2Zz4=">
   <title>Анастасия — Онлайн-фитнес-тренер | Система тренировок и питания</title>
   <meta name="description" content="Анастасия — онлайн-фитнес-тренер: персональные тренировки по видеосвязи, питание и поддержка в чате. Первая пробная тренировка — в подарок.">
   <meta name="theme-color" content="#3F291B">
@@ -1826,12 +1827,12 @@
       "photos/approach-3": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNzUwIj48cmVjdCB3aWR0aD0iNjAwIiBoZWlnaHQ9Ijc1MCIgZmlsbD0iI0Y3RUZFNCIvPjxyZWN0IHg9IjI0IiB5PSIyNCIgd2lkdGg9IjU1MiIgaGVpZ2h0PSI3MDIiIHJ4PSIyNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjQzk5MDRFIiBzdHJva2Utb3BhY2l0eT0iMC4zNSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+"
 };
     function photoFallback(img) {
-      var m = (img.getAttribute('src') || '').match(/^((?:photos|images)\/[^.]+)\.(\w+)$/);
-      if (!m) { img.onerror = null; return; }
-      var i = PHOTO_EXT.indexOf(m[2]);
-      if (i >= 0 && i < PHOTO_EXT.length - 1) { img.src = m[1] + '.' + PHOTO_EXT[i + 1]; return; }
+      if (!img || img.dataset.fbDone) return;
+      img.dataset.fbDone = '1';
       img.onerror = null;
-      if (STOCK[m[1]]) img.src = STOCK[m[1]];
+      var slot = img.getAttribute('data-slot') || '';
+      var stock = (window.STOCK && (window.STOCK[slot] || window.STOCK[Object.keys(window.STOCK)[0]])) || '';
+      if (stock && img.src !== stock) { img.src = stock; }
     }
   </script>
 <script>window.SITE_EDIT = {
@@ -2060,7 +2061,7 @@
       </div>
 
       <div class="hero-visual">
-        <img data-slot="hero" src="photos/hero.jpg" onerror="photoFallback(this)" alt="Анастасия — онлайн-фитнес-тренер">
+        <img data-slot="hero" src="photos/hero.jpg" onerror="photoFallback(this)" alt="Анастасия — онлайн-фитнес-тренер" fetchpriority="high" decoding="async">
         <div class="hero-floating-card">
           <div>
             <strong style="display:block; font-size:0.92rem; color:var(--deep-choco);">Первая тренировка — в подарок 🎁</strong>
@@ -2226,13 +2227,13 @@
           <div class="cert-scan-card" onclick="openNastyaLightbox(this.querySelector('img').src, 'Диплом')">
             <div class="cert-scan-top-title">Диплом о профессиональной переподготовке</div>
             <div class="cert-scan-img-wrap">
-              <img data-slot="cert-1" src="photos/cert-1.jpg" onerror="photoFallback(this)" loading="lazy" alt="Диплом">
+              <img data-slot="cert-1" src="photos/cert-1.jpg" onerror="photoFallback(this)" loading="lazy" alt="Диплом" decoding="async">
             </div>
           </div>
           <div class="cert-scan-card" onclick="openNastyaLightbox(this.querySelector('img').src, 'Сертификат')">
             <div class="cert-scan-top-title">Сертификат профильного обучения</div>
             <div class="cert-scan-img-wrap">
-              <img data-slot="cert-2" src="photos/cert-2.jpg" onerror="photoFallback(this)" loading="lazy" alt="Сертификат">
+              <img data-slot="cert-2" src="photos/cert-2.jpg" onerror="photoFallback(this)" loading="lazy" alt="Сертификат" decoding="async">
             </div>
           </div>
         </div>
@@ -3282,10 +3283,10 @@
   if (window.SITE_AFTER_OVERRIDES) window.SITE_AFTER_OVERRIDES();
 })();
 </script>
-<script src="reliefs.js?v=20261122_s3"></script>
-<script src="lusion3d.js?v=20261122_s3"></script>
-<script src="gift3d.js?v=20261122_s3"></script>
-<script src="patches.js?v=20261122_s3"></script>
+<script src="reliefs.js?v=20261122_p3fix"></script>
+<script src="lusion3d.js?v=20261122_p3fix"></script>
+<script src="gift3d.js?v=20261122_p3fix"></script>
+<script src="patches.js?v=20261122_p3fix"></script>
 </body>
 </html>
        

@@ -4,6 +4,7 @@
  */
 (function () {
   'use strict';
+  if (/[?&]panel=/.test(location.search)) return; // Не запускаем WebGL в скрытом iframe админки
 
   var mounted = false;
 

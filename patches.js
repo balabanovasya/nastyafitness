@@ -2355,3 +2355,36 @@
   }
 })();
 /* === END PART2 APPROACH PHOTO SYNC === */
+
+
+/* === Убираем ценники из выпадающего списка в форме заявки === */
+(function () {
+  function stripSelectPrices() {
+    document.querySelectorAll('#contacts select option, #bookingModal select option').forEach(function (opt) {
+      var clean = function (s) {
+        return String(s || '')
+          .replace(/\s*\([^)]*(?:₽|руб\.?)[^)]*\)/gi, '')
+          .replace(/\s*[—–-]\s*(?:от\s+)?\d[\d\s.,]*\s*(?:₽|руб\.?)/gi, '')
+          .trim();
+      };
+      var t = clean(opt.textContent);
+      if (t && opt.textContent !== t) opt.textContent = t;
+      if (opt.value) {
+        var v = clean(opt.value);
+        if (v && opt.value !== v) opt.value = v;
+      }
+    });
+  }
+  function init() {
+    stripSelectPrices();
+    setTimeout(stripSelectPrices, 200);
+    setTimeout(stripSelectPrices, 800);
+    window.addEventListener('load', stripSelectPrices);
+    var sel = document.querySelector('#contacts select');
+    if (sel && window.MutationObserver) {
+      new MutationObserver(stripSelectPrices).observe(sel, { childList: true, subtree: true, characterData: true });
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();

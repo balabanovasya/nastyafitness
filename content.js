@@ -104,27 +104,27 @@ window.SITE_OVERRIDES = {
   "design": {},
   "reviewsCustom": [
     {
-      "name": "Елена, 33 года",
-      "program": "Полное ведение • 12 тренировок",
-      "badge": "-5.5 кг и осанка",
+      "name": "Наталья , 20 лет",
+      "program": "Растяжка • 8 занятий",
+      "badge": "Гибкость и отсутствие боли ",
       "screenshot": "photos/rev-screen-1-mwrj6o3a.jpg"
     },
     {
-      "name": "Ольга, 28 лет",
-      "program": "Мини-группа",
-      "badge": "-6 см в талии",
+      "name": "Виктория , 28 лет",
+      "program": "Полное Ведение • 12 тренировок",
+      "badge": "Энергия и дисциплина ",
       "screenshot": "photos/rev-screen-2-mwrj6ql9.jpg"
     },
     {
-      "name": "Кристина, 35 лет",
-      "program": "Ведение • 8 тренировок",
-      "badge": "-7 кг без диет",
+      "name": "Ольга , 30 лет",
+      "program": "Программа тренировок ",
+      "badge": "Понятная техника и дыхание ",
       "screenshot": "photos/rev-screen-3-mwrj6tbc.jpg"
     },
     {
-      "name": "Анна, 26 лет",
-      "program": "Растяжка • 12 занятий",
-      "badge": "Гибкость и 0 боли",
+      "name": "Алина, 25 лет",
+      "program": "Мини-группа",
+      "badge": "Результат по всем пунктам ",
       "screenshot": "photos/rev-screen-4-mwrj6x7k.jpg"
     }
   ]
